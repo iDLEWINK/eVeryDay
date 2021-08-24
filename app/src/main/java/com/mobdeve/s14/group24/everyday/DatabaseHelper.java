@@ -12,40 +12,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "Entries.db";
     private static final int DATABASE_VERSION = 1;
 
-    private static final String TABLE_NAME = "users";
+    private static final String TABLE_NAME = "entries";
     private static final String COLUMN_ID = "_id";
-    private static final String COLUMN_USERNAME = "username";
-    private static final String COLUMN_NAME = "name";
-    private static final String COLUMN_DESCRIPTION = "description";
+    private static final String COLUMN_DATE = "date";
+    private static final String COLUMN_CAPTION = "caption";
+    private static final String COLUMN_IMAGE_PATH = "image_path";
+    private static final String COLUMN_MOOD = "mood";
 
-    public DatabaseHelper(@Nullable Context context) {
+    public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query = "CREATE TABLE " + TABLE_NAME +
-                " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_USERNAME + " TEXT, " +
-                COLUMN_NAME + " TEXT, " +
-                COLUMN_DESCRIPTION + " INTEGER);";
+        String query = "CREATE TABLE " + TABLE_NAME + " (" +
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_DATE + " DATE NOT NULL UNIQUE, " +
+                COLUMN_CAPTION + " TEXT DEFAULT '', " +
+                COLUMN_IMAGE_PATH + " TEXT UNIQUE, " +
+                COLUMN_MOOD + " INTEGER(1)" +
+                ");";
         db.execSQL(query);
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 
-    public void addUser(String username, String name, String description){
+    public void addEntry(Date date, String imagePath, String caption, int mood){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-
-        cv.put(COLUMN_USERNAME, username);
-        cv.put(COLUMN_NAME, name);
-        cv.put(COLUMN_DESCRIPTION, description);
-
+        cv.put(COLUMN_DATE, date.toStringDB());
+        cv.put(COLUMN_IMAGE_PATH, imagePath);
+        cv.put(COLUMN_CAPTION, caption);
+        cv.put(COLUMN_MOOD, mood);
     }
 
     Cursor readAllData(){
@@ -60,12 +63,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    void updateData(int id, String name, String description){
+    void updateData(int id, String imagePath, String caption, String mood){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(COLUMN_NAME, name);
-        cv.put(COLUMN_DESCRIPTION, description);
-
+        cv.put(COLUMN_IMAGE_PATH, imagePath);
+        cv.put(COLUMN_CAPTION, caption);
+        cv.put(COLUMN_MOOD, mood);
     }
 
     void deleteOneRow(String row_id){
