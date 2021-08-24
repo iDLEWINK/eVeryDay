@@ -29,8 +29,7 @@ public class MainActivity extends AppCompatActivity {
        this.mediaEntries = DataHelper.initializeData();
 
         this.rvGallery = findViewById(R.id.rv_activity_main_gallery);
-        this.rvGallery.setLayoutManager(new GridLayoutManager(this, 2));
-//        rvGallery.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        this.rvGallery.setLayoutManager(new GridLayoutManager(this, 3));
         this.mediaEntryAdapter = new MediaEntryAdapter(mediaEntries);
         this.rvGallery.setAdapter(mediaEntryAdapter);
     }
