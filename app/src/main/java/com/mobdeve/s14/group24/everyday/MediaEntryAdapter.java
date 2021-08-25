@@ -3,6 +3,7 @@ package com.mobdeve.s14.group24.everyday;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ThumbnailUtils;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,7 @@ public class MediaEntryAdapter extends RecyclerView.Adapter<MediaEntryViewHolder
 
         String path = mediaEntry.getImagePath().toString();
         String ext = path.contains(".") ? path.substring(path.lastIndexOf(".")).toLowerCase() : "";
-        if (ext == "jpeg" || ext == "jpg")
+        if (ext.equals(".jpeg") || ext.equals(".jpg"))
             holder.setIvImage(mediaEntry.getImagePath());
         else
             holder.setIvImage(ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MICRO_KIND));
