@@ -26,7 +26,58 @@ public class DataHelper {
                 R.drawable.sample,
                 R.drawable.mood_border_1,
                 ""));
-
+        data.add(new MediaEntry(
+                R.drawable.sample,
+                R.drawable.mood_border_1,
+                ""));
+        data.add(new MediaEntry(
+                R.drawable.sample,
+                R.drawable.mood_border_1,
+                ""));
+        data.add(new MediaEntry(
+                R.drawable.sample,
+                R.drawable.mood_border_1,
+                ""));
+        data.add(new MediaEntry(
+                R.drawable.sample,
+                R.drawable.mood_border_1,
+                ""));
+        data.add(new MediaEntry(
+                R.drawable.sample,
+                R.drawable.mood_border_1,
+                ""));
+        data.add(new MediaEntry(
+                R.drawable.sample,
+                R.drawable.mood_border_1,
+                ""));
+        data.add(new MediaEntry(
+                R.drawable.sample,
+                R.drawable.mood_border_1,
+                ""));
+        data.add(new MediaEntry(
+                R.drawable.sample,
+                R.drawable.mood_border_1,
+                ""));
+        data.add(new MediaEntry(
+                R.drawable.sample,
+                R.drawable.mood_border_1,
+                ""));
+        data.add(new MediaEntry(
+                R.drawable.sample,
+                R.drawable.mood_border_1,
+                ""));
+        data.add(new MediaEntry(
+                R.drawable.sample,
+                R.drawable.mood_border_1,
+                ""));
+        data.add(new MediaEntry(
+                R.drawable.sample,
+                R.drawable.mood_border_1,
+                ""));
+        data.add(new MediaEntry(
+                R.drawable.sample,
+                R.drawable.mood_border_1,
+                ""));
         return data;
     }
 }

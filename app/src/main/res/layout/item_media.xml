@@ -7,47 +7,46 @@
     android:padding="2dp">
 
     <ImageView
+        android:id="@+id/iv_item_media_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="false"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/sample" />
+
+    <ImageView
         android:id="@+id/iv_item_media_mood_rating"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/gl_item_media_bottom_mood"
+        app:layout_constraintBottom_toTopOf="@+id/gl_bottom_mood_rating"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_item_media_image"
         app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@drawable/mood_border_1" />
 
     <TextView
         android:id="@+id/tv_item_media_date"
+        style="@android:style/TextAppearance.DeviceDefault.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Jan 01, 2000"
         android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="@+id/iv_item_media_mood_rating"
-        app:layout_constraintEnd_toEndOf="@+id/iv_item_media_mood_rating"
+        app:layout_constraintEnd_toEndOf="@+id/iv_item_media_image"
         app:layout_constraintStart_toStartOf="@+id/iv_item_media_mood_rating"
-        app:layout_constraintTop_toTopOf="@+id/iv_item_media_mood_rating" />
+        app:layout_constraintTop_toTopOf="@id/iv_item_media_mood_rating" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_item_media_bottom_mood"
+        android:id="@+id/gl_bottom_mood_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.05" />
-
-    <ImageView
-        android:id="@+id/iv_item_media_image"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="20:19"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/gl_item_media_bottom_mood"
-        app:layout_constraintVertical_bias="1.0"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintGuide_percent="0.1" />
 </androidx.constraintlayout.widget.ConstraintLayout>
