@@ -32,8 +32,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = "CREATE TABLE " + TABLE_NAME + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_DATE + " DATE NOT NULL UNIQUE, " +
-                COLUMN_CAPTION + " TEXT DEFAULT '', " +
                 COLUMN_IMAGE_PATH + " TEXT UNIQUE, " +
+                COLUMN_CAPTION + " TEXT DEFAULT '', " +
                 COLUMN_MOOD + " INTEGER(1)" +
                 ");";
         db.execSQL(query);
