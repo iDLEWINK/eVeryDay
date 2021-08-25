@@ -52,7 +52,7 @@
         app:layout_constraintStart_toStartOf="@+id/gl_montage_settings_center_vert" />
 
     <EditText
-        android:id="@+id/tv_montage_end_date"
+        android:id="@+id/et_montage_end_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -117,5 +117,16 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent=".8" />
+
+    <ProgressBar
+        android:id="@+id/pb_montage_loading"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/gl_montage_settings_third_hor"
+        app:layout_constraintEnd_toStartOf="@+id/gl_montage_settings_center_vert"
+        app:layout_constraintStart_toStartOf="@+id/gl_montage_settings_center_vert"
+        app:layout_constraintTop_toTopOf="@+id/gl_montage_settings_second_hor" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
