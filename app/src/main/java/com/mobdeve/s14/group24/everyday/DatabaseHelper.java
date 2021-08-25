@@ -5,11 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
+
+import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private Context context;
-    private static final String DATABASE_NAME = "Entries.db";
+    public static final String DATABASE_NAME = "Entries.db";
     private static final int DATABASE_VERSION = 1;
 
     private static final String TABLE_NAME = "entries";
@@ -51,7 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_MOOD, mood);
     }
 
-    Cursor readAllData(){
+    public Cursor readAllData(){
         String query = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -63,7 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    void updateData(int id, String imagePath, String caption, String mood){
+    public void updateData(int id, String imagePath, String caption, String mood){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_IMAGE_PATH, imagePath);
@@ -71,14 +74,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_MOOD, mood);
     }
 
-    void deleteOneRow(String row_id){
+    public void deleteOneRow(String row_id){
         SQLiteDatabase db = this.getWritableDatabase();
         long result = db.delete(TABLE_NAME, "_id=?", new String[]{row_id});
     }
 
-    void deleteAllData(){
+    public void deleteAllData(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME);
+    }
+
+    public ArrayList<MediaEntry> getAllDataAsList() {
+        ArrayList<MediaEntry> list = new ArrayList<MediaEntry>();
+        Cursor cursor = readAllData();
+        while (cursor.moveToNext()) {
+            list.add(new MediaEntry(
+                    Uri.parse(cursor.getString(3)),
+                    cursor.getInt(5),
+                    cursor.getString(3)
+            ));
+        }
     }
 
 }

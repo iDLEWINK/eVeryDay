@@ -25,6 +25,7 @@ public class DataHelper {
         int moods[] = {3, 4, 5};
 
         File location = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        context.deleteDatabase(DatabaseHelper.DATABASE_NAME);
         DatabaseHelper dbh = new DatabaseHelper(context);
 
         for (int i = 0; i < dates.length; i++) {
@@ -43,7 +44,7 @@ public class DataHelper {
             }
             dbh.addEntry(dates[i], image.getAbsolutePath(), captions[i], moods[i]);
         }
-        
+
     }
 
     public static ArrayList<MediaEntry> initializeData() {
