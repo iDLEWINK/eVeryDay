@@ -34,10 +34,10 @@ public class MediaEntryAdapter extends RecyclerView.Adapter<MediaEntryViewHolder
     public void onBindViewHolder(@NonNull @NotNull MediaEntryViewHolder holder, int position) {
         MediaEntry mediaEntry = mediaEntries.get(position);
 
+
+        holder.setTvDate(mediaEntry.getDate().toStringNoYear());
+        holder.setIvImage(mediaEntry.getImagePath());
         holder.setIvMoodRating(mediaEntry.getMoodRating());
-//        TODO: Set date
-//        holder.setTvDate(mediaEntry.getDate());
-        holder.setIvImage(mediaEntry.getImageID());
     }
 
     @Override

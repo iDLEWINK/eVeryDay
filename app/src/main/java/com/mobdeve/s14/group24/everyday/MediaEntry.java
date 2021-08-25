@@ -1,31 +1,33 @@
 package com.mobdeve.s14.group24.everyday;
 
+import android.net.Uri;
+
 public class MediaEntry {
-    private int imageID;
-    private int moodRating;
+    private Date date;
+    private Uri imagePath;
     private String caption;
-//    TODO: Implement Date and Time
-//    private Date date;
-//    private Time time;
+    private int moodRating;
 
-    public MediaEntry (int imageID, int moodRating, String caption) {
-        this.imageID = imageID;
-        this.moodRating = moodRating;
+    public MediaEntry (Date date, Uri imagePath, String caption, int moodRating) {
+        this.date = date;
+        this.imagePath = imagePath;
         this.caption = caption;
-//        TODO: Add date and time
+        this.moodRating = moodRating;
     }
 
-    public int getImageID() {
-        return imageID;
+    public Date getDate() {
+        return date;
     }
 
-    public int getMoodRating() {
-        return moodRating;
+    public Uri getImagePath() {
+        return imagePath;
     }
 
     public String getCaption() {
         return caption;
     }
 
-//    TODO: Getters for date and time
+    public int getMoodRating() {
+        return moodRating;
+    }
 }

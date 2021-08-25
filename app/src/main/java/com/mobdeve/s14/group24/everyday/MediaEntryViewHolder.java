@@ -1,5 +1,6 @@
 package com.mobdeve.s14.group24.everyday;
 
+import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -8,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.net.URI;
 
 public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
 
@@ -31,8 +34,8 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
         tvDate.setText(date);
     }
 
-    public void setIvImage(int imageID) {
-        ivImage.setImageResource(imageID);
+    public void setIvImage(Uri imagePath) {
+        ivImage.setImageURI(imagePath);
     }
 }
 
