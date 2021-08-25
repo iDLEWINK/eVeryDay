@@ -57,8 +57,10 @@
         android:id="@+id/tv_view_media_entry_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="Aug. 27 2021"
+        android:textAllCaps="true"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
         app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
         app:layout_constraintTop_toBottomOf="@+id/iv_view_media_entry_image" />
@@ -68,6 +70,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mood: "
+        android:textAllCaps="true"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/iv_view_media_entry_mood"
         app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
         app:layout_constraintTop_toTopOf="@+id/iv_view_media_entry_mood" />
@@ -83,11 +87,22 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
+        android:id="@+id/tv_view_media_entry_mood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_view_media_entry_mood"
+        app:layout_constraintStart_toEndOf="@+id/iv_view_media_entry_mood"
+        app:layout_constraintTop_toTopOf="@+id/iv_view_media_entry_mood" />
+
+    <TextView
         android:id="@+id/tv_view_media_entry_caption_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="About This Pic: "
+        android:textAllCaps="true"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
         app:layout_constraintTop_toBottomOf="@+id/iv_view_media_entry_mood" />
 
