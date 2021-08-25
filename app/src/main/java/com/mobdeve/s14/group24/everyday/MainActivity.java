@@ -30,14 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void initRecyclerView () {
         DataHelper dataHelper = new DataHelper(MainActivity.this);
-
         mediaEntries = dataHelper.retrieveData();
-        for (MediaEntry i : mediaEntries) {
-            Log.d("aaa caption", i.getCaption());
-            Log.d("aaa date", i.getDate().toStringFull());
-            Log.d("aaa mood", "" + i.getMoodRating());
-            Log.d("aaa path", i.getImagePath().toString());
-        }
 
         this.rvGallery = findViewById(R.id.rv_activity_main_gallery);
         this.rvGallery.setLayoutManager(new GridLayoutManager(this, 3));
