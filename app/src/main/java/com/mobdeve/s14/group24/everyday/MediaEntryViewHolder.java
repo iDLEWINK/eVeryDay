@@ -3,10 +3,12 @@ package com.mobdeve.s14.group24.everyday;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.View;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +17,7 @@ import java.net.URI;
 
 public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
 
+    private ConstraintLayout itemLayout;
     private ImageView ivMoodRating;
     private TextView tvDate;
     private ImageView ivImage;
@@ -25,6 +28,7 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
         ivMoodRating = itemView.findViewById(R.id.iv_item_media_mood_rating);
         tvDate = itemView.findViewById(R.id.tv_item_media_date);
         ivImage = itemView.findViewById(R.id.iv_item_media_image);
+        itemLayout = itemView.findViewById(R.id.cl_item_layout);
     }
 
     public void setIvMoodRating(int moodRating) {
@@ -52,6 +56,10 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
 
     public void setIvImage(Uri imagePath) {
         ivImage.setImageURI(imagePath);
+    }
+
+    public void setOnClickListener(View.OnClickListener listener) {
+        itemLayout.setOnClickListener(listener);
     }
 }
 
