@@ -15,7 +15,7 @@
         <activity
             android:name=".MontageSettingsActivity"
             android:exported="true" />
-        <activity android:name=".ViewEntryActivity" />
+        <activity android:name=".ViewMediaEntryActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
