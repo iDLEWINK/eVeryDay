@@ -24,7 +24,7 @@ public class DataHelper {
 
     public DataHelper (Context context) {
         this.context = context;
-        initializeData();
+//        initializeData();
     }
 
     private void initializeData() {
@@ -53,7 +53,6 @@ public class DataHelper {
             }
             dbh.addEntry(dates[i], image.getAbsolutePath(), captions[i], moods[i]);
         }
-
     }
 
     public ArrayList<MediaEntry> retrieveData () {
