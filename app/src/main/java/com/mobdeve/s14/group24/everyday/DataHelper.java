@@ -68,6 +68,7 @@ public class DataHelper {
                     cursor.getInt(4)
             ));
         }
+
         return mediaEntries;
     }
 

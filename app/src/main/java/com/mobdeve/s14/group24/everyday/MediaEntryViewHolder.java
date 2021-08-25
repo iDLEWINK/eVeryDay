@@ -1,5 +1,6 @@
 package com.mobdeve.s14.group24.everyday;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
@@ -43,6 +44,10 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
 
     public void setTvDate(String date) {
         tvDate.setText(date);
+    }
+
+    public void setIvImage(Bitmap image) {
+        ivImage.setImageBitmap(image);
     }
 
     public void setIvImage(Uri imagePath) {

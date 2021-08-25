@@ -1,5 +1,8 @@
 package com.mobdeve.s14.group24.everyday;
 
+import android.graphics.drawable.BitmapDrawable;
+import android.media.ThumbnailUtils;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MediaEntryAdapter extends RecyclerView.Adapter<MediaEntryViewHolder> {
 
@@ -36,7 +40,14 @@ public class MediaEntryAdapter extends RecyclerView.Adapter<MediaEntryViewHolder
 
 
         holder.setTvDate(mediaEntry.getDate().toStringNoYear());
-        holder.setIvImage(mediaEntry.getImagePath());
+
+        String path = mediaEntry.getImagePath().toString();
+        String ext = path.contains(".") ? path.substring(path.lastIndexOf(".")).toLowerCase() : "";
+        if (ext == "jpeg" || ext == "jpg")
+            holder.setIvImage(mediaEntry.getImagePath());
+        else
+            holder.setIvImage(ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MICRO_KIND));
+
         holder.setIvMoodRating(mediaEntry.getMoodRating());
     }
 
