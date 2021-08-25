@@ -6,35 +6,113 @@
     android:layout_height="match_parent"
     tools:context=".ViewMediaEntryActivity">
 
-    <ImageView
-        android:id="@+id/iv_view_media_entry_image"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_view_main_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_view_main_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_view_main_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.025" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_view_main_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.975"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_view_image_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <ImageView
+        android:id="@+id/iv_view_media_entry_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/drawable_rounded"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@+id/gl_view_image_bottom"
+        app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
+        app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
+        app:layout_constraintTop_toTopOf="@+id/gl_view_main_top"
+        tools:srcCompat="@drawable/sample2" />
 
     <TextView
         android:id="@+id/tv_view_media_entry_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="16dp"
+        android:text="Aug. 27 2021"
+        app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
+        app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
+        app:layout_constraintTop_toBottomOf="@+id/iv_view_media_entry_image" />
 
     <TextView
-        android:id="@+id/tv_view_media_entry_caption"
+        android:id="@+id/tv_view_media_entry_mood_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:text="Mood: "
+        app:layout_constraintBottom_toBottomOf="@+id/iv_view_media_entry_mood"
+        app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
+        app:layout_constraintTop_toTopOf="@+id/iv_view_media_entry_mood" />
+
+    <ImageView
+        android:id="@+id/iv_view_media_entry_mood"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/tv_view_media_entry_mood_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_view_media_entry_date"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/tv_view_media_entry_mood"
+        android:id="@+id/tv_view_media_entry_caption_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete This"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_marginTop="16dp"
+        android:text="About This Pic: "
+        app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
+        app:layout_constraintTop_toBottomOf="@+id/iv_view_media_entry_mood" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/gl_view_main_bottom"
+        app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
+        app:layout_constraintTop_toBottomOf="@+id/tv_view_media_entry_caption_label">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_view_media_entry_caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent quis venenatis arcu. Suspendisse vestibulum lectus mattis nisi fermentum, nec posuere eros interdum. Fusce congue, est in egestas feugiat, dui magna tempor metus, ac mattis neque turpis et turpis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt, est vel iaculis sodales, felis nisl interdum nibh, id imperdiet magna mi a ante. Aenean sapien felis, luctus eu maximus ac, tempor a turpis. Integer maximus tellus feugiat viverra convallis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas fringilla odio non nunc euismod, ut ultrices dolor auctor. Curabitur a maximus purus, at ultricies mauris. Morbi imperdiet et arcu eu imperdiet. Nam id bibendum leo, ac faucibus odio. Praesent scelerisque urna sed velit accumsan semper. Pellentesque eleifend, dui ac posuere tempor, felis ligula pretium diam, nec tincidunt massa orci sed ante." />
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
