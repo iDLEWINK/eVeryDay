@@ -3,6 +3,7 @@ package com.mobdeve.s14.group24.everyday;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,10 +27,12 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String date = intent.getStringExtra(Keys.KEY_DATE.name());
+        String imagePath = intent.getStringExtra(Keys.KEY_IMAGE_PATH.name());
         String caption = intent.getStringExtra(Keys.KEY_CAPTION.name());
         int mood = intent.getIntExtra(Keys.KEY_MOOD.name(), 0);
 
         tvDate.setText(date);
+        ivImage.setImageURI(Uri.parse(imagePath));
         tvCaption.setText(caption);
         tvMood.setText("" + mood);
     }
