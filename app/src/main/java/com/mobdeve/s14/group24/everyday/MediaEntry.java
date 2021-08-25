@@ -6,13 +6,13 @@ public class MediaEntry {
     private Date date;
     private Uri imagePath;
     private String caption;
-    private int moodRating;
+    private int mood;
 
-    public MediaEntry (Date date, Uri imagePath, String caption, int moodRating) {
+    public MediaEntry (Date date, Uri imagePath, String caption, int mood) {
         this.date = date;
         this.imagePath = imagePath;
         this.caption = caption;
-        this.moodRating = moodRating;
+        this.mood = mood;
     }
 
     public Date getDate() {
@@ -27,7 +27,7 @@ public class MediaEntry {
         return caption;
     }
 
-    public int getMoodRating() {
-        return moodRating;
+    public int getMood() {
+        return mood;
     }
 }

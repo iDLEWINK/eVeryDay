@@ -20,7 +20,7 @@
         tools:srcCompat="@drawable/sample" />
 
     <ImageView
-        android:id="@+id/iv_item_media_mood_rating"
+        android:id="@+id/iv_item_media_mood"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/gl_bottom_mood_rating"

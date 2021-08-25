@@ -11,35 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.net.URI;
-
 public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
 
-    private ImageView ivMoodRating;
     private TextView tvDate;
     private ImageView ivImage;
+    private ImageView ivMood;
 
     public MediaEntryViewHolder(@NonNull @NotNull View itemView) {
         super(itemView);
 
-        ivMoodRating = itemView.findViewById(R.id.iv_item_media_mood_rating);
+        ivMood = itemView.findViewById(R.id.iv_item_media_mood);
         tvDate = itemView.findViewById(R.id.tv_item_media_date);
         ivImage = itemView.findViewById(R.id.iv_item_media_image);
-    }
-
-    public void setIvMoodRating(int moodRating) {
-        if (moodRating == 1) {
-            ivMoodRating.setImageResource(R.drawable.mood_border_1);
-        } else if (moodRating == 2) {
-            ivMoodRating.setImageResource(R.drawable.mood_border_2);
-        } else if (moodRating == 3) {
-            ivMoodRating.setImageResource(R.drawable.mood_border_3);
-        } else if (moodRating == 4) {
-            ivMoodRating.setImageResource(R.drawable.mood_border_4);
-        } else if (moodRating == 5) {
-            ivMoodRating.setImageResource(R.drawable.mood_border_5);
-        }
-
     }
 
     public void setTvDate(String date) {
@@ -52,6 +35,20 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
 
     public void setIvImage(Uri imagePath) {
         ivImage.setImageURI(imagePath);
+    }
+
+    public void setIvMood(int mood) {
+        if (mood == 1) {
+            ivMood.setImageResource(R.drawable.mood_border_1);
+        } else if (mood == 2) {
+            ivMood.setImageResource(R.drawable.mood_border_2);
+        } else if (mood == 3) {
+            ivMood.setImageResource(R.drawable.mood_border_3);
+        } else if (mood == 4) {
+            ivMood.setImageResource(R.drawable.mood_border_4);
+        } else if (mood == 5) {
+            ivMood.setImageResource(R.drawable.mood_border_5);
+        }
     }
 }
 
