@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         DataHelper dataHelper = new DataHelper(MainActivity.this);
 
         mediaEntries = dataHelper.retrieveData();
+        Log.d("aaa", mediaEntries.toString());
         this.rvGallery = findViewById(R.id.rv_activity_main_gallery);
         this.rvGallery.setLayoutManager(new GridLayoutManager(this, 3));
         this.mediaEntryAdapter = new MediaEntryAdapter(mediaEntries);

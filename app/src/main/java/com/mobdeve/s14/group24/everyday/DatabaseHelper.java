@@ -52,6 +52,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_IMAGE_PATH, imagePath);
         cv.put(COLUMN_CAPTION, caption);
         cv.put(COLUMN_MOOD, mood);
+        db.insert(TABLE_NAME,null, cv);
     }
 
     public Cursor readAllData(){
@@ -72,6 +73,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_IMAGE_PATH, imagePath);
         cv.put(COLUMN_CAPTION, caption);
         cv.put(COLUMN_MOOD, mood);
+        db.update(TABLE_NAME, cv, "_id=?", new String[]{Integer.toString(id)});
     }
 
     public void deleteOneRow(String row_id){
