@@ -38,4 +38,8 @@ public class Date {
     public String toStringDB() {
         return year + "/" + month + "/" + day;
     }
+
+    public String toStringFileName() {
+        return year + "_" + month + "_" + day + ".jpg";
+    }
 }
