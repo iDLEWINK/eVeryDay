@@ -64,7 +64,7 @@ public class DataHelper {
         while (cursor.moveToNext()) {
             mediaEntries.add(new MediaEntry(
                     new Date(cursor.getString(1)),
-                    Uri.parse(cursor.getString(2)),
+                    cursor.getString(2),
                     cursor.getString(3),
                     cursor.getInt(4)
             ));

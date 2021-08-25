@@ -62,14 +62,7 @@ public class MediaEntryAdapter extends RecyclerView.Adapter<MediaEntryViewHolder
         MediaEntry mediaEntry = mediaEntries.get(position);
 
         holder.setTvDate(mediaEntry.getDate().toStringNoYear());
-
-        String path = mediaEntry.getImagePath().toString();
-        String ext = path.contains(".") ? path.substring(path.lastIndexOf(".")).toLowerCase() : "";
-        if (ext.equals(".jpeg") || ext.equals(".jpg"))
-            holder.setIvImage(mediaEntry.getImagePath());
-        else
-            holder.setIvImage(ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MICRO_KIND));
-
+        holder.setIvImage(mediaEntry.getImagePath());
         holder.setIvMood(mediaEntry.getMood());
     }
 

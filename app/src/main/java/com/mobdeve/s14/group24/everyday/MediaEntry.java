@@ -4,11 +4,11 @@ import android.net.Uri;
 
 public class MediaEntry {
     private Date date;
-    private Uri imagePath;
+    private String imagePath;
     private String caption;
     private int mood;
 
-    public MediaEntry (Date date, Uri imagePath, String caption, int mood) {
+    public MediaEntry (Date date, String imagePath, String caption, int mood) {
         this.date = date;
         this.imagePath = imagePath;
         this.caption = caption;
@@ -19,7 +19,7 @@ public class MediaEntry {
         return date;
     }
 
-    public Uri getImagePath() {
+    public String getImagePath() {
         return imagePath;
     }
 

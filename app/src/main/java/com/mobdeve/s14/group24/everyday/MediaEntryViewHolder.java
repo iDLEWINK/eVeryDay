@@ -1,7 +1,9 @@
 package com.mobdeve.s14.group24.everyday;
 
 import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,12 +31,15 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
         tvDate.setText(date);
     }
 
-    public void setIvImage(Bitmap image) {
-        ivImage.setImageBitmap(image);
-    }
+    public void setIvImage(String imagePath) {
 
-    public void setIvImage(Uri imagePath) {
-        ivImage.setImageURI(imagePath);
+        String ext = imagePath.contains(".") ? imagePath.substring(imagePath.lastIndexOf(".")).toLowerCase() : "";
+
+        if (ext.equals(".jpeg") || ext.equals(".jpg")) {
+            ivImage.setImageURI(Uri.parse(imagePath));
+        } else {
+            ivImage.setImageBitmap(ThumbnailUtils.createVideoThumbnail(imagePath, MediaStore.Video.Thumbnails.MICRO_KIND));
+        }
     }
 
     public void setIvMood(int mood) {
