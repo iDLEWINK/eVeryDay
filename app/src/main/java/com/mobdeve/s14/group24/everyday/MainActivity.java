@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("aaa mood", "" + i.getMoodRating());
             Log.d("aaa path", i.getImagePath().toString());
         }
+
         this.rvGallery = findViewById(R.id.rv_activity_main_gallery);
         this.rvGallery.setLayoutManager(new GridLayoutManager(this, 3));
         this.mediaEntryAdapter = new MediaEntryAdapter(mediaEntries);

@@ -12,10 +12,10 @@ import java.util.ArrayList;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private Context context;
-    public static final String DATABASE_NAME = "Entries.db";
+    public static final String DATABASE_NAME = "MediaEntries.db";
     private static final int DATABASE_VERSION = 1;
 
-    private static final String TABLE_NAME = "entries";
+    private static final String TABLE_NAME = "media_entries";
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_DATE = "date";
     private static final String COLUMN_CAPTION = "caption";
