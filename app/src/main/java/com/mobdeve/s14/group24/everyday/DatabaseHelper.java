@@ -84,16 +84,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_NAME);
     }
 
-    public ArrayList<MediaEntry> getAllDataAsList() {
-        ArrayList<MediaEntry> list = new ArrayList<MediaEntry>();
-        Cursor cursor = readAllData();
-        while (cursor.moveToNext()) {
-            list.add(new MediaEntry(
-                    Uri.parse(cursor.getString(3)),
-                    cursor.getInt(5),
-                    cursor.getString(3)
-            ));
-        }
-    }
-
 }
