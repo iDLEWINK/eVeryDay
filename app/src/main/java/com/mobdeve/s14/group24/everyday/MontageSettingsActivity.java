@@ -14,7 +14,7 @@ public class MontageSettingsActivity extends AppCompatActivity {
     EditText etLength;
     EditText etStartDate;
     EditText etEndDate;
-    Button btnCreateMontage;
+    Button btnCreate;
     ProgressBar pbLoading;
 
     @Override
@@ -29,10 +29,10 @@ public class MontageSettingsActivity extends AppCompatActivity {
         etLength = findViewById(R.id.et_montage_length);
         etStartDate = findViewById(R.id.et_montage_start_date);
         etEndDate = findViewById(R.id.et_montage_end_date);
-        btnCreateMontage = findViewById(R.id.btn_montage_create);
+        btnCreate = findViewById(R.id.btn_montage_create);
         pbLoading = findViewById(R.id.pb_montage_loading);
 
-        btnCreateMontage.setOnClickListener(new View.OnClickListener() {
+        btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Boolean isSuccessful = false;
