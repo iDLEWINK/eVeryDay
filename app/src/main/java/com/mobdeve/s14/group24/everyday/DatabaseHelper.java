@@ -34,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_DATE + " DATE NOT NULL UNIQUE, " +
                 COLUMN_IMAGE_PATH + " TEXT UNIQUE, " +
                 COLUMN_CAPTION + " TEXT DEFAULT '', " +
-                COLUMN_MOOD + " INTEGER(1)" +
+                COLUMN_MOOD + " INTEGER(1) DEFAULT 0" +
                 ");";
         db.execSQL(query);
     }
@@ -52,6 +52,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_IMAGE_PATH, imagePath);
         cv.put(COLUMN_CAPTION, caption);
         cv.put(COLUMN_MOOD, mood);
+        db.insert(TABLE_NAME,null, cv);
+    }
+
+    public void addEntry(String imagePath){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_DATE, new Date().toStringDB());
+        cv.put(COLUMN_IMAGE_PATH, imagePath);
         db.insert(TABLE_NAME,null, cv);
     }
 

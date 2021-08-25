@@ -36,12 +36,7 @@ public class AddMediaEntryActivity extends AppCompatActivity {
         btnAddMediaEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbh.addEntry(
-                        new Date(),
-                        dbh.getRow(1).getImagePath(),
-                        etCaption.getText().toString().trim(),
-                        0 //add mood somehow
-                );
+                dbh.addEntry(dbh.getRow(1).getImagePath() /*put camera returned path here*/);
             }
         });
     }
