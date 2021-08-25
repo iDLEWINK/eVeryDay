@@ -84,7 +84,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         );
     }
 
-    public void updateData(int id, String imagePath, String caption, String mood){
+    public void updateData(int id, String imagePath, String caption, int mood){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_IMAGE_PATH, imagePath);

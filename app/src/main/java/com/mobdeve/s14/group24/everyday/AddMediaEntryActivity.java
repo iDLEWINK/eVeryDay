@@ -18,7 +18,7 @@ public class AddMediaEntryActivity extends AppCompatActivity {
 
     //mood
     EditText etCaption;
-    Button addMediaEntry;
+    Button btnAddMediaEntry;
 
     DatabaseHelper dbh;
 
@@ -29,11 +29,11 @@ public class AddMediaEntryActivity extends AppCompatActivity {
 
         //initialize mood
         //etCaption = findViewById();
-        //addMediaEntry = findViewById();
+        //btnAddMediaEntry = findViewById();
 
         dbh = new DatabaseHelper(this);
 
-        addMediaEntry.setOnClickListener(new View.OnClickListener() {
+        btnAddMediaEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dbh.addEntry(
