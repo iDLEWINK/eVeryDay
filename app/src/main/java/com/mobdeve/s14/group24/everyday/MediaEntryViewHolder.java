@@ -27,7 +27,18 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setIvMoodRating(int moodRating) {
-        ivMoodRating.setImageResource(moodRating);
+        if (moodRating == 1) {
+            ivMoodRating.setImageResource(R.drawable.mood_border_1);
+        } else if (moodRating == 2) {
+            ivMoodRating.setImageResource(R.drawable.mood_border_2);
+        } else if (moodRating == 3) {
+            ivMoodRating.setImageResource(R.drawable.mood_border_3);
+        } else if (moodRating == 4) {
+            ivMoodRating.setImageResource(R.drawable.mood_border_4);
+        } else if (moodRating == 5) {
+            ivMoodRating.setImageResource(R.drawable.mood_border_5);
+        }
+
     }
 
     public void setTvDate(String date) {
