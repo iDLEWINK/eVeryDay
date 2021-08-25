@@ -60,11 +60,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = null;
-
         if(db != null)
             cursor = db.rawQuery(query, null);
 
         return cursor;
+    }
+
+    public MediaEntry getRow(int id){
+        String query = "SELECT * FROM " + TABLE_NAME +
+                "WHERE " + COLUMN_ID + " = " + id;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        if(db != null)
+            cursor = db.rawQuery(query, null);
+
+        cursor.moveToNext();
+
+        return new MediaEntry(new Date(cursor.getString(1)),
+                cursor.getString(2),
+                cursor.getString(3),
+                cursor.getInt(4)
+        );
     }
 
     public void updateData(int id, String imagePath, String caption, String mood){

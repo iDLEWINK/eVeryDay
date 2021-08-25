@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mobdeve.s14.group24.everyday">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
 
     <application
@@ -12,6 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EVeryDay">
+        <activity
+            android:name=".EditMediaEntryActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AddMediaEntryActivity"
+            android:exported="true" />
         <activity
             android:name=".MontageSettingsActivity"
             android:exported="true" />
