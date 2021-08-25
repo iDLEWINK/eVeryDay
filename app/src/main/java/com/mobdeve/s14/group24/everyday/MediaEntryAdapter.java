@@ -1,5 +1,6 @@
 package com.mobdeve.s14.group24.everyday;
 
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ThumbnailUtils;
 import android.provider.MediaStore;
@@ -14,9 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class MediaEntryAdapter extends RecyclerView.Adapter<MediaEntryViewHolder> {
+
+    public static final String KEY_DATE = "KEY_DATE";
+    public static final String KEY_IMAGE_PATH = "KEY_IMAGE_PATH";
+    public static final String KEY_CAPTION = "";
+    public static final String KEY_LIKES = "";
 
     private ArrayList<MediaEntry> mediaEntries;
 
@@ -32,13 +37,29 @@ public class MediaEntryAdapter extends RecyclerView.Adapter<MediaEntryViewHolder
         View view = layoutInflater.inflate(R.layout.item_media, parent, false);
 
         MediaEntryViewHolder mediaEntryViewHolder = new MediaEntryViewHolder(view);
+
+        mediaEntryViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), ViewMediaEntryActivity.class);
+
+                MediaEntry mediaEntry = mediaEntries.get(mediaEntryViewHolder.getBindingAdapterPosition());
+
+                intent.putExtra(Keys.KEY_DATE.name(), mediaEntry.getDate().toStringFull());
+                intent.putExtra(Keys.KEY_IMAGE_PATH.name(), mediaEntry.getImagePath());
+                intent.putExtra(Keys.KEY_CAPTION.name(), mediaEntry.getCaption());
+                intent.putExtra(Keys.KEY_MOOD.name(), mediaEntry.getMood());
+
+                v.getContext().startActivity(intent);
+            }
+        });
+
         return mediaEntryViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull MediaEntryViewHolder holder, int position) {
         MediaEntry mediaEntry = mediaEntries.get(position);
-
 
         holder.setTvDate(mediaEntry.getDate().toStringNoYear());
 
@@ -49,11 +70,11 @@ public class MediaEntryAdapter extends RecyclerView.Adapter<MediaEntryViewHolder
         else
             holder.setIvImage(ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MICRO_KIND));
 
-        holder.setIvMoodRating(mediaEntry.getMoodRating());
+        holder.setIvMood(mediaEntry.getMood());
     }
 
     @Override
     public int getItemCount() {
-        return this.mediaEntries.size();
+        return mediaEntries.size();
     }
 }
