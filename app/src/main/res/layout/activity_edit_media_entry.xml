@@ -6,4 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".EditMediaEntryActivity">
 
+    <RadioGroup
+        android:id="@+id/rg_moods"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
+        app:layout_constraintTop_toBottomOf="@+id/tv_view_media_entry_date">
+
+
+        <RadioButton
+            android:id="@+id/rb_view_mood1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="RadioButton" />
+    </RadioGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>
