@@ -1,6 +1,5 @@
 package com.mobdeve.s14.group24.everyday;
 
-import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ThumbnailUtils;
 import android.provider.MediaStore;
@@ -31,18 +30,8 @@ public class MediaEntryAdapter extends RecyclerView.Adapter<MediaEntryViewHolder
     public MediaEntryViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.item_media, parent, false);
+
         MediaEntryViewHolder mediaEntryViewHolder = new MediaEntryViewHolder(view);
-
-        mediaEntryViewHolder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int currentUserID = mediaEntryViewHolder.getAdapterPosition();
-                Intent intent = new Intent(v.getContext(), ViewMediaEntryActivity.class);
-                //intent.putExtra();
-                v.getContext().startActivity(intent);
-            }
-        });
-
         return mediaEntryViewHolder;
     }
 
