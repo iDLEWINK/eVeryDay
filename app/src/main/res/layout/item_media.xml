@@ -33,15 +33,22 @@
 
     <TextView
         android:id="@+id/tv_item_media_date"
-        style="@android:style/TextAppearance.DeviceDefault.Small"
+        style="@android:style/TextAppearance.DeviceDefault.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Jan 01, 2000"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="1"
+        android:text="Jan 01"
         android:textAllCaps="true"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_item_media_mood_rating"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_item_media_image"
         app:layout_constraintEnd_toEndOf="@+id/iv_item_media_image"
-        app:layout_constraintStart_toStartOf="@+id/iv_item_media_mood_rating"
-        app:layout_constraintTop_toTopOf="@id/iv_item_media_mood_rating" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/iv_item_media_image"
+        app:layout_constraintTop_toTopOf="@+id/iv_item_media_image"
+        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_bottom_mood_rating"
