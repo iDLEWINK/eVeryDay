@@ -53,6 +53,8 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
             ivMood.setImageResource(R.drawable.mood_border_4);
         } else if (mood == 5) {
             ivMood.setImageResource(R.drawable.mood_border_5);
+        } else {
+            ivMood.setImageResource(R.drawable.mood_border_0);
         }
     }
 }
