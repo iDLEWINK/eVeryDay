@@ -3,6 +3,7 @@ package com.mobdeve.s14.group24.everyday;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,9 +15,12 @@ import android.widget.TextView;
 
 public class EditMediaEntryActivity extends AppCompatActivity {
 
+    private ImageView ivImage;
+    private TextView tvDate;
     private RadioGroup rgMoods;
     private EditText etCaption;
     private ImageButton ibRetakePhoto;
+    private ImageButton ibEdit;
 
     private DatabaseHelper dbh;
 
@@ -31,11 +35,13 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_media_entry);
 
-        //pass int ID somehow, intents?
-        //initialize mood
-        //etCaption = findViewById();
-        //btnEditMediaEntry = findViewById();
+        // TODO implement moods bci have no idea how radio buttons work
+        ivImage = findViewById(R.id.iv_edit_media_entry_image);
+        tvDate = findViewById(R.id.tv_edit_media_entry_date);
+        rgMoods = findViewById(R.id.rg_moods);
+        etCaption = findViewById(R.id.et_edit_media_entry_caption);
         ibRetakePhoto = findViewById(R.id.ib_retake_photo);
+        ibEdit = findViewById(R.id.ib_edit_media_entry);
 
         Intent intent = getIntent();
         id = intent.getIntExtra(Keys.KEY_ID.name(), -1);
@@ -44,6 +50,10 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         caption = intent.getStringExtra(Keys.KEY_CAPTION.name());
         mood = intent.getIntExtra(Keys.KEY_MOOD.name(), 0);
 
+        ivImage.setImageURI(Uri.parse(imagePath));
+        tvDate.setText(date);
+        etCaption.setText(caption);
+        
         dbh = new DatabaseHelper(this);
 
         ibRetakePhoto.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +62,14 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                 CameraHelper cameraHelper = new CameraHelper(getApplicationContext());
                 startActivityForResult(cameraHelper.makeIntent(), CameraHelper.REQUEST_IMAGE_CAPTURE);
                 imagePath = cameraHelper.getCurrentPhotoPath();
+                ivImage.setImageURI(Uri.parse(imagePath));
+            }
+        });
+        
+        ibEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbh.updateData(id, imagePath, etCaption.getText().toString(), mood /*idk how radio buttons work*/);
             }
         });
     }
