@@ -73,7 +73,7 @@
                 android:scaleType="fitCenter"
                 app:layout_constraintEnd_toStartOf="@+id/gl_edit_main_end"
                 app:layout_constraintTop_toTopOf="@+id/gl_edit_main_top"
-                app:srcCompat="@drawable/ic_menu_camera" />
+                app:srcCompat="@drawable/camera" />
 
             <TextView
                 android:id="@+id/tv_edit_media_entry_date"
