@@ -35,15 +35,18 @@
         app:layout_constraintGuide_percent="0.975"/>
 
     <ScrollView
+        android:id="@+id/sv_main"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:fillViewport="true"
+        android:scrollbars="none"
         app:layout_constraintBottom_toTopOf="@+id/gl_view_main_bottom"
         app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
         app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
-        app:layout_constraintTop_toTopOf="@+id/gl_view_main_top"
-        android:fillViewport="true">
+        app:layout_constraintTop_toTopOf="@+id/gl_view_main_top">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
