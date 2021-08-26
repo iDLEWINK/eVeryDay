@@ -1,18 +1,11 @@
 package com.mobdeve.s14.group24.everyday;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
-
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,17 +17,15 @@ public class DataHelper {
 
     public DataHelper (Context context) {
         this.context = context;
-//        initializeData();
     }
 
-    private void initializeData() {
-        Date dates[] = {new Date("2021/08/22"), new Date("2021/08/23"), new Date("2021/08/24")};
+    public void initializeData() {
+        CustomDate dates[] = {new CustomDate("2021/08/22"), new CustomDate("2021/08/23"), new CustomDate("2021/08/24")};
         String captions[] = {"sunny today", "cool adventure", "wow! awesome"};
         Drawable drawables[] = {context.getDrawable(R.drawable.sample), context.getDrawable(R.drawable.sample1), context.getDrawable(R.drawable.sample2)};
         int moods[] = {3, 4, 5};
 
         File location = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        context.deleteDatabase(DatabaseHelper.DATABASE_NAME);
         DatabaseHelper dbh = new DatabaseHelper(context);
 
         for (int i = 0; i < dates.length; i++) {
@@ -55,6 +46,10 @@ public class DataHelper {
         }
     }
 
+    public void resetData() {
+        context.deleteDatabase(DatabaseHelper.DATABASE_NAME);
+    }
+
     public ArrayList<MediaEntry> retrieveData () {
         ArrayList<MediaEntry> mediaEntries = new ArrayList<MediaEntry>();
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
@@ -62,7 +57,7 @@ public class DataHelper {
 
         while (cursor.moveToNext()) {
             mediaEntries.add(new MediaEntry(
-                    new Date(cursor.getString(1)),
+                    new CustomDate(cursor.getString(1)),
                     cursor.getString(2),
                     cursor.getString(3),
                     cursor.getInt(4)
