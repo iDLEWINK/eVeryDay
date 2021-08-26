@@ -9,6 +9,7 @@ public class MediaEntry {
     private int mood;
 
     public MediaEntry (int id, CustomDate date, String imagePath, String caption, int mood) {
+        this.id = id;
         this.date = date;
         this.imagePath = imagePath;
         this.caption = caption;

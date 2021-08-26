@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -57,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initRecyclerView () {
         mediaEntries = dataHelper.retrieveData();
-
+        for (MediaEntry i: mediaEntries)
+            Log.d( "ccc",i.getId() + " " + i.getDate().toStringFull());
         this.rvGallery = findViewById(R.id.rv_activity_main_gallery);
         this.rvGallery.setLayoutManager(new GridLayoutManager(this, 3));
         this.mediaEntryAdapter = new MediaEntryAdapter(mediaEntries);
