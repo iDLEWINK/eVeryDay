@@ -100,6 +100,16 @@ public class EditMediaEntryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (rbMood1.isSelected())
+                    mood = 1;
+                else if (rbMood2.isSelected())
+                    mood = 2;
+                else if (rbMood3.isSelected())
+                    mood = 3;
+                else if (rbMood4.isSelected())
+                    mood = 4;
+                else if (rbMood5.isSelected())
+                    mood = 5;
+                
                 dbh.updateData(
                         id,
                         imagePath,
