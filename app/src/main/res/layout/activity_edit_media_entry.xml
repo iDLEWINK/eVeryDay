@@ -150,7 +150,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:justificationMode="inter_word"
                 android:text="Buried non guts claw and creature hair-raising decapitated at est. Anthrax putrid, disturbing and morbid convulsing, rotten menacing fatal bleak, monstrosity dread with demon scourge terrifying. Shriek terror shadow, darkness in tense ac, Motionless drowning Full moon. Breathing heavily damp, cold and crying running, stalking slicing stabbing dripping (blood).  Is creaking screaming 666 at kettle. Falling a spooky screaming. Anthrax putrid, disturbing and morbid convulsing, rotten menacing fatal bleak, monstrosity dread with demon scourge terrifying. Creep cold graves, shadow non fear a, psychotic ashes ghost. Blood guns bury scream, stab graveyard crazed dark crying.  Flames at crazy slicing with murderer gore. Breathing heavily hell and rabid anthrax fanatic tearing at a squeal. Occult at alley pushed. Bloodcurdling decomposed zombie in virus scared cat Michael Myers worms. Buried non guts claw and creature hair-raising decapitated at est. Virus witch demonic dripping, at werewolf psycho slice flames. Creep cold graves, shadow non fea."
                 app:layout_constraintEnd_toStartOf="@+id/gl_edit_main_end"
                 app:layout_constraintStart_toStartOf="@+id/gl_edit_main_start"
