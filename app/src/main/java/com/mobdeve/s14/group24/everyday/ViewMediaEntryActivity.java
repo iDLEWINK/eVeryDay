@@ -44,23 +44,23 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
 
         switch (mood) {
             case 1:
-                ivMood.setImageResource(R.drawable.mood_border_1);
+                ivMood.setImageResource(R.drawable.mood_face_res1);
                 tvMood.setText("Bad Mood");
                 break;
             case 2:
-                ivMood.setImageResource(R.drawable.mood_border_1);
+                ivMood.setImageResource(R.drawable.mood_face_res2);
                 tvMood.setText("Poor Mood");
                 break;
             case 3:
-                ivMood.setImageResource(R.drawable.mood_border_1);
+                ivMood.setImageResource(R.drawable.mood_face_res3);
                 tvMood.setText("Okay Mood");
                 break;
             case 4:
-                ivMood.setImageResource(R.drawable.mood_border_1);
+                ivMood.setImageResource(R.drawable.mood_face_res4);
                 tvMood.setText("Good Mood");
                 break;
             case 5:
-                ivMood.setImageResource(R.drawable.mood_border_1);
+                ivMood.setImageResource(R.drawable.mood_face_res5);
                 tvMood.setText("Great Mood");
                 break;
             default:

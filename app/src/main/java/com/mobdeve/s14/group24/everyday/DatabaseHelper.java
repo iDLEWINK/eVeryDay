@@ -110,8 +110,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_IMAGE_PATH, imagePath);
         cv.put(COLUMN_CAPTION, caption);
         cv.put(COLUMN_MOOD, mood);
-        Log.d("aaa", id + " " + imagePath + " " + caption + " " + mood);
-        Log.d("aaa", db.update(TABLE_NAME, cv, "_id=?", new String[]{Integer.toString(id)}) + "");
     }
 
     public void deleteOneRow(String row_id){

@@ -2,6 +2,7 @@ package com.mobdeve.s14.group24.everyday;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
     private ImageButton ibDelete;
 
     private DatabaseHelper dbh;
+    CameraHelper cameraHelper;
 
     private int id;
     private String date;
@@ -44,7 +46,6 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_media_entry);
 
-        // TODO implement moods bci have no idea how radio buttons work
         ivImage = findViewById(R.id.iv_edit_media_entry_image);
         tvDate = findViewById(R.id.tv_edit_media_entry_date);
         rbMood1 = findViewById(R.id.rb_edit_mood1);
@@ -69,52 +70,51 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         etCaption.setText(caption);
         switch (mood) {
             case 1:
-                rbMood1.setSelected(true);
+                rbMood1.setChecked(true);
                 break;
             case 2:
-                rbMood2.setSelected(true);
+                rbMood2.setChecked(true);
                 break;
             case 3:
-                rbMood3.setSelected(true);
+                rbMood3.setChecked(true);
                 break;
             case 4:
-                rbMood4.setSelected(true);
+                rbMood4.setChecked(true);
                 break;
             case 5:
-                rbMood5.setSelected(true);
+                rbMood5.setChecked(true);
                 break;
         }
-        
+
         dbh = new DatabaseHelper(this);
+        cameraHelper = new CameraHelper(getApplicationContext());
+
         ibRetakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CameraHelper cameraHelper = new CameraHelper(getApplicationContext());
                 startActivityForResult(cameraHelper.makeIntent(), CameraHelper.REQUEST_IMAGE_CAPTURE);
-                new File(imagePath).delete();
-                imagePath = cameraHelper.getCurrentPhotoPath();
             }
         });
         
         ibEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (rbMood1.isSelected())
+                if (rbMood1.isChecked())
                     mood = 1;
-                else if (rbMood2.isSelected())
+                else if (rbMood2.isChecked())
                     mood = 2;
-                else if (rbMood3.isSelected())
+                else if (rbMood3.isChecked())
                     mood = 3;
-                else if (rbMood4.isSelected())
+                else if (rbMood4.isChecked())
                     mood = 4;
-                else if (rbMood5.isSelected())
+                else if (rbMood5.isChecked())
                     mood = 5;
-                
+
                 dbh.updateData(
                         id,
                         imagePath,
                         etCaption.getText().toString().trim(),
-                        mood /*idk how radio buttons work*/
+                        mood
                 );
                 Intent intent = new Intent(EditMediaEntryActivity.this, ViewMediaEntryActivity.class);
                 intent.putExtra(Keys.KEY_ID.name(), id);
@@ -134,6 +134,16 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CameraHelper.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            new File(imagePath).delete();
+            imagePath = cameraHelper.getCurrentPhotoPath();
+        }
     }
 
     @Override
