@@ -61,16 +61,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@drawable/sample2" />
 
-            <ImageView
-                android:id="@+id/iv_edit_media_entry_mood"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintStart_toEndOf="@+id/tv_edit_media_entry_mood_label"
-                app:layout_constraintTop_toBottomOf="@+id/tv_edit_media_entry_date"
-                tools:srcCompat="@tools:sample/avatars" />
-
             <TextView
                 android:id="@+id/tv_edit_media_entry_caption_label"
                 android:layout_width="wrap_content"
@@ -79,8 +69,9 @@
                 android:text="About This Pic: "
                 android:textAllCaps="true"
                 android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_edit_media_entry_mood" />
+                app:layout_constraintTop_toBottomOf="@+id/rg_moods" />
 
             <EditText
                 android:id="@+id/et_edit_media_entry_caption"
@@ -105,27 +96,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv_edit_media_entry_image" />
 
-            <TextView
-                android:id="@+id/tv_edit_media_entry_mood_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mood: "
-                android:textAllCaps="true"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_edit_media_entry_mood"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/iv_edit_media_entry_mood" />
-
-            <TextView
-                android:id="@+id/tv_edit_media_entry_mood"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="SCAM SCAM SCAM"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_edit_media_entry_mood"
-                app:layout_constraintStart_toEndOf="@+id/iv_edit_media_entry_mood"
-                app:layout_constraintTop_toTopOf="@+id/iv_edit_media_entry_mood" />
-
             <RadioGroup
                 android:id="@+id/rg_moods"
                 android:layout_width="wrap_content"
@@ -139,6 +109,34 @@
 
                 <RadioButton
                     android:id="@+id/rb_edit_mood1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="RadioButton" />
+
+                <RadioButton
+                    android:id="@+id/rb_edit_mood2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="RadioButton" />
+
+                <RadioButton
+                    android:id="@+id/rb_edit_mood3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="RadioButton" />
+
+                <RadioButton
+                    android:id="@+id/rb_edit_mood4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="RadioButton" />
+
+                <RadioButton
+                    android:id="@+id/rb_edit_mood5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
