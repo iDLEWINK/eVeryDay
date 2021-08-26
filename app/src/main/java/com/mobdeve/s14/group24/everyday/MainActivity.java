@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
                 CameraHelper cameraHelper = new CameraHelper(getApplicationContext());
                 startActivityForResult(cameraHelper.makeIntent(), CameraHelper.REQUEST_IMAGE_CAPTURE);
                 currentPhotoPath = cameraHelper.getCurrentPhotoPath();
-                dbh.addEntry(currentPhotoPath);
             }
         });
     }
@@ -90,9 +89,10 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == CameraHelper.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            MediaEntry currentEntry = dbh.addEntry(currentPhotoPath);
             Intent intent = new Intent(getApplicationContext(), ViewMediaEntryActivity.class);
-            intent.putExtra(Keys.KEY_IMAGE_PATH.name(), currentPhotoPath);
-            intent.putExtra(Keys.KEY_DATE.name(), new CustomDate().toStringFull());
+            intent.putExtra(Keys.KEY_IMAGE_PATH.name(), currentEntry.getImagePath());
+            intent.putExtra(Keys.KEY_DATE.name(), currentEntry.getDate().toStringFull());
             startActivity(intent);
         }
     }

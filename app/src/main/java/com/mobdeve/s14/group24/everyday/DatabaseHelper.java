@@ -43,22 +43,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addEntry(CustomDate date, String imagePath, String caption, int mood){
+    public MediaEntry addEntry(CustomDate date, String imagePath, String caption, int mood){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_DATE, date.toStringDB());
         cv.put(COLUMN_IMAGE_PATH, imagePath);
         cv.put(COLUMN_CAPTION, caption);
         cv.put(COLUMN_MOOD, mood);
-        db.insert(TABLE_NAME,null, cv);
+        long id = db.insert(TABLE_NAME,null, cv);
+        return getRowById(id);
     }
 
-    public void addEntry(String imagePath){
+    public MediaEntry addEntry(String imagePath){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_DATE, new CustomDate().toStringDB());
         cv.put(COLUMN_IMAGE_PATH, imagePath);
-        db.insert(TABLE_NAME,null, cv);
+        long id = db.insert(TABLE_NAME,null, cv);
+        return getRowById(id);
     }
 
     public Cursor readAllData(){
@@ -72,7 +74,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public MediaEntry getRowById(int id){
+    public MediaEntry getRowById(long id){
         String query = "SELECT * FROM " + TABLE_NAME +
                 " WHERE " + COLUMN_ID + " = " + id;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -81,17 +83,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(db != null)
             cursor = db.rawQuery(query, null);
 
-        cursor.moveToNext();
         if (cursor.getCount() == 0)
             return null;
 
-        return new MediaEntry(
-                cursor.getInt(0),
-                new CustomDate(cursor.getString(1)),
-                cursor.getString(2),
-                cursor.getString(3),
-                cursor.getInt(4)
-        );
+        return cursorToMediaEntry(cursor);
     }
 
     public MediaEntry getRowByDate(CustomDate date){
@@ -103,17 +98,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(db != null)
             cursor = db.rawQuery(query, null);
 
-        cursor.moveToNext();
         if (cursor.getCount() == 0)
             return null;
 
-        return new MediaEntry(
-                cursor.getInt(0),
-                new CustomDate(cursor.getString(1)),
-                cursor.getString(2),
-                cursor.getString(3),
-                cursor.getInt(4)
-        );
+        return cursorToMediaEntry(cursor);
     }
 
     public void updateData(int id, String imagePath, String caption, int mood){
@@ -133,6 +121,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteAllData(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME);
+    }
+
+    private MediaEntry cursorToMediaEntry(Cursor cursor) {
+        cursor.moveToNext();
+        return new MediaEntry(
+                cursor.getInt(0),
+                new CustomDate(cursor.getString(1)),
+                cursor.getString(2),
+                cursor.getString(3),
+                cursor.getInt(4)
+        );
     }
 
 }

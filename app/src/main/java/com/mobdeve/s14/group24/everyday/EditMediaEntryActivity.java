@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -65,15 +66,27 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                 startActivityForResult(cameraHelper.makeIntent(), CameraHelper.REQUEST_IMAGE_CAPTURE);
                 new File(imagePath).delete();
                 imagePath = cameraHelper.getCurrentPhotoPath();
-                ivImage.setImageURI(Uri.parse(imagePath));
             }
         });
         
         ibEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbh.updateData(id, imagePath, etCaption.getText().toString(), mood /*idk how radio buttons work*/);
+                dbh.updateData(
+                        id,
+                        imagePath,
+                        etCaption.getText().toString().trim(),
+                        mood /*idk how radio buttons work*/
+                );
+                finish();
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ivImage.setImageURI(Uri.parse(imagePath));
+    }
+
 }
