@@ -28,7 +28,7 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
         ivImage = findViewById(R.id.iv_view_media_entry_image);
         tvCaption = findViewById(R.id.tv_view_media_entry_caption);
         tvMood = findViewById(R.id.tv_view_media_entry_mood);
-        ivMood = findViewById(R.id.iv_item_media_mood);
+        ivMood = findViewById(R.id.iv_view_media_entry_mood);
         ibEdit = findViewById(R.id.ib_edit_media_entry);
 
         Intent intent = getIntent();
@@ -41,7 +41,7 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
         tvDate.setText(date);
         ivImage.setImageURI(Uri.parse(imagePath));
         tvCaption.setText(caption);
-        // TODO replace mood border with actual photos of mood emoticons
+
         switch (mood) {
             case 1:
                 ivMood.setImageResource(R.drawable.mood_border_1);

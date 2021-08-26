@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -20,7 +21,11 @@ public class EditMediaEntryActivity extends AppCompatActivity {
 
     private ImageView ivImage;
     private TextView tvDate;
-    private RadioGroup rgMoods;
+    private RadioButton rbMood1;
+    private RadioButton rbMood2;
+    private RadioButton rbMood3;
+    private RadioButton rbMood4;
+    private RadioButton rbMood5;
     private EditText etCaption;
     private ImageButton ibRetakePhoto;
     private ImageButton ibEdit;
@@ -42,7 +47,11 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         // TODO implement moods bci have no idea how radio buttons work
         ivImage = findViewById(R.id.iv_edit_media_entry_image);
         tvDate = findViewById(R.id.tv_edit_media_entry_date);
-        rgMoods = findViewById(R.id.rg_moods);
+        rbMood1 = findViewById(R.id.rb_edit_mood1);
+        rbMood2 = findViewById(R.id.rb_edit_mood2);
+        rbMood3 = findViewById(R.id.rb_edit_mood3);
+        rbMood4 = findViewById(R.id.rb_edit_mood4);
+        rbMood5 = findViewById(R.id.rb_edit_mood5);
         etCaption = findViewById(R.id.et_edit_media_entry_caption);
         ibRetakePhoto = findViewById(R.id.ib_retake_photo);
         ibEdit = findViewById(R.id.ib_submit_edit);
@@ -58,9 +67,25 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         ivImage.setImageURI(Uri.parse(imagePath));
         tvDate.setText(date);
         etCaption.setText(caption);
+        switch (mood) {
+            case 1:
+                rbMood1.setSelected(true);
+                break;
+            case 2:
+                rbMood2.setSelected(true);
+                break;
+            case 3:
+                rbMood3.setSelected(true);
+                break;
+            case 4:
+                rbMood4.setSelected(true);
+                break;
+            case 5:
+                rbMood5.setSelected(true);
+                break;
+        }
         
         dbh = new DatabaseHelper(this);
-
         ibRetakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +99,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         ibEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (rbMood1.isSelected())
                 dbh.updateData(
                         id,
                         imagePath,
