@@ -32,7 +32,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 dbh.updateData(
                         0,
-                        dbh.getRow(1).getImagePath(),
+                        dbh.getRowById(1).getImagePath(),
                         etCaption.getText().toString().trim(),
                         0 //add mood somehow
                 );

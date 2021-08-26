@@ -2,11 +2,11 @@ package com.mobdeve.s14.group24.everyday;
 
 import java.util.Calendar;
 
-public class Date {
+public class CustomDate {
     private static final String[] monthNames = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     private int day, month, year;
 
-    public Date() {
+    public CustomDate() {
         Calendar c = Calendar.getInstance();
 
         year = c.get(Calendar.YEAR);
@@ -14,14 +14,14 @@ public class Date {
         month = c.get(Calendar.MONTH);
     }
 
-    public Date(String stringDate) {
+    public CustomDate(String stringDate) {
         String[] dateParts = stringDate.split("/");
         year = Integer.parseInt(dateParts[0]);
         month = Integer.parseInt(dateParts[1]);
         day = Integer.parseInt(dateParts[2]);
     }
 
-    public Date(int year, int month, int day) {
+    public CustomDate(int year, int month, int day) {
         this.year = year;
         this.day = day;
         this.month = month;

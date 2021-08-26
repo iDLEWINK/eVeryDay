@@ -5,9 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.net.Uri;
-
-import java.util.ArrayList;
+import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -45,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addEntry(Date date, String imagePath, String caption, int mood){
+    public void addEntry(CustomDate date, String imagePath, String caption, int mood){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_DATE, date.toStringDB());
@@ -58,7 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void addEntry(String imagePath){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(COLUMN_DATE, new Date().toStringDB());
+        cv.put(COLUMN_DATE, new CustomDate().toStringDB());
         cv.put(COLUMN_IMAGE_PATH, imagePath);
         db.insert(TABLE_NAME,null, cv);
     }
@@ -74,9 +72,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public MediaEntry getRow(int id){
+    public MediaEntry getRowById(int id){
         String query = "SELECT * FROM " + TABLE_NAME +
-                "WHERE " + COLUMN_ID + " = " + id;
+                " WHERE " + COLUMN_ID + " = " + id;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        if(db != null)
+            cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToNext())
+            return null;
+
+        return new MediaEntry(new CustomDate(cursor.getString(1)),
+                cursor.getString(2),
+                cursor.getString(3),
+                cursor.getInt(4)
+        );
+    }
+
+    public MediaEntry getRowByDate(CustomDate date){
+        String query = "SELECT * FROM " + TABLE_NAME +
+                " WHERE " + COLUMN_DATE + " = '" + date.toStringDB() + "'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;
 
@@ -84,8 +101,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor = db.rawQuery(query, null);
 
         cursor.moveToNext();
+        if (cursor == null || cursor.getCount() == 0)
+            return null;
 
-        return new MediaEntry(new Date(cursor.getString(1)),
+        return new MediaEntry(new CustomDate(cursor.getString(1)),
                 cursor.getString(2),
                 cursor.getString(3),
                 cursor.getInt(4)

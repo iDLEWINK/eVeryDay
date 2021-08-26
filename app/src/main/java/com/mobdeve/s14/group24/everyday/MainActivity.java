@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView rvGallery;
     private RecyclerView.Adapter mediaEntryAdapter;
 
-    DatabaseHelper databaseHelper;
+    private DatabaseHelper dbh;
+    private DataHelper dataHelper;
     private ArrayList<MediaEntry> mediaEntries;
 
     private FloatingActionButton fabCamera;
@@ -41,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        dbh = new DatabaseHelper(this);
+        dataHelper = new DataHelper(MainActivity.this);
+        dataHelper.resetData();
+        dataHelper.initializeData();
         initRecyclerView();
         initFabCamera();
     }
@@ -48,12 +53,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        TODO: Determine which part of the lifecyle the save must happen
         initRecyclerView();
     }
 
     private void initRecyclerView () {
-        DataHelper dataHelper = new DataHelper(MainActivity.this);
         mediaEntries = dataHelper.retrieveData();
 
         this.rvGallery = findViewById(R.id.rv_activity_main_gallery);
@@ -67,6 +70,11 @@ public class MainActivity extends AppCompatActivity {
         fabCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (dbh.getRowByDate(new CustomDate()) != null) {
+                    Toast.makeText(getApplicationContext(), "You have already made an entry for today", Toast.LENGTH_LONG).show();
+                    return;
+                }
 
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -85,9 +93,7 @@ public class MainActivity extends AppCompatActivity {
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
 
-//                        TODO: Determine which part of the lifecyle the save must happen
-                        DatabaseHelper databaseHelper = new DatabaseHelper(MainActivity.this);
-                        databaseHelper.addEntry(currentPhotoPath);
+                        dbh.addEntry(currentPhotoPath);
                     }
                 }
             }
