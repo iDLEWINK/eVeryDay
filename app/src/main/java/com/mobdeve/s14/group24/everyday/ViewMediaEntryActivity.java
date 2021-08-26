@@ -16,6 +16,7 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
     private ImageView ivImage;
     private TextView tvCaption;
     private TextView tvMood;
+    private ImageView ivMood;
     private ImageButton ibEdit;
 
     @Override
@@ -27,6 +28,7 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
         ivImage = findViewById(R.id.iv_view_media_entry_image);
         tvCaption = findViewById(R.id.tv_view_media_entry_caption);
         tvMood = findViewById(R.id.tv_view_media_entry_mood);
+        ivMood = findViewById(R.id.iv_item_media_mood);
         ibEdit = findViewById(R.id.ib_edit_media_entry);
 
         Intent intent = getIntent();
@@ -39,7 +41,31 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
         tvDate.setText(date);
         ivImage.setImageURI(Uri.parse(imagePath));
         tvCaption.setText(caption);
-        tvMood.setText("" + mood);
+        // TODO replace mood border with actual photos of mood emoticons
+        switch (mood) {
+            case 1:
+                ivMood.setImageResource(R.drawable.mood_border_1);
+                tvMood.setText("Bad Mood");
+                break;
+            case 2:
+                ivMood.setImageResource(R.drawable.mood_border_1);
+                tvMood.setText("Poor Mood");
+                break;
+            case 3:
+                ivMood.setImageResource(R.drawable.mood_border_1);
+                tvMood.setText("Okay Mood");
+                break;
+            case 4:
+                ivMood.setImageResource(R.drawable.mood_border_1);
+                tvMood.setText("Good Mood");
+                break;
+            case 5:
+                ivMood.setImageResource(R.drawable.mood_border_1);
+                tvMood.setText("Great Mood");
+                break;
+            default:
+                tvMood.setText("Not yet set");
+        }
 
         ibEdit.setOnClickListener(new View.OnClickListener() {
             @Override
