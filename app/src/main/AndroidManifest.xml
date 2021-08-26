@@ -18,9 +18,6 @@
             android:name=".EditMediaEntryActivity"
             android:exported="true" />
         <activity
-            android:name=".AddMediaEntryActivity"
-            android:exported="true" />
-        <activity
             android:name=".MontageSettingsActivity"
             android:exported="true" />
         <activity android:name=".ViewMediaEntryActivity" />
