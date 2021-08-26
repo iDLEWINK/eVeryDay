@@ -91,49 +91,53 @@
 
             <RadioGroup
                 android:id="@+id/rg_moods"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toStartOf="@+id/gl_edit_main_end"
                 app:layout_constraintStart_toStartOf="@+id/gl_edit_main_start"
                 app:layout_constraintTop_toBottomOf="@+id/tv_edit_media_entry_date">
 
                 <RadioButton
+                    style="@style/Mood1Style"
                     android:id="@+id/rb_edit_mood1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="RadioButton" />
+                    android:layout_marginHorizontal="3dp"
+                    android:layout_weight="1"/>
 
                 <RadioButton
+                    style="@style/Mood2Style"
                     android:id="@+id/rb_edit_mood2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="RadioButton" />
+                    android:layout_marginHorizontal="3dp"
+                    android:layout_weight="1"/>
 
                 <RadioButton
+                    style="@style/Mood3Style"
                     android:id="@+id/rb_edit_mood3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="RadioButton" />
+                    android:layout_marginHorizontal="3dp"
+                    android:layout_weight="1"/>
 
                 <RadioButton
+                    style="@style/Mood4Style"
                     android:id="@+id/rb_edit_mood4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="RadioButton" />
+                    android:layout_marginHorizontal="3dp"
+                    android:layout_weight="1"/>
 
                 <RadioButton
+                    style="@style/Mood5Style"
                     android:id="@+id/rb_edit_mood5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="RadioButton" />
+                    android:layout_marginHorizontal="3dp"
+                    android:layout_weight="1"/>
             </RadioGroup>
 
             <TextView
