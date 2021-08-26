@@ -24,6 +24,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
     private EditText etCaption;
     private ImageButton ibRetakePhoto;
     private ImageButton ibEdit;
+    private ImageButton ibDelete;
 
     private DatabaseHelper dbh;
 
@@ -45,6 +46,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         etCaption = findViewById(R.id.et_edit_media_entry_caption);
         ibRetakePhoto = findViewById(R.id.ib_retake_photo);
         ibEdit = findViewById(R.id.ib_submit_edit);
+        ibDelete = findViewById(R.id.ib_delete);
 
         Intent intent = getIntent();
         id = intent.getIntExtra(Keys.KEY_ID.name(), -1);
@@ -78,7 +80,15 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                         etCaption.getText().toString().trim(),
                         mood /*idk how radio buttons work*/
                 );
-                finish();
+                finish(); //this wont display correctly bc viewEntry uses intents to display
+            }
+        });
+
+        ibDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbh.deleteOneRow(String.valueOf(id));
+                finish(); //need to uhh redirect to gallery
             }
         });
     }
