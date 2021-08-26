@@ -122,7 +122,7 @@
                 android:id="@+id/tv_view_media_entry_caption_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="23dp"
+                android:layout_marginTop="24dp"
                 android:text="About This Pic"
                 android:textAllCaps="true"
                 android:textSize="16sp"
