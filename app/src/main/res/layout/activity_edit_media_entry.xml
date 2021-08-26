@@ -66,8 +66,8 @@
                 android:id="@+id/ib_retake_photo"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/rounded_bg"
                 android:padding="10dp"
                 android:scaleType="fitCenter"
@@ -188,8 +188,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/gl_edit_main_bottom"
                 app:layout_constraintStart_toStartOf="@+id/gl_edit_main_start"
                 app:layout_constraintTop_toBottomOf="@+id/et_edit_media_entry_caption"
-                app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@android:drawable/ic_menu_delete"/>
+                app:srcCompat="@android:drawable/ic_menu_delete" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
