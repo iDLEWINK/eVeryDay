@@ -128,6 +128,4 @@
                 app:layout_constraintTop_toTopOf="@+id/iv_view_media_entry_mood" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
