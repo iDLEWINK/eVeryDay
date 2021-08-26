@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.io.File;
+
 public class EditMediaEntryActivity extends AppCompatActivity {
 
     private ImageView ivImage;
@@ -41,7 +43,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         rgMoods = findViewById(R.id.rg_moods);
         etCaption = findViewById(R.id.et_edit_media_entry_caption);
         ibRetakePhoto = findViewById(R.id.ib_retake_photo);
-        ibEdit = findViewById(R.id.ib_edit_media_entry);
+        ibEdit = findViewById(R.id.ib_submit_edit);
 
         Intent intent = getIntent();
         id = intent.getIntExtra(Keys.KEY_ID.name(), -1);
@@ -61,6 +63,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 CameraHelper cameraHelper = new CameraHelper(getApplicationContext());
                 startActivityForResult(cameraHelper.makeIntent(), CameraHelper.REQUEST_IMAGE_CAPTURE);
+                new File(imagePath).delete();
                 imagePath = cameraHelper.getCurrentPhotoPath();
                 ivImage.setImageURI(Uri.parse(imagePath));
             }

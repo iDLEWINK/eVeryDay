@@ -1,5 +1,6 @@
 package com.mobdeve.s14.group24.everyday;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -33,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<MediaEntry> mediaEntries;
 
     private FloatingActionButton fabCamera;
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
     private String currentPhotoPath;
 
     @Override
@@ -79,9 +79,20 @@ public class MainActivity extends AppCompatActivity {
 
                 CameraHelper cameraHelper = new CameraHelper(getApplicationContext());
                 startActivityForResult(cameraHelper.makeIntent(), CameraHelper.REQUEST_IMAGE_CAPTURE);
-                dbh.addEntry(cameraHelper.getCurrentPhotoPath());
+                currentPhotoPath = cameraHelper.getCurrentPhotoPath();
+                dbh.addEntry(currentPhotoPath);
             }
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CameraHelper.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            Intent intent = new Intent(getApplicationContext(), ViewMediaEntryActivity.class);
+            intent.putExtra(Keys.KEY_IMAGE_PATH.name(), currentPhotoPath);
+            startActivity(intent);
+        }
+    }
 }
