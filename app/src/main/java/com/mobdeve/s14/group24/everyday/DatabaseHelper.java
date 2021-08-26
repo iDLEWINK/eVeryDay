@@ -81,10 +81,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(db != null)
             cursor = db.rawQuery(query, null);
 
-        if (cursor.moveToNext())
+        cursor.moveToNext();
+        if (cursor.getCount() == 0)
             return null;
 
-        return new MediaEntry(new CustomDate(cursor.getString(1)),
+        return new MediaEntry(
+                cursor.getInt(0),
+                new CustomDate(cursor.getString(1)),
                 cursor.getString(2),
                 cursor.getString(3),
                 cursor.getInt(4)
@@ -101,10 +104,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor = db.rawQuery(query, null);
 
         cursor.moveToNext();
-        if (cursor == null || cursor.getCount() == 0)
+        if (cursor.getCount() == 0)
             return null;
 
-        return new MediaEntry(new CustomDate(cursor.getString(1)),
+        return new MediaEntry(
+                cursor.getInt(0),
+                new CustomDate(cursor.getString(1)),
                 cursor.getString(2),
                 cursor.getString(3),
                 cursor.getInt(4)

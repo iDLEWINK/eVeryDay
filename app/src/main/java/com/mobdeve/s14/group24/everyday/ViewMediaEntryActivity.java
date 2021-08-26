@@ -30,6 +30,7 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
         ibEdit = findViewById(R.id.ib_edit_media_entry);
 
         Intent intent = getIntent();
+        int id = intent.getIntExtra(Keys.KEY_ID.name(), -1);
         String date = intent.getStringExtra(Keys.KEY_DATE.name());
         String imagePath = intent.getStringExtra(Keys.KEY_IMAGE_PATH.name());
         String caption = intent.getStringExtra(Keys.KEY_CAPTION.name());
@@ -44,6 +45,7 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ViewMediaEntryActivity.this, EditMediaEntryActivity.class);
+                intent.putExtra(Keys.KEY_ID.name(), id);
                 intent.putExtra(Keys.KEY_DATE.name(), date);
                 intent.putExtra(Keys.KEY_IMAGE_PATH.name(), imagePath);
                 intent.putExtra(Keys.KEY_CAPTION.name(), caption);

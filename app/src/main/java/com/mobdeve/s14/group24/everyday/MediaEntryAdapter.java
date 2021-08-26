@@ -45,6 +45,7 @@ public class MediaEntryAdapter extends RecyclerView.Adapter<MediaEntryViewHolder
 
                 MediaEntry mediaEntry = mediaEntries.get(mediaEntryViewHolder.getBindingAdapterPosition());
 
+                intent.putExtra(Keys.KEY_ID.name(), mediaEntry.getId());
                 intent.putExtra(Keys.KEY_DATE.name(), mediaEntry.getDate().toStringFull());
                 intent.putExtra(Keys.KEY_IMAGE_PATH.name(), mediaEntry.getImagePath());
                 intent.putExtra(Keys.KEY_CAPTION.name(), mediaEntry.getCaption());
