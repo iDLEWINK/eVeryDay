@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,9 +18,10 @@ public class DataHelper {
 
     public DataHelper (Context context) {
         this.context = context;
+        initializeData();
     }
 
-    public void initializeData() {
+    private void initializeData() {
         CustomDate dates[] = {new CustomDate("2021/08/22"), new CustomDate("2021/08/23"), new CustomDate("2021/08/24")};
         String captions[] = {"sunny today", "cool adventure", "wow! awesome"};
         Drawable drawables[] = {context.getDrawable(R.drawable.sample), context.getDrawable(R.drawable.sample1), context.getDrawable(R.drawable.sample2)};
@@ -46,9 +48,9 @@ public class DataHelper {
         }
     }
 
-    public void resetData() {
-        context.deleteDatabase(DatabaseHelper.DATABASE_NAME);
-    }
+//    public void resetData() {
+//        context.deleteDatabase(DatabaseHelper.DATABASE_NAME);
+//    }
 
     public ArrayList<MediaEntry> retrieveData () {
         ArrayList<MediaEntry> mediaEntries = new ArrayList<MediaEntry>();
@@ -56,13 +58,12 @@ public class DataHelper {
         Cursor cursor = databaseHelper.readAllData();
 
         while (cursor.moveToNext()) {
-            mediaEntries.add(new MediaEntry(
-                    cursor.getInt(0),
-                    new CustomDate(cursor.getString(1)),
-                    cursor.getString(2),
-                    cursor.getString(3),
-                    cursor.getInt(4)
-            ));
+            mediaEntries.add(0,
+                    new MediaEntry(cursor.getInt(0),
+                            new CustomDate(cursor.getString(1)),
+                            cursor.getString(2),
+                            cursor.getString(3),
+                            cursor.getInt(4)));
         }
 
         return mediaEntries;

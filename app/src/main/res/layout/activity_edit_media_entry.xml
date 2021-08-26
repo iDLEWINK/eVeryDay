@@ -72,7 +72,7 @@
                 android:scaleType="fitCenter"
                 app:layout_constraintEnd_toStartOf="@+id/gl_edit_main_end"
                 app:layout_constraintTop_toTopOf="@+id/gl_edit_main_top"
-                app:srcCompat="@drawable/camera" />
+                app:srcCompat="@drawable/ic_menu_camera" />
 
             <TextView
                 android:id="@+id/tv_edit_media_entry_date"
@@ -166,7 +166,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/gl_edit_main_bottom"
                 app:layout_constraintEnd_toStartOf="@+id/gl_edit_main_end"
                 app:layout_constraintTop_toBottomOf="@+id/et_edit_media_entry_caption"
-                app:srcCompat="@drawable/check" />
+                app:srcCompat="@android:drawable/ic_menu_save" />
 
             <ImageButton
                 android:id="@+id/ib_delete"
@@ -179,7 +179,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/gl_edit_main_bottom"
                 app:layout_constraintStart_toStartOf="@+id/gl_edit_main_start"
                 app:layout_constraintTop_toBottomOf="@+id/et_edit_media_entry_caption"
-                app:srcCompat="@drawable/trash" />
+                app:srcCompat="@android:drawable/ic_menu_delete" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

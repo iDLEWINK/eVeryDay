@@ -165,7 +165,7 @@
                 android:scaleType="fitCenter"
                 app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
                 app:layout_constraintTop_toTopOf="@+id/gl_view_main_top"
-                app:srcCompat="@drawable/edit"
+                app:srcCompat="@drawable/ic_menu_edit"
                 app:tint="@color/black_coffee" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
