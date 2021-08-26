@@ -50,10 +50,14 @@ public class MainActivity extends AppCompatActivity {
         initFabCamera();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initRecyclerView();
+    }
+
     private void initRecyclerView () {
         mediaEntries = dataHelper.retrieveData();
-        for (MediaEntry i: mediaEntries)
-            Log.d( "ccc",i.getId() + " " + i.getDate().toStringFull());
         this.rvGallery = findViewById(R.id.rv_activity_main_gallery);
         this.rvGallery.setLayoutManager(new GridLayoutManager(this, 3));
         this.mediaEntryAdapter = new MediaEntryAdapter(mediaEntries);
