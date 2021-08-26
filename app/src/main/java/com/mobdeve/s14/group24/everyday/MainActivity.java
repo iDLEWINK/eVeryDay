@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<MediaEntry> mediaEntries;
 
     private FloatingActionButton fabCamera;
+    private FloatingActionButton fabMontage;
     private String currentPhotoPath;
 
     @Override
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         initRecyclerView();
         initFabCamera();
+        initFabMontage();
     }
 
     @Override
@@ -91,11 +93,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == CameraHelper.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             MediaEntry mediaEntry = databaseHelper.addEntry(currentPhotoPath);
 
-            mediaEntries.add(0, mediaEntry);
-            mediaEntryAdapter.notifyItemChanged(0);
-            mediaEntryAdapter.notifyItemRangeChanged(0, mediaEntryAdapter.getItemCount());
-
-            Intent intent = new Intent(getApplicationContext(), ViewMediaEntryActivity.class);
+            Intent intent = new Intent(MainActivity.this, ViewMediaEntryActivity.class);
 
             intent.putExtra(Keys.KEY_ID.name(), mediaEntry.getId());
             intent.putExtra(Keys.KEY_DATE.name(), mediaEntry.getDate().toStringFull());
@@ -105,5 +103,17 @@ public class MainActivity extends AppCompatActivity {
 
             startActivity(intent);
         }
+    }
+
+    private void initFabMontage () {
+        fabMontage = findViewById(R.id.fab_activity_main_montage);
+
+        fabMontage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MontageSettingsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
