@@ -6,12 +6,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 public class EditMediaEntryActivity extends AppCompatActivity {
 
-    //Mood
+    RadioGroup rgMoods;
     EditText etCaption;
     Button btnEditMediaEntry;
+
+    private TextView tvDate;
+    private ImageView ivImage;
+    private TextView tvCaption;
+    private TextView tvMood;
+    private ImageButton ibEdit;
+
 
     DatabaseHelper dbh;
 

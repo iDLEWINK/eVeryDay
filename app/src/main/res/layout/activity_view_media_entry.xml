@@ -5,6 +5,7 @@
     android:id="@+id/cl_view_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:outlineProvider="none"
     tools:context=".ViewMediaEntryActivity">
 
     <ScrollView
@@ -140,6 +141,20 @@
                 app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
                 app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
                 app:layout_constraintTop_toBottomOf="@+id/tv_view_media_entry_caption_label" />
+
+            <ImageButton
+                android:id="@+id/ib_edit_media_entry"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/rounded_bg"
+                android:outlineProvider="bounds"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
+                app:layout_constraintTop_toTopOf="@+id/gl_view_main_top"
+                app:srcCompat="@drawable/edit" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
