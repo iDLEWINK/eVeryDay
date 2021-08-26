@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == CameraHelper.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             Intent intent = new Intent(getApplicationContext(), ViewMediaEntryActivity.class);
             intent.putExtra(Keys.KEY_IMAGE_PATH.name(), currentPhotoPath);
+            intent.putExtra(Keys.KEY_DATE.name(), new CustomDate().toStringFull());
             startActivity(intent);
         }
     }
