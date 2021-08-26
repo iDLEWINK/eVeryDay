@@ -51,6 +51,7 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
                 intent.putExtra(Keys.KEY_CAPTION.name(), caption);
                 intent.putExtra(Keys.KEY_MOOD.name(), mood);
                 startActivity(intent);
+                finish();
             }
         });
     }

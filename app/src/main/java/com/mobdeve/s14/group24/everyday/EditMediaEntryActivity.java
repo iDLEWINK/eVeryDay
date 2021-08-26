@@ -80,7 +80,14 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                         etCaption.getText().toString().trim(),
                         mood /*idk how radio buttons work*/
                 );
-                finish(); //this wont display correctly bc viewEntry uses intents to display
+                Intent intent = new Intent(EditMediaEntryActivity.this, ViewMediaEntryActivity.class);
+                intent.putExtra(Keys.KEY_ID.name(), id);
+                intent.putExtra(Keys.KEY_DATE.name(), date);
+                intent.putExtra(Keys.KEY_IMAGE_PATH.name(), imagePath);
+                intent.putExtra(Keys.KEY_CAPTION.name(), etCaption.getText().toString().trim());
+                intent.putExtra(Keys.KEY_MOOD.name(), mood);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -88,7 +95,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dbh.deleteOneRow(String.valueOf(id));
-                finish(); //need to uhh redirect to gallery
+                finish();
             }
         });
     }
