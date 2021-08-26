@@ -163,9 +163,10 @@
                 android:outlineProvider="bounds"
                 android:padding="10dp"
                 android:scaleType="fitCenter"
+                android:tintMode="src_in"
                 app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
                 app:layout_constraintTop_toTopOf="@+id/gl_view_main_top"
-                app:srcCompat="@drawable/ic_menu_edit"
+                app:srcCompat="@android:drawable/ic_menu_edit"
                 app:tint="@color/black_coffee" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
