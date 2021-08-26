@@ -44,8 +44,7 @@ public class MainActivity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
 
         dataHelper = new DataHelper(MainActivity.this);
-        dataHelper.resetData();
-        dataHelper.initializeData();
+
         initRecyclerView();
         initFabCamera();
     }
@@ -66,16 +65,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (databaseHelper.getRowByDate(new CustomDate()) != null) {
-                    Toast.makeText(getApplicationContext(), "You have already made an entry for today", Toast.LENGTH_LONG).show();
-                } else {
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                if (databaseHelper.getRowByDate(new CustomDate()) != null) {
+//                    Toast.makeText(getApplicationContext(), "You have already made an entry for today", Toast.LENGTH_LONG).show();
+//                } else {
 
                     CameraHelper cameraHelper = new CameraHelper(getApplicationContext());
                     startActivityForResult(cameraHelper.makeIntent(), CameraHelper.REQUEST_IMAGE_CAPTURE);
 
                     currentPhotoPath = cameraHelper.getCurrentPhotoPath();
-                }
+//                }
             }
         });
     }
