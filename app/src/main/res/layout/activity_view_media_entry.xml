@@ -80,6 +80,7 @@
                 android:text="About This Pic: "
                 android:textAllCaps="true"
                 android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv_view_media_entry_mood" />
 
