@@ -34,100 +34,97 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.975"/>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_view_image_bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.55" />
-
-    <ImageView
-        android:id="@+id/iv_view_media_entry_image"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/drawable_rounded"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/gl_view_image_bottom"
-        app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
-        app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
-        app:layout_constraintTop_toTopOf="@+id/gl_view_main_top"
-        tools:srcCompat="@drawable/sample2" />
-
-    <TextView
-        android:id="@+id/tv_view_media_entry_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Aug. 27 2021"
-        android:textAllCaps="true"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
-        app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
-        app:layout_constraintTop_toBottomOf="@+id/iv_view_media_entry_image" />
-
-    <TextView
-        android:id="@+id/tv_view_media_entry_mood_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mood: "
-        android:textAllCaps="true"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_view_media_entry_mood"
-        app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
-        app:layout_constraintTop_toTopOf="@+id/iv_view_media_entry_mood" />
-
-    <ImageView
-        android:id="@+id/iv_view_media_entry_mood"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toEndOf="@+id/tv_view_media_entry_mood_label"
-        app:layout_constraintTop_toBottomOf="@+id/tv_view_media_entry_date"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/tv_view_media_entry_mood"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_view_media_entry_mood"
-        app:layout_constraintStart_toEndOf="@+id/iv_view_media_entry_mood"
-        app:layout_constraintTop_toTopOf="@+id/iv_view_media_entry_mood" />
-
-    <TextView
-        android:id="@+id/tv_view_media_entry_caption_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="About This Pic: "
-        android:textAllCaps="true"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
-        app:layout_constraintTop_toBottomOf="@+id/iv_view_media_entry_mood" />
-
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toTopOf="@+id/gl_view_main_bottom"
         app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
-        app:layout_constraintTop_toBottomOf="@+id/tv_view_media_entry_caption_label">
+        app:layout_constraintTop_toTopOf="@+id/gl_view_main_top"
+        android:fillViewport="true">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_view_media_entry_image"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:background="@drawable/drawable_rounded"
+                android:scaleType="fitCenter"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@drawable/sample2" />
+
+            <ImageView
+                android:id="@+id/iv_view_media_entry_mood"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toEndOf="@+id/tv_view_media_entry_mood_label"
+                app:layout_constraintTop_toBottomOf="@+id/tv_view_media_entry_date"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/tv_view_media_entry_caption_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="About This Pic: "
+                android:textAllCaps="true"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_view_media_entry_mood" />
 
             <TextView
                 android:id="@+id/tv_view_media_entry_caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:justificationMode="inter_word"
+                android:text="Buried non guts claw and creature hair-raising decapitated at est. Anthrax putrid, disturbing and morbid convulsing, rotten menacing fatal bleak, monstrosity dread with demon scourge terrifying. Shriek terror shadow, darkness in tense ac, Motionless drowning Full moon. Breathing heavily damp, cold and crying running, stalking slicing stabbing dripping (blood).  Is creaking screaming 666 at kettle. Falling a spooky screaming. Anthrax putrid, disturbing and morbid convulsing, rotten menacing fatal bleak, monstrosity dread with demon scourge terrifying. Creep cold graves, shadow non fear a, psychotic ashes ghost. Blood guns bury scream, stab graveyard crazed dark crying.  Flames at crazy slicing with murderer gore. Breathing heavily hell and rabid anthrax fanatic tearing at a squeal. Occult at alley pushed. Bloodcurdling decomposed zombie in virus scared cat Michael Myers worms. Buried non guts claw and creature hair-raising decapitated at est. Virus witch demonic dripping, at werewolf psycho slice flames. Creep cold graves, shadow non fea."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_view_media_entry_caption_label" />
+
+            <TextView
+                android:id="@+id/tv_view_media_entry_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent quis venenatis arcu. Suspendisse vestibulum lectus mattis nisi fermentum, nec posuere eros interdum. Fusce congue, est in egestas feugiat, dui magna tempor metus, ac mattis neque turpis et turpis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt, est vel iaculis sodales, felis nisl interdum nibh, id imperdiet magna mi a ante. Aenean sapien felis, luctus eu maximus ac, tempor a turpis. Integer maximus tellus feugiat viverra convallis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas fringilla odio non nunc euismod, ut ultrices dolor auctor. Curabitur a maximus purus, at ultricies mauris. Morbi imperdiet et arcu eu imperdiet. Nam id bibendum leo, ac faucibus odio. Praesent scelerisque urna sed velit accumsan semper. Pellentesque eleifend, dui ac posuere tempor, felis ligula pretium diam, nec tincidunt massa orci sed ante." />
-        </LinearLayout>
+                android:layout_marginTop="8dp"
+                android:text="Aug. 27 2021"
+                android:textAllCaps="true"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_view_media_entry_image" />
+
+            <TextView
+                android:id="@+id/tv_view_media_entry_mood_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mood: "
+                android:textAllCaps="true"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_view_media_entry_mood"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/iv_view_media_entry_mood" />
+
+            <TextView
+                android:id="@+id/tv_view_media_entry_mood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="SCAM SCAM SCAM"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_view_media_entry_mood"
+                app:layout_constraintStart_toEndOf="@+id/iv_view_media_entry_mood"
+                app:layout_constraintTop_toTopOf="@+id/iv_view_media_entry_mood" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
