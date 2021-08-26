@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:outlineProvider="none"
+    android:background="@color/mint_cream"
     tools:context=".ViewMediaEntryActivity">
 
     <ScrollView
@@ -68,9 +69,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:fontFamily="@font/righteous"
                 android:text="Aug. 27 2021"
                 android:textAllCaps="true"
-                android:textSize="16sp"
+                android:textColor="@color/black_coffee"
+                android:textSize="24sp"
                 app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
                 app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
                 app:layout_constraintTop_toBottomOf="@+id/iv_view_media_entry_image" />
@@ -80,8 +83,8 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="-8dp"
-                android:background="#00BCD4"
+                android:layout_marginBottom="-12dp"
+                android:background="@color/mint"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_view_media_entry_mood"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -92,9 +95,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:fontFamily="@font/righteous"
                 android:text="Mood"
                 android:textAllCaps="true"
-                android:textSize="16sp"
+                android:textColor="@color/black_coffee"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@+id/iv_view_media_entry_mood"
                 app:layout_constraintStart_toStartOf="@+id/iv_view_media_entry_mood"
                 app:layout_constraintTop_toTopOf="@+id/v_view_mood_container_bg" />
@@ -114,7 +119,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:fontFamily="@font/comfortaa"
                 android:text="FEELSGOODMAN"
+                android:textColor="@color/black_coffee"
                 app:layout_constraintEnd_toEndOf="@+id/iv_view_media_entry_mood"
                 app:layout_constraintStart_toStartOf="@+id/iv_view_media_entry_mood"
                 app:layout_constraintTop_toBottomOf="@+id/iv_view_media_entry_mood" />
@@ -124,9 +131,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:fontFamily="@font/righteous"
                 android:text="About This Pic"
                 android:textAllCaps="true"
-                android:textSize="16sp"
+                android:textColor="@color/black_coffee"
+                android:textSize="24sp"
                 app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
                 app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
                 app:layout_constraintTop_toBottomOf="@+id/v_view_mood_container_bg" />
@@ -136,8 +145,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:fontFamily="@font/comfortaa"
                 android:justificationMode="inter_word"
                 android:text="Buried non guts claw and creature hair-raising decapitated at est. Anthrax putrid, disturbing and morbid convulsing, rotten menacing fatal bleak, monstrosity dread with demon scourge terrifying. Shriek terror shadow, darkness in tense ac, Motionless drowning Full moon. Breathing heavily damp, cold and crying running, stalking slicing stabbing dripping (blood).  Is creaking screaming 666 at kettle. Falling a spooky screaming. Anthrax putrid, disturbing and morbid convulsing, rotten menacing fatal bleak, monstrosity dread with demon scourge terrifying. Creep cold graves, shadow non fear a, psychotic ashes ghost. Blood guns bury scream, stab graveyard crazed dark crying.  Flames at crazy slicing with murderer gore. Breathing heavily hell and rabid anthrax fanatic tearing at a squeal. Occult at alley pushed. Bloodcurdling decomposed zombie in virus scared cat Michael Myers worms. Buried non guts claw and creature hair-raising decapitated at est. Virus witch demonic dripping, at werewolf psycho slice flames. Creep cold graves, shadow non fea."
+                android:textColor="@color/black_coffee"
                 app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
                 app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
                 app:layout_constraintTop_toBottomOf="@+id/tv_view_media_entry_caption_label" />
@@ -154,7 +165,8 @@
                 android:scaleType="fitCenter"
                 app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
                 app:layout_constraintTop_toTopOf="@+id/gl_view_main_top"
-                app:srcCompat="@drawable/edit" />
+                app:srcCompat="@drawable/edit"
+                app:tint="@color/black_coffee" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
