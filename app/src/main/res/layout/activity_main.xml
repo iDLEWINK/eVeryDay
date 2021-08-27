@@ -31,6 +31,7 @@
         app:fabSize="auto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="32dp"
         app:srcCompat="@android:drawable/ic_menu_camera"
         app:tint="@color/coffee_cream" />
 
@@ -46,6 +47,7 @@
         app:borderWidth="0dp"
         app:layout_constraintBottom_toTopOf="@+id/fab_activity_main_camera"
         app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="32dp"
         app:srcCompat="@android:drawable/ic_menu_slideshow"
         app:tint="@color/coffee_cream" />
 
