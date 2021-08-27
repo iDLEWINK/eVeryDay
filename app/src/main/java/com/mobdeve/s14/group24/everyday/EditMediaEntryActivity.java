@@ -3,7 +3,10 @@ package com.mobdeve.s14.group24.everyday;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -130,8 +133,24 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         ibDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbh.deleteOneRow(String.valueOf(id));
-                finish();
+                AlertDialog.Builder alert = new AlertDialog.Builder(EditMediaEntryActivity.this);
+                alert.setTitle("Delete");
+                alert.setMessage("Are you sure you want to delete?");
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new File(imagePath).delete();
+                        dbh.deleteOneRow(String.valueOf(id));
+                        finish();
+                        dialog.dismiss();
+                    }
+                });
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
             }
         });
     }
