@@ -2,15 +2,34 @@
     <!-- Base application theme. -->
     <style name="Theme.EVeryDay" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/black_coffee</item>
+        <item name="colorPrimaryVariant">@color/black_coffee_secondary</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/mint</item>
+        <item name="colorSecondaryVariant">@color/mint_secondary</item>
+        <item name="colorOnSecondary">@color/black_coffee_secondary</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+    </style>
+    <style name="Mood1Style" parent="@style/Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/custom_mood1</item>
+    </style>
+
+    <style name="Mood2Style" parent="@style/Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/custom_mood2</item>
+    </style>
+
+    <style name="Mood3Style" parent="@style/Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/custom_mood3</item>
+    </style>
+
+    <style name="Mood4Style" parent="@style/Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/custom_mood4</item>
+    </style>
+
+    <style name="Mood5Style" parent="@style/Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/custom_mood5</item>
     </style>
 </resources>
