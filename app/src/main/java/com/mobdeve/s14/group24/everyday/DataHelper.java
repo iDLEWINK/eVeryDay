@@ -29,7 +29,7 @@ public class DataHelper {
 
     private void initializeData() {
         CustomDate dates[] = {new CustomDate("2021/08/22"), new CustomDate("2021/08/23"), new CustomDate("2021/08/24")};
-        String captions[] = {"sunny today", "cool adventure", "wow! awesome"};
+        String captions[] = {"Default Photo 1 \nCool mountain trail", "Default Photo 2 \nEna Photo", "Default Photo 3 \n Chiaki Nanami"};
         Drawable drawables[] = {context.getDrawable(R.drawable.sample), context.getDrawable(R.drawable.sample1), context.getDrawable(R.drawable.sample2)};
         int moods[] = {3, 4, 5};
 
