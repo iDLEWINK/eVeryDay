@@ -30,15 +30,15 @@ public class DataHelper {
 
     private void initializeData() {
         CustomDate dates[] = {
-                new CustomDate("2021/08/18"),
-                new CustomDate("2021/08/19"),
-                new CustomDate("2021/08/20"),
-                new CustomDate("2021/08/21"),
-                new CustomDate("2021/08/22"),
-                new CustomDate("2021/08/23"),
-                new CustomDate("2021/08/24"),
-                new CustomDate("2021/08/25"),
-                new CustomDate("2021/08/26"),
+                new CustomDate("2021/07/18"),
+                new CustomDate("2021/07/19"),
+                new CustomDate("2021/07/20"),
+                new CustomDate("2021/07/21"),
+                new CustomDate("2021/07/22"),
+                new CustomDate("2021/07/23"),
+                new CustomDate("2021/07/24"),
+                new CustomDate("2021/07/25"),
+                new CustomDate("2021/07/26"),
         };
         String captions[] = {
                 "Making dinner tonight <3\nHope it tastes good!",
