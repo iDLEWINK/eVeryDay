@@ -90,7 +90,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="@color/mint"
+                android:background="@color/black_coffee"
                 android:fontFamily="@font/righteous"
                 android:padding="14dp"
                 android:text="Aug. 27 2021"
