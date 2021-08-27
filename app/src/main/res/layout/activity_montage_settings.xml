@@ -86,6 +86,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/black_coffee"
         android:backgroundTintMode="src_over"
+        android:fontFamily="@font/comfortaa"
         android:text="@string/montage_settings_create"
         android:textColor="@color/mint_cream"
         app:layout_constraintBottom_toTopOf="@+id/gl_montage_settings_fourth_hor"
