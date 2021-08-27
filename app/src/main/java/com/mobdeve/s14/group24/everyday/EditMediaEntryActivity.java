@@ -131,7 +131,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                     mood = 4;
                 else if (rbMood5.isChecked())
                     mood = 5;
-
+                Log.d("aaa ping", "ping");
                 caption = etCaption.getText().toString().trim();
                 dbh.updateData(id, imagePath, caption, mood);
                 Intent intent = new Intent(EditMediaEntryActivity.this, ViewMediaEntryActivity.class);
@@ -161,7 +161,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 new File(imagePath).delete();
-                dbh.deleteOneRow(String.valueOf(id));
+                dbh.deleteOneRow(id);
                 finish();
                 dialog.dismiss();
             }

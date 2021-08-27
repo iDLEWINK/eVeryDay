@@ -110,12 +110,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_IMAGE_PATH, imagePath);
         cv.put(COLUMN_CAPTION, caption);
         cv.put(COLUMN_MOOD, mood);
-        db.update(TABLE_NAME, cv, "id=?", new String[]{String.valueOf(id)});
+        db.update(TABLE_NAME, cv, "_id=?", new String[]{String.valueOf(id)});
     }
 
-    public void deleteOneRow(String row_id){
+    public void deleteOneRow(int id){
         SQLiteDatabase db = this.getWritableDatabase();
-        long result = db.delete(TABLE_NAME, "_id=?", new String[]{row_id});
+        long result = db.delete(TABLE_NAME, "_id=?", new String[]{String.valueOf(id)});
     }
 
     public void deleteAllData(){

@@ -1,11 +1,13 @@
 package com.mobdeve.s14.group24.everyday;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.File;
@@ -14,11 +16,15 @@ import java.util.ArrayList;
 
 public class DataHelper {
 
-    Context context;
+    private Context context;
+    private SharedPreferences sp;
+    private static final String INIT_TABLE = "initializedTable";
 
     public DataHelper (Context context) {
         this.context = context;
-        initializeData();
+        sp = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        if (sp.getBoolean(INIT_TABLE, false))
+            initializeData();
     }
 
     private void initializeData() {
@@ -46,6 +52,7 @@ public class DataHelper {
             }
             dbh.addEntry(dates[i], image.getAbsolutePath(), captions[i], moods[i]);
         }
+        sp.edit().putBoolean(INIT_TABLE, true).commit();
     }
 
 //    public void resetData() {
