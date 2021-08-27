@@ -13,4 +13,10 @@
     <color name="mint_secondary">#FF51CDBE</color>
     <color name="black_coffee">#FF4F404A</color>
     <color name="black_coffee_secondary">#FF32292F</color>
+    <color name="mood_0">#FF81888C</color>
+    <color name="mood_1">#FFFF8BA6</color>
+    <color name="mood_2">#FFFFAAA5</color>
+    <color name="mood_3">#FFFFE8D4</color>
+    <color name="mood_4">#FFDCEDC1</color>
+    <color name="mood_5">#FFA8E6CF</color>
 </resources>
