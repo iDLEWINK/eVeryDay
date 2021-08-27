@@ -63,7 +63,7 @@ public class MediaEntryAdapter extends RecyclerView.Adapter<MediaEntryViewHolder
         MediaEntry mediaEntry = mediaEntries.get(position);
 
         holder.setTvDate(mediaEntry.getDate().toStringNoYear());
-        holder.setIvImage(mediaEntry.getImagePath());
+        holder.setIvImage(MediaStore.Images.Media.getBitmap(MainActivity.getContentResolver(), mediaEntry.getImagePath()));
         holder.setIvMood(mediaEntry.getMood());
     }
 

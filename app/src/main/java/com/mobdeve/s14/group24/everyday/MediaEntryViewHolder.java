@@ -42,6 +42,10 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
+    public void setIvImage(Bitmap image) {
+        ivImage.setImageBitmap(image);
+    }
+
     public void setIvMood(int mood) {
         if (mood == 1) {
             ivMood.setImageResource(R.drawable.mood_border_1);
