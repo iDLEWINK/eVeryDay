@@ -21,7 +21,7 @@
             android:id="@+id/cl_edit_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/mint_cream">
+            android:background="@color/coffee_cream">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/gl_edit_main_start"
