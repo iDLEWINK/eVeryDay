@@ -6,17 +6,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Address;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.io.File;
@@ -35,7 +32,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
     private ImageButton ibEdit;
     private ImageButton ibDelete;
 
-    private DatabaseHelper dbh;
+    private DatabaseHelper databaseHelper;
     CameraHelper cameraHelper;
 
     private int id;
@@ -89,7 +86,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                 break;
         }
 
-        dbh = new DatabaseHelper(this);
+        databaseHelper = new DatabaseHelper(this);
         cameraHelper = new CameraHelper(getApplicationContext());
 
         ibRetakePhoto.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +130,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                     mood = 5;
                 Log.d("aaa ping", "ping");
                 caption = etCaption.getText().toString().trim();
-                dbh.updateData(id, imagePath, caption, mood);
+                databaseHelper.updateData(id, imagePath, caption, mood);
                 Intent intent = new Intent(EditMediaEntryActivity.this, ViewMediaEntryActivity.class);
                 intent.putExtra(Keys.KEY_ID.name(), id);
                 intent.putExtra(Keys.KEY_DATE.name(), date);
@@ -161,7 +158,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 new File(imagePath).delete();
-                dbh.deleteOneRow(id);
+                databaseHelper.deleteOneRow(id);
                 finish();
                 dialog.dismiss();
             }

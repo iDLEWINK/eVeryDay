@@ -18,10 +18,12 @@ public class DataHelper {
 
     private Context context;
     private SharedPreferences sp;
+    private DatabaseHelper databaseHelper;
     private static final String INIT_TABLE = "initializedTable";
 
     public DataHelper (Context context) {
         this.context = context;
+        databaseHelper = new DatabaseHelper(context);
         sp = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
         if (!sp.getBoolean(INIT_TABLE, false))
             initializeData();
@@ -34,7 +36,6 @@ public class DataHelper {
         int moods[] = {3, 4, 5};
 
         File location = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        DatabaseHelper dbh = new DatabaseHelper(context);
 
         for (int i = 0; i < dates.length; i++) {
             Bitmap bitmap = ((BitmapDrawable) drawables[i]).getBitmap();
@@ -50,7 +51,7 @@ public class DataHelper {
                     e.printStackTrace();
                 }
             }
-            dbh.addEntry(dates[i], image.getAbsolutePath(), captions[i], moods[i]);
+            databaseHelper.addEntry(dates[i], image.getAbsolutePath(), captions[i], moods[i]);
         }
         sp.edit().putBoolean(INIT_TABLE, true).commit();
     }
@@ -61,7 +62,6 @@ public class DataHelper {
 
     public ArrayList<MediaEntry> retrieveData () {
         ArrayList<MediaEntry> mediaEntries = new ArrayList<MediaEntry>();
-        DatabaseHelper databaseHelper = new DatabaseHelper(context);
         Cursor cursor = databaseHelper.readAllData();
 
         while (cursor.moveToNext()) {
