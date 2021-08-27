@@ -42,6 +42,11 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
         ivImage.setImageURI(Uri.parse(imagePath));
         tvCaption.setText(caption);
 
+        if (mood < 1 || mood > 5)
+            ivMood.setVisibility(View.GONE);
+        else
+            ivMood.setVisibility(View.VISIBLE);
+
         switch (mood) {
             case 1:
                 ivMood.setImageResource(R.drawable.mood_face_res1);
