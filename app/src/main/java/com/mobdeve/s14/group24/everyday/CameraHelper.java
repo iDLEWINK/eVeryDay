@@ -24,11 +24,9 @@ public class CameraHelper {
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     private String currentPhotoPath;
     private Context context;
-    private DatabaseHelper dbh;
 
     public CameraHelper(Context context) {
         this.context = context;
-        dbh = new DatabaseHelper(context);
     }
 
     public Intent makeIntent() {
@@ -39,7 +37,7 @@ public class CameraHelper {
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                Toast.makeText(context.getApplicationContext(), ex.getMessage().toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context.getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
             }
 
             if (photoFile != null) {

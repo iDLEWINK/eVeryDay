@@ -72,13 +72,13 @@ public class MainActivity extends AppCompatActivity {
         fabCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (databaseHelper.getRowByDate(new CustomDate()) != null)
+/*                if (databaseHelper.getRowByDate(new CustomDate()) != null)
                     Toast.makeText(getApplicationContext(), "You have already made an entry for today", Toast.LENGTH_LONG).show();
                 else {
-                    CameraHelper cameraHelper = new CameraHelper(getApplicationContext());
+*/                    CameraHelper cameraHelper = new CameraHelper(getApplicationContext());
                     startActivityForResult(cameraHelper.makeIntent(), CameraHelper.REQUEST_IMAGE_CAPTURE);
                     currentPhotoPath = cameraHelper.getCurrentPhotoPath();
-                }
+//                }
             }
         });
     }
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == CameraHelper.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            MediaEntry mediaEntry = databaseHelper.addEntry(currentPhotoPath);
+            MediaEntry mediaEntry = databaseHelper.getRowById(databaseHelper.addEntry(currentPhotoPath));
 
             Intent intent = new Intent(MainActivity.this, ViewMediaEntryActivity.class);
 
