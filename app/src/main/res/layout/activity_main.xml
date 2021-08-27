@@ -25,28 +25,29 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
-        android:tintMode="src_in"
-        app:backgroundTint="@color/white"
+        android:tintMode="multiply"
+        app:backgroundTint="@color/black_coffee"
         app:borderWidth="0dp"
+        app:fabSize="auto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_camera"
-        app:tint="@color/black" />
+        app:tint="@color/coffee_cream" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_activity_main_montage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/white"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/black_coffee"
         android:clickable="true"
-        android:tintMode="src_in"
+        android:tintMode="multiply"
         app:borderWidth="0dp"
         app:layout_constraintBottom_toTopOf="@+id/fab_activity_main_camera"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_slideshow"
-        app:tint="@color/black" />
+        app:tint="@color/coffee_cream" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_gallery_rv_top"
