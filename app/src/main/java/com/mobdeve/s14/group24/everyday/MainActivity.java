@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private void initRecyclerView () {
         mediaEntries = dataHelper.retrieveData();
         this.rvGallery = findViewById(R.id.rv_activity_main_gallery);
-        this.rvGallery.setLayoutManager(new GridLayoutManager(this, 3));
+        this.rvGallery.setLayoutManager(new GridLayoutManager(this, 2));
         this.mediaEntryAdapter = new MediaEntryAdapter(mediaEntries);
         this.rvGallery.setAdapter(mediaEntryAdapter);
     }
