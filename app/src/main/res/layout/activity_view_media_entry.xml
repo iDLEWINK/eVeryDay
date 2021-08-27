@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:outlineProvider="none"
-    android:background="@color/mint_cream"
+    android:background="@color/coffee_cream"
     tools:context=".ViewMediaEntryActivity">
 
     <ScrollView
@@ -53,38 +53,70 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.95" />
 
-            <ImageView
-                android:id="@+id/iv_view_media_entry_image"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_view_media_entry_image"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
+                android:elevation="12dp"
+                app:cardCornerRadius="14dp"
                 app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
                 app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
-                app:layout_constraintTop_toTopOf="@+id/gl_view_main_top"
-                tools:srcCompat="@drawable/sample2" />
+                app:layout_constraintTop_toTopOf="@+id/gl_view_main_top">
+
+                <ImageView
+                    android:id="@+id/iv_view_media_entry_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
+                    app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
+                    app:layout_constraintTop_toTopOf="@+id/gl_view_main_top"
+                    tools:srcCompat="@drawable/sample2" />
+
+                <ImageButton
+                    android:id="@+id/ib_edit_media_entry"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/rounded_bg"
+                    android:outlineProvider="bounds"
+                    android:padding="10dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/edit"
+                    android:tintMode="src_in"
+                    app:srcCompat="@android:drawable/ic_menu_edit" />
+
+            </androidx.cardview.widget.CardView>
+
+
 
             <TextView
                 android:id="@+id/tv_view_media_entry_date"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/black_coffee_secondary"
                 android:fontFamily="@font/righteous"
+                android:padding="14dp"
                 android:text="Aug. 27 2021"
+                android:textAlignment="center"
                 android:textAllCaps="true"
-                android:textColor="@color/black_coffee"
+                android:textColor="@color/white"
                 android:textSize="24sp"
-                app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
-                app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
-                app:layout_constraintTop_toBottomOf="@+id/iv_view_media_entry_image" />
+                app:layout_constraintBottom_toTopOf="@id/v_view_mood_container_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cv_view_media_entry_image" />
 
             <View
                 android:id="@+id/v_view_mood_container_bg"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="-12dp"
-                android:background="@color/mint"
+                android:layout_marginBottom="-16dp"
+                android:background="@color/mint_cream"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_view_media_entry_mood"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -145,29 +177,18 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/drawable_rounded_white"
                 android:fontFamily="@font/comfortaa"
                 android:justificationMode="inter_word"
+                android:padding="15dp"
                 android:text="Buried non guts claw and creature hair-raising decapitated at est. Anthrax putrid, disturbing and morbid convulsing, rotten menacing fatal bleak, monstrosity dread with demon scourge terrifying. Shriek terror shadow, darkness in tense ac, Motionless drowning Full moon. Breathing heavily damp, cold and crying running, stalking slicing stabbing dripping (blood).  Is creaking screaming 666 at kettle. Falling a spooky screaming. Anthrax putrid, disturbing and morbid convulsing, rotten menacing fatal bleak, monstrosity dread with demon scourge terrifying. Creep cold graves, shadow non fear a, psychotic ashes ghost. Blood guns bury scream, stab graveyard crazed dark crying.  Flames at crazy slicing with murderer gore. Breathing heavily hell and rabid anthrax fanatic tearing at a squeal. Occult at alley pushed. Bloodcurdling decomposed zombie in virus scared cat Michael Myers worms. Buried non guts claw and creature hair-raising decapitated at est. Virus witch demonic dripping, at werewolf psycho slice flames. Creep cold graves, shadow non fea."
                 android:textColor="@color/black_coffee"
+                app:layout_constraintBottom_toTopOf="@+id/gl_view_main_bottom"
                 app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
                 app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
-                app:layout_constraintTop_toBottomOf="@+id/tv_view_media_entry_caption_label" />
-
-            <ImageButton
-                android:id="@+id/ib_edit_media_entry"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/rounded_bg"
-                android:outlineProvider="bounds"
-                android:padding="10dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/edit"
-                android:tintMode="src_in"
-                app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
-                app:layout_constraintTop_toTopOf="@+id/gl_view_main_top"
-                app:srcCompat="@android:drawable/ic_menu_edit" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_view_media_entry_caption_label"
+                app:layout_constraintVertical_bias="0.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
