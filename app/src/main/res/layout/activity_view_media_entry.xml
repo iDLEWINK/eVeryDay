@@ -85,12 +85,9 @@
                     android:outlineProvider="bounds"
                     android:padding="10dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/edit"
-                    android:tintMode="src_in"
                     app:srcCompat="@android:drawable/ic_menu_edit" />
 
             </androidx.cardview.widget.CardView>
-
 
 
             <TextView
