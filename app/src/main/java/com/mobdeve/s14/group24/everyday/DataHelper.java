@@ -8,7 +8,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,10 +29,40 @@ public class DataHelper {
     }
 
     private void initializeData() {
-        CustomDate dates[] = {new CustomDate("2021/08/22"), new CustomDate("2021/08/23"), new CustomDate("2021/08/24")};
-        String captions[] = {"Default Photo 1 \nCool mountain trail", "Default Photo 2 \nEna Photo", "Default Photo 3 \n Chiaki Nanami"};
-        Drawable drawables[] = {context.getDrawable(R.drawable.sample), context.getDrawable(R.drawable.sample1), context.getDrawable(R.drawable.sample2)};
-        int moods[] = {3, 4, 5};
+        CustomDate dates[] = {
+                new CustomDate("2021/08/18"),
+                new CustomDate("2021/08/19"),
+                new CustomDate("2021/08/20"),
+                new CustomDate("2021/08/21"),
+                new CustomDate("2021/08/22"),
+                new CustomDate("2021/08/23"),
+                new CustomDate("2021/08/24"),
+                new CustomDate("2021/08/25"),
+                new CustomDate("2021/08/26"),
+        };
+        String captions[] = {
+                "Making dinner tonight <3\nHope it tastes good!",
+                "Discovered a new mountain trail! Life is really full of adventures. So glad today",
+                "Had to wait in the car for so long :/\nKind ofbumbed out rn",
+                "I have so much work to do today! UGH so annoyed",
+                "Having a nice afternoon break with some bread",
+                "Swamped at work again, so much to do, so many deadlines. Hope I can make it.",
+                "Hanged out with my friend today",
+                "Visited my friend in a different city\nWe took this photo in the hotel lobby\nI love the lilghting.",
+                "Shoooping day!!\nI love getting new stuff :)\nI have to try these on soon."
+        };
+        Drawable drawables[] = {
+                context.getDrawable(R.drawable.sample_1),
+                context.getDrawable(R.drawable.sample_2),
+                context.getDrawable(R.drawable.sample_3),
+                context.getDrawable(R.drawable.sample_4),
+                context.getDrawable(R.drawable.sample_5),
+                context.getDrawable(R.drawable.sample_6),
+                context.getDrawable(R.drawable.sample_7),
+                context.getDrawable(R.drawable.sample_8),
+                context.getDrawable(R.drawable.sample_9)
+        };
+        int moods[] = {4, 5, 2, 1, 3, 1, 4, 4, 5};
 
         File location = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 

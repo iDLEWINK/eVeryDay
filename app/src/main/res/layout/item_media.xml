@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/sample" />
+        tools:srcCompat="@drawable/sample_2" />
 
     <ImageView
         android:id="@+id/iv_item_media_mood"
