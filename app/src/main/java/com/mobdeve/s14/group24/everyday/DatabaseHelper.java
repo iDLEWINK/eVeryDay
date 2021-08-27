@@ -87,7 +87,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return cursorToMediaEntry(cursor);
     }
-
+/*
     public MediaEntry getRowByDate(CustomDate date){
         String query = "SELECT * FROM " + TABLE_NAME +
                 " WHERE " + COLUMN_DATE + " = '" + date.toStringDB() + "'";
@@ -102,7 +102,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return cursorToMediaEntry(cursor);
     }
-
+*/
     public void updateData(int id, String imagePath, String caption, int mood){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
