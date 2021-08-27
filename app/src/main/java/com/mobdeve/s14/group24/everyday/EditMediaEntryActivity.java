@@ -102,6 +102,25 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         ibEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editEntry();
+            }
+        });
+
+        ibDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteEntry();
+            }
+        });
+    }
+
+    private void editEntry() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(EditMediaEntryActivity.this);
+        alert.setTitle("Edit Confirmation");
+        alert.setMessage("Are you sure you want to edit with these changes?");
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 if (rbMood1.isChecked())
                     mood = 1;
                 else if (rbMood2.isChecked())
@@ -113,12 +132,8 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                 else if (rbMood5.isChecked())
                     mood = 5;
 
-                dbh.updateData(
-                        id,
-                        imagePath,
-                        etCaption.getText().toString().trim(),
-                        mood
-                );
+                caption = etCaption.getText().toString().trim();
+                dbh.updateData(id, imagePath, caption, mood);
                 Intent intent = new Intent(EditMediaEntryActivity.this, ViewMediaEntryActivity.class);
                 intent.putExtra(Keys.KEY_ID.name(), id);
                 intent.putExtra(Keys.KEY_DATE.name(), date);
@@ -129,30 +144,35 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        ibDelete.setOnClickListener(new View.OnClickListener() {
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                AlertDialog.Builder alert = new AlertDialog.Builder(EditMediaEntryActivity.this);
-                alert.setTitle("Delete");
-                alert.setMessage("Are you sure you want to delete?");
-                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        new File(imagePath).delete();
-                        dbh.deleteOneRow(String.valueOf(id));
-                        finish();
-                        dialog.dismiss();
-                    }
-                });
-                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
         });
+        alert.show();
+    }
+
+    private void deleteEntry() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(EditMediaEntryActivity.this);
+        alert.setTitle("Delete");
+        alert.setMessage("Are you sure you want to delete?");
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                new File(imagePath).delete();
+                dbh.deleteOneRow(String.valueOf(id));
+                finish();
+                dialog.dismiss();
+            }
+        });
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.show();
     }
 
     @Override
