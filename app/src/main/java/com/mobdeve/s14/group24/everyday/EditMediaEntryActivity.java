@@ -151,7 +151,6 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-                alert.show();
             }
         });
     }
