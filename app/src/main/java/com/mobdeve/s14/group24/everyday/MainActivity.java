@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == CameraHelper.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            MediaEntry mediaEntry = databaseHelper.addEntry(currentPhotoPath);
+            MediaEntry mediaEntry = databaseHelper.getRowById(databaseHelper.addEntry(currentPhotoPath));
 
             Intent intent = new Intent(MainActivity.this, ViewMediaEntryActivity.class);
 

@@ -54,13 +54,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return getRowById(id);
     }
 
-    public MediaEntry addEntry(String imagePath){
+    public long addEntry(String imagePath){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_DATE, new CustomDate().toStringDB());
         cv.put(COLUMN_IMAGE_PATH, imagePath);
-        long id = db.insert(TABLE_NAME,null, cv);
-        return getRowById(id);
+        return db.insert(TABLE_NAME,null, cv);
     }
 
     public Cursor readAllData(){
