@@ -23,7 +23,7 @@ public class DataHelper {
     public DataHelper (Context context) {
         this.context = context;
         sp = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        if (sp.getBoolean(INIT_TABLE, false))
+        if (!sp.getBoolean(INIT_TABLE, false))
             initializeData();
     }
 
