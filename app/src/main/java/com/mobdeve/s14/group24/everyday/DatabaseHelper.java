@@ -12,7 +12,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static DatabaseHelper instance = null;
 
-    public static final String DATABASE_NAME = "MediaEntries.db";
+    private static final String DATABASE_NAME = "MediaEntries.db";
     private static final int DATABASE_VERSION = 1;
 
     private static final String TABLE_NAME = "media_entries";

@@ -1,7 +1,12 @@
 package com.mobdeve.s14.group24.everyday;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +24,32 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
     private ImageView ivMood;
     private ImageButton ibEdit;
 
+    private int id;
+    private String date;
+    private String imagePath;
+    private String caption;
+    private int mood;
+
+    private ActivityResultLauncher activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent intent = result.getData();
+
+                        id = intent.getIntExtra(Keys.KEY_ID.name(), -1);
+                        date = intent.getStringExtra(Keys.KEY_DATE.name());
+                        imagePath = intent.getStringExtra(Keys.KEY_IMAGE_PATH.name());
+                        caption = intent.getStringExtra(Keys.KEY_CAPTION.name());
+                        mood = intent.getIntExtra(Keys.KEY_MOOD.name(), 0);
+
+                        initViewMediaEntryActivity();
+                    }
+                }
+            }
+    );
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,11 +63,20 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
         ibEdit = findViewById(R.id.ib_edit_media_entry);
 
         Intent intent = getIntent();
-        int id = intent.getIntExtra(Keys.KEY_ID.name(), -1);
-        String date = intent.getStringExtra(Keys.KEY_DATE.name());
-        String imagePath = intent.getStringExtra(Keys.KEY_IMAGE_PATH.name());
-        String caption = intent.getStringExtra(Keys.KEY_CAPTION.name());
-        int mood = intent.getIntExtra(Keys.KEY_MOOD.name(), 0);
+        id = intent.getIntExtra(Keys.KEY_ID.name(), -1);
+        date = intent.getStringExtra(Keys.KEY_DATE.name());
+        imagePath = intent.getStringExtra(Keys.KEY_IMAGE_PATH.name());
+        caption = intent.getStringExtra(Keys.KEY_CAPTION.name());
+        mood = intent.getIntExtra(Keys.KEY_MOOD.name(), 0);
+
+        initViewMediaEntryActivity();
+    }
+
+    public void initViewMediaEntryActivity() {
+        if (id == -1) {
+            finish();
+            return;
+        }
 
         tvDate.setText(date);
         ivImage.setImageURI(Uri.parse(imagePath));
@@ -81,8 +121,7 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
                 intent.putExtra(Keys.KEY_IMAGE_PATH.name(), imagePath);
                 intent.putExtra(Keys.KEY_CAPTION.name(), caption);
                 intent.putExtra(Keys.KEY_MOOD.name(), mood);
-                startActivity(intent);
-                finish();
+                activityResultLauncher.launch(intent);
             }
         });
     }

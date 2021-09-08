@@ -1,5 +1,9 @@
 package com.mobdeve.s14.group24.everyday;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
@@ -8,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,10 +39,35 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseHelper databaseHelper;
     private DataHelper dataHelper;
     private ArrayList<MediaEntry> mediaEntries;
+    private SharedPreferences sp;
 
     private FloatingActionButton fabCamera;
     private FloatingActionButton fabMontage;
     private String currentPhotoPath;
+
+    private ActivityResultLauncher activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        MediaEntry mediaEntry = databaseHelper.getRowById(databaseHelper.addEntry(currentPhotoPath));
+
+                        Intent intent = new Intent(MainActivity.this, ViewMediaEntryActivity.class);
+                        sp.edit().putBoolean(Keys.INSERTED_DATA_SET.name(), true).commit();
+                        mediaEntries.add(0, mediaEntry);
+
+                        intent.putExtra(Keys.KEY_ID.name(), mediaEntry.getId());
+                        intent.putExtra(Keys.KEY_DATE.name(), mediaEntry.getDate().toStringFull());
+                        intent.putExtra(Keys.KEY_IMAGE_PATH.name(), mediaEntry.getImagePath());
+                        intent.putExtra(Keys.KEY_CAPTION.name(), mediaEntry.getCaption());
+                        intent.putExtra(Keys.KEY_MOOD.name(), mediaEntry.getMood());
+
+                        startActivity(intent);
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
         databaseHelper = DatabaseHelper.getInstance(this);
         dataHelper = new DataHelper(MainActivity.this);
+        sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         initRecyclerView();
         initFabCamera();
@@ -55,7 +86,34 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        initRecyclerView();
+
+        Log.d("aaa", sp.getBoolean(Keys.MODIFIED_DATA_SET.name(), false) + "\n" +
+                sp.getBoolean(Keys.INSERTED_DATA_SET.name(), false) + "\n" +
+                sp.getBoolean(Keys.DELETED_DATA_SET.name(), false));
+
+        int lastClickedPosition = sp.getInt(Keys.CUR_DATA_SET_POS.name(), 0);
+
+        if (sp.getBoolean(Keys.MODIFIED_DATA_SET.name(), false)) {
+            mediaEntries.set(
+                    lastClickedPosition,
+                    databaseHelper.getRowById(mediaEntries.get(lastClickedPosition).getId())
+            );
+            mediaEntryAdapter.notifyItemChanged(sp.getInt(Keys.CUR_DATA_SET_POS.name(), 0));
+        }
+
+        if (sp.getBoolean(Keys.INSERTED_DATA_SET.name(), false))
+            mediaEntryAdapter.notifyItemInserted(0);
+
+        if (sp.getBoolean(Keys.DELETED_DATA_SET.name(), false)) {
+            mediaEntries.remove(lastClickedPosition);
+            mediaEntryAdapter.notifyItemRemoved(lastClickedPosition);
+        }
+
+        sp.edit()
+                .putBoolean(Keys.MODIFIED_DATA_SET.name(), false)
+                .putBoolean(Keys.INSERTED_DATA_SET.name(), false)
+                .putBoolean(Keys.DELETED_DATA_SET.name(), false)
+                .commit();
     }
 
     private void initRecyclerView () {
@@ -76,30 +134,11 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "You have already made an entry for today", Toast.LENGTH_LONG).show();
                 else {
 */                    CameraHelper cameraHelper = new CameraHelper(getApplicationContext());
-                    startActivityForResult(cameraHelper.makeIntent(), CameraHelper.REQUEST_IMAGE_CAPTURE);
+                    activityResultLauncher.launch(cameraHelper.makeIntent());
                     currentPhotoPath = cameraHelper.getCurrentPhotoPath();
 //                }
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == CameraHelper.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            MediaEntry mediaEntry = databaseHelper.getRowById(databaseHelper.addEntry(currentPhotoPath));
-
-            Intent intent = new Intent(MainActivity.this, ViewMediaEntryActivity.class);
-
-            intent.putExtra(Keys.KEY_ID.name(), mediaEntry.getId());
-            intent.putExtra(Keys.KEY_DATE.name(), mediaEntry.getDate().toStringFull());
-            intent.putExtra(Keys.KEY_IMAGE_PATH.name(), mediaEntry.getImagePath());
-            intent.putExtra(Keys.KEY_CAPTION.name(), mediaEntry.getCaption());
-            intent.putExtra(Keys.KEY_MOOD.name(), mediaEntry.getMood());
-
-            startActivity(intent);
-        }
     }
 
     private void initFabMontage () {

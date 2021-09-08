@@ -1,13 +1,16 @@
 package com.mobdeve.s14.group24.everyday;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ThumbnailUtils;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ShareActionProvider;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,6 +53,10 @@ public class MediaEntryAdapter extends RecyclerView.Adapter<MediaEntryViewHolder
                 intent.putExtra(Keys.KEY_IMAGE_PATH.name(), mediaEntry.getImagePath());
                 intent.putExtra(Keys.KEY_CAPTION.name(), mediaEntry.getCaption());
                 intent.putExtra(Keys.KEY_MOOD.name(), mediaEntry.getMood());
+                PreferenceManager.getDefaultSharedPreferences(v.getContext().getApplicationContext())
+                    .edit()
+                    .putInt(Keys.CUR_DATA_SET_POS.name(), mediaEntryViewHolder.getBindingAdapterPosition())
+                    .commit();
 
                 v.getContext().startActivity(intent);
             }

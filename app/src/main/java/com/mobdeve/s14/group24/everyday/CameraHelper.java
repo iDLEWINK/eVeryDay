@@ -21,7 +21,6 @@ import java.util.Calendar;
 
 public class CameraHelper {
 
-    public static final int REQUEST_IMAGE_CAPTURE = 1;
     private String currentPhotoPath;
     private Context context;
 

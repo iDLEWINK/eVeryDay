@@ -18,13 +18,12 @@ public class DataHelper {
     private Context context;
     private SharedPreferences sp;
     private DatabaseHelper databaseHelper;
-    private static final String INIT_TABLE = "initializedTable";
 
     public DataHelper (Context context) {
         this.context = context;
         databaseHelper = DatabaseHelper.getInstance(context);
         sp = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        if (!sp.getBoolean(INIT_TABLE, false))
+        if (!sp.getBoolean(Keys.INITIALIZED_TABLE.name(), false))
             initializeData();
     }
 
@@ -82,13 +81,13 @@ public class DataHelper {
             }
             databaseHelper.addEntry(dates[i], image.getAbsolutePath(), captions[i], moods[i]);
         }
-        sp.edit().putBoolean(INIT_TABLE, true).commit();
+        sp.edit().putBoolean(Keys.INITIALIZED_TABLE.name(), true).commit();
     }
 
-//    public void resetData() {
-//        context.deleteDatabase(DatabaseHelper.DATABASE_NAME);
-//    }
-
+/*    public void resetData() {
+        context.deleteDatabase(DatabaseHelper.DATABASE_NAME);
+    }
+*/
     public ArrayList<MediaEntry> retrieveData () {
         ArrayList<MediaEntry> mediaEntries = new ArrayList<MediaEntry>();
         Cursor cursor = databaseHelper.readAllData();

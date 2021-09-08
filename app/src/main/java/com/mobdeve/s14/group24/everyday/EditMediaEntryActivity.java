@@ -1,13 +1,19 @@
 package com.mobdeve.s14.group24.everyday;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -33,13 +39,27 @@ public class EditMediaEntryActivity extends AppCompatActivity {
     private ImageButton ibDelete;
 
     private DatabaseHelper databaseHelper;
-    CameraHelper cameraHelper;
+    private CameraHelper cameraHelper;
+    private SharedPreferences sp;
 
     private int id;
     private String date;
     private String imagePath;
     private String caption;
     private int mood;
+
+    private ActivityResultLauncher activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        new File(imagePath).delete();
+                        imagePath = cameraHelper.getCurrentPhotoPath();
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,11 +108,12 @@ public class EditMediaEntryActivity extends AppCompatActivity {
 
         databaseHelper = DatabaseHelper.getInstance(this);
         cameraHelper = new CameraHelper(getApplicationContext());
+        sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         ibRetakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(cameraHelper.makeIntent(), CameraHelper.REQUEST_IMAGE_CAPTURE);
+                activityResultLauncher.launch(cameraHelper.makeIntent());
             }
         });
         
@@ -128,7 +149,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                     mood = 4;
                 else if (rbMood5.isChecked())
                     mood = 5;
-                Log.d("aaa ping", "ping");
+
                 caption = etCaption.getText().toString().trim();
                 databaseHelper.updateData(id, imagePath, caption, mood);
                 Intent intent = new Intent(EditMediaEntryActivity.this, ViewMediaEntryActivity.class);
@@ -137,7 +158,10 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                 intent.putExtra(Keys.KEY_IMAGE_PATH.name(), imagePath);
                 intent.putExtra(Keys.KEY_CAPTION.name(), etCaption.getText().toString().trim());
                 intent.putExtra(Keys.KEY_MOOD.name(), mood);
-                startActivity(intent);
+                setResult(Activity.RESULT_OK, intent);
+
+                sp.edit().putBoolean(Keys.MODIFIED_DATA_SET.name(), true).commit();
+                dialog.dismiss();
                 finish();
             }
         });
@@ -159,8 +183,12 @@ public class EditMediaEntryActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 new File(imagePath).delete();
                 databaseHelper.deleteOneRow(id);
-                finish();
+                Intent intent = new Intent(EditMediaEntryActivity.this, ViewMediaEntryActivity.class);
+                intent.putExtra(Keys.KEY_ID.name(), -1);
+                setResult(Activity.RESULT_OK, intent);
+                sp.edit().putBoolean(Keys.DELETED_DATA_SET.name(), true).commit();
                 dialog.dismiss();
+                finish();
             }
         });
         alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -170,16 +198,6 @@ public class EditMediaEntryActivity extends AppCompatActivity {
             }
         });
         alert.show();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == CameraHelper.REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            new File(imagePath).delete();
-            imagePath = cameraHelper.getCurrentPhotoPath();
-        }
     }
 
     @Override
