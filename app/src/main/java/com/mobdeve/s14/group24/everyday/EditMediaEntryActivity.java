@@ -86,7 +86,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                 break;
         }
 
-        databaseHelper = new DatabaseHelper(this);
+        databaseHelper = DatabaseHelper.getInstance(this);
         cameraHelper = new CameraHelper(getApplicationContext());
 
         ibRetakePhoto.setOnClickListener(new View.OnClickListener() {

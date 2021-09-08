@@ -5,11 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private Context context;
+    private static DatabaseHelper instance = null;
+
     public static final String DATABASE_NAME = "MediaEntries.db";
     private static final int DATABASE_VERSION = 1;
 
@@ -22,7 +24,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
     }
 
     @Override
@@ -131,6 +132,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 cursor.getString(3),
                 cursor.getInt(4)
         );
+    }
+
+    public static DatabaseHelper getInstance(Context context) {
+        if (instance == null)
+            instance = new DatabaseHelper(context.getApplicationContext());
+        return instance;
     }
 
 }
