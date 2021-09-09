@@ -1,5 +1,7 @@
 package com.mobdeve.s14.group24.everyday;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
@@ -12,6 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ShareActionProvider;
 
+import androidx.activity.ComponentActivity;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 

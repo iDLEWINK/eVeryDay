@@ -151,7 +151,14 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                     mood = 5;
 
                 caption = etCaption.getText().toString().trim();
-                databaseHelper.updateData(id, imagePath, caption, mood);
+
+                ThreadHelper.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        databaseHelper.updateData(id, imagePath, caption, mood);
+                    }
+                });
+
                 Intent intent = new Intent(EditMediaEntryActivity.this, ViewMediaEntryActivity.class);
                 intent.putExtra(Keys.KEY_ID.name(), id);
                 intent.putExtra(Keys.KEY_DATE.name(), date);
@@ -182,7 +189,14 @@ public class EditMediaEntryActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 new File(imagePath).delete();
-                databaseHelper.deleteOneRow(id);
+
+                ThreadHelper.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        databaseHelper.deleteOneRow(id);
+                    }
+                });
+
                 Intent intent = new Intent(EditMediaEntryActivity.this, ViewMediaEntryActivity.class);
                 intent.putExtra(Keys.KEY_ID.name(), -1);
                 setResult(Activity.RESULT_OK, intent);

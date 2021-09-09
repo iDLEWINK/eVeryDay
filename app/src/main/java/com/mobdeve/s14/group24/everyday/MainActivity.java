@@ -4,32 +4,20 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,19 +39,24 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        MediaEntry mediaEntry = databaseHelper.getRowById(databaseHelper.addEntry(currentPhotoPath));
+                        ThreadHelper.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                MediaEntry mediaEntry = databaseHelper.getRowById(databaseHelper.addEntry(currentPhotoPath));
 
-                        Intent intent = new Intent(MainActivity.this, ViewMediaEntryActivity.class);
-                        sp.edit().putBoolean(Keys.INSERTED_DATA_SET.name(), true).commit();
-                        mediaEntries.add(0, mediaEntry);
+                                Intent intent = new Intent(MainActivity.this, ViewMediaEntryActivity.class);
+                                sp.edit().putBoolean(Keys.INSERTED_DATA_SET.name(), true).commit();
+                                mediaEntries.add(0, mediaEntry);
 
-                        intent.putExtra(Keys.KEY_ID.name(), mediaEntry.getId());
-                        intent.putExtra(Keys.KEY_DATE.name(), mediaEntry.getDate().toStringFull());
-                        intent.putExtra(Keys.KEY_IMAGE_PATH.name(), mediaEntry.getImagePath());
-                        intent.putExtra(Keys.KEY_CAPTION.name(), mediaEntry.getCaption());
-                        intent.putExtra(Keys.KEY_MOOD.name(), mediaEntry.getMood());
+                                intent.putExtra(Keys.KEY_ID.name(), mediaEntry.getId());
+                                intent.putExtra(Keys.KEY_DATE.name(), mediaEntry.getDate().toStringFull());
+                                intent.putExtra(Keys.KEY_IMAGE_PATH.name(), mediaEntry.getImagePath());
+                                intent.putExtra(Keys.KEY_CAPTION.name(), mediaEntry.getCaption());
+                                intent.putExtra(Keys.KEY_MOOD.name(), mediaEntry.getMood());
 
-                        startActivity(intent);
+                                startActivity(intent);
+                            }
+                        });
                     }
                 }
             }
@@ -87,27 +80,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        Log.d("aaa", sp.getBoolean(Keys.MODIFIED_DATA_SET.name(), false) + "\n" +
-                sp.getBoolean(Keys.INSERTED_DATA_SET.name(), false) + "\n" +
-                sp.getBoolean(Keys.DELETED_DATA_SET.name(), false));
-
         int lastClickedPosition = sp.getInt(Keys.CUR_DATA_SET_POS.name(), 0);
 
         if (sp.getBoolean(Keys.MODIFIED_DATA_SET.name(), false)) {
-            mediaEntries.set(
-                    lastClickedPosition,
-                    databaseHelper.getRowById(mediaEntries.get(lastClickedPosition).getId())
-            );
-            mediaEntryAdapter.notifyItemChanged(sp.getInt(Keys.CUR_DATA_SET_POS.name(), 0));
+            ThreadHelper.execute(new Runnable() {
+                @Override
+                public void run() {
+                    mediaEntries.set(
+                            lastClickedPosition,
+                            databaseHelper.getRowById(mediaEntries.get(lastClickedPosition).getId())
+                    );
+                    mediaEntryAdapter.notifyItemChanged(lastClickedPosition);
+                }
+            });
         }
 
         if (sp.getBoolean(Keys.INSERTED_DATA_SET.name(), false))
             mediaEntryAdapter.notifyItemInserted(0);
 
-        if (sp.getBoolean(Keys.DELETED_DATA_SET.name(), false)) {
-            mediaEntries.remove(lastClickedPosition);
+        if (sp.getBoolean(Keys.DELETED_DATA_SET.name(), false))
             mediaEntryAdapter.notifyItemRemoved(lastClickedPosition);
-        }
 
         sp.edit()
                 .putBoolean(Keys.MODIFIED_DATA_SET.name(), false)
