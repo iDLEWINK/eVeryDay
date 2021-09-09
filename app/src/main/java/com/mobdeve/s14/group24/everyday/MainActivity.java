@@ -14,6 +14,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -31,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton fabCamera;
     private FloatingActionButton fabMontage;
+    private ProgressBar pbLoading;
+    private TextView tvLoading;
+
     private String currentPhotoPath;
 
     private ActivityResultLauncher activityResultLauncher = registerForActivityResult(
@@ -66,6 +71,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        pbLoading = findViewById(R.id.pb_loading_main);
+        tvLoading = findViewById(R.id.tv_loading_main);
+        pbLoading.setVisibility(View.VISIBLE);
+        tvLoading.setVisibility(View.VISIBLE);
 
         databaseHelper = DatabaseHelper.getInstance(this);
         dataHelper = new DataHelper(MainActivity.this);
@@ -109,11 +119,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView () {
-        mediaEntries = dataHelper.retrieveData();
-        this.rvGallery = findViewById(R.id.rv_activity_main_gallery);
-        this.rvGallery.setLayoutManager(new GridLayoutManager(this, 2));
-        this.mediaEntryAdapter = new MediaEntryAdapter(mediaEntries);
-        this.rvGallery.setAdapter(mediaEntryAdapter);
+        ThreadHelper.execute(new Runnable() {
+            @Override
+            public void run() {
+                mediaEntries = dataHelper.retrieveData();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MainActivity.this.rvGallery = findViewById(R.id.rv_activity_main_gallery);
+                        MainActivity.this.rvGallery.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+                        MainActivity.this.mediaEntryAdapter = new MediaEntryAdapter(mediaEntries);
+                        MainActivity.this.rvGallery.setAdapter(mediaEntryAdapter);
+                        pbLoading.setVisibility(View.GONE);
+                        tvLoading.setVisibility(View.GONE);
+                    }
+                });
+            }
+        });
     }
 
     private void initFabCamera () {

@@ -7,4 +7,5 @@
     <string name="app_title">e-Very Day</string>
     <string name="about_caption_label">About This Pic</string>
     <string name="mood_label">Mood</string>
+    <string name="loading_main">Getting your photos</string>
 </resources>

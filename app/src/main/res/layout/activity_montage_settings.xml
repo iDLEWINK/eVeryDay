@@ -7,8 +7,11 @@
 
     <EditText
         android:id="@+id/et_montage_length"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@android:drawable/editbox_background_normal"
         android:ems="10"
         android:fontFamily="@font/comfortaa"
         android:hint="@string/montage_settings_length"
@@ -16,89 +19,97 @@
         android:minHeight="48dp"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/tv_montage_length_label"
-        app:layout_constraintEnd_toStartOf="@+id/gl_montage_settings_center_vert"
-        app:layout_constraintHorizontal_bias="0.59"
-        app:layout_constraintStart_toStartOf="@+id/gl_montage_settings_center_vert" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tv_montage_length_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="141dp"
+        android:layout_marginEnd="141dp"
         android:fontFamily="@font/comfortaa"
         android:text="@string/montage_settings_length"
         app:layout_constraintBottom_toTopOf="@+id/gl_montage_settings_first_hor"
-        app:layout_constraintEnd_toStartOf="@+id/gl_montage_settings_center_vert"
-        app:layout_constraintStart_toStartOf="@+id/gl_montage_settings_center_vert" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
+    <TextView
         android:id="@+id/et_montage_start_date"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@android:drawable/editbox_background_normal"
         android:ems="10"
         android:fontFamily="@font/comfortaa"
+        android:gravity="center"
         android:hint="@string/montage_settings_start_date"
         android:inputType="date"
         android:minHeight="48dp"
         android:textAlignment="center"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/tv_montage_start_date_label"
-        app:layout_constraintEnd_toStartOf="@+id/gl_montage_settings_center_vert"
-        app:layout_constraintHorizontal_bias="0.59"
-        app:layout_constraintStart_toStartOf="@+id/gl_montage_settings_center_vert" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tv_montage_start_date_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="168dp"
+        android:layout_marginEnd="167dp"
         android:fontFamily="@font/comfortaa"
         android:text="@string/montage_settings_start_date"
         app:layout_constraintBottom_toTopOf="@+id/gl_montage_settings_second_hor"
-        app:layout_constraintEnd_toStartOf="@+id/gl_montage_settings_center_vert"
-        app:layout_constraintStart_toStartOf="@+id/gl_montage_settings_center_vert" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
+    <TextView
         android:id="@+id/et_montage_end_date"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@android:drawable/editbox_background_normal"
         android:ems="10"
         android:fontFamily="@font/comfortaa"
+        android:gravity="center"
         android:hint="@string/montage_settings_end_date"
         android:inputType="date"
         android:minHeight="48dp"
         android:textAlignment="center"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/tv_montage_end_date_label"
-        app:layout_constraintEnd_toStartOf="@+id/gl_montage_settings_center_vert"
-        app:layout_constraintHorizontal_bias="0.59"
-        app:layout_constraintStart_toStartOf="@+id/gl_montage_settings_center_vert" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tv_montage_end_date_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="172dp"
+        android:layout_marginEnd="171dp"
         android:fontFamily="@font/comfortaa"
         android:text="@string/montage_settings_end_date"
         app:layout_constraintBottom_toTopOf="@+id/gl_montage_settings_third_hor"
-        app:layout_constraintEnd_toStartOf="@+id/gl_montage_settings_center_vert"
-        app:layout_constraintStart_toStartOf="@+id/gl_montage_settings_center_vert" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_montage_create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="112dp"
+        android:layout_marginEnd="110dp"
         android:backgroundTint="@color/black_coffee"
         android:backgroundTintMode="src_over"
         android:fontFamily="@font/comfortaa"
         android:text="@string/montage_settings_create"
         android:textColor="@color/mint_cream"
         app:layout_constraintBottom_toTopOf="@+id/gl_montage_settings_fourth_hor"
-        app:layout_constraintEnd_toStartOf="@+id/gl_montage_settings_center_vert"
-        app:layout_constraintStart_toStartOf="@+id/gl_montage_settings_center_vert" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_montage_settings_center_vert"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent=".5" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_montage_settings_first_hor"
@@ -133,10 +144,11 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="75dp"
         android:layout_height="75dp"
+        android:layout_marginEnd="411dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/gl_montage_settings_third_hor"
-        app:layout_constraintEnd_toStartOf="@+id/gl_montage_settings_center_vert"
-        app:layout_constraintStart_toStartOf="@+id/gl_montage_settings_center_vert"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/gl_montage_settings_second_hor" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
