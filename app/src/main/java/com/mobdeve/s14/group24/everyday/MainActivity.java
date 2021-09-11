@@ -5,12 +5,16 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -92,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         int lastClickedPosition = sp.getInt(Keys.CUR_DATA_SET_POS.name(), 0);
 
-        if (sp.getBoolean(Keys.MODIFIED_DATA_SET.name(), false)) {
+        if (sp.getBoolean(Keys.MODIFIED_DATA_SET.name(), false) && mediaEntryAdapter != null) {
             ThreadHelper.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -105,10 +109,10 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        if (sp.getBoolean(Keys.INSERTED_DATA_SET.name(), false))
+        if (sp.getBoolean(Keys.INSERTED_DATA_SET.name(), false) && mediaEntryAdapter != null)
             mediaEntryAdapter.notifyItemInserted(0);
 
-        if (sp.getBoolean(Keys.DELETED_DATA_SET.name(), false))
+        if (sp.getBoolean(Keys.DELETED_DATA_SET.name(), false) && mediaEntryAdapter != null)
             mediaEntryAdapter.notifyItemRemoved(lastClickedPosition);
 
         sp.edit()
@@ -147,10 +151,28 @@ public class MainActivity extends AppCompatActivity {
 /*                if (databaseHelper.getRowByDate(new CustomDate()) != null)
                     Toast.makeText(getApplicationContext(), "You have already made an entry for today", Toast.LENGTH_LONG).show();
                 else {
-*/                    CameraHelper cameraHelper = new CameraHelper(getApplicationContext());
-                    activityResultLauncher.launch(cameraHelper.makeIntent());
-                    currentPhotoPath = cameraHelper.getCurrentPhotoPath();
-//                }
+*/
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("What do you want to capture?");
+                builder.setItems(
+                    new String[]{"Take a photo", "Take a moment"},
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            CameraHelper cameraHelper = new CameraHelper(getApplicationContext());
+                            if (which == 0) {
+                                activityResultLauncher.launch(cameraHelper.makePhotoIntent());
+                                currentPhotoPath = cameraHelper.getCurrentPath();
+                            }
+                            else if (which == 1) {
+                                activityResultLauncher.launch(cameraHelper.makeVideoIntent());
+                                currentPhotoPath = cameraHelper.getCurrentPath();
+                            }
+                        }
+                    }
+                );
+                builder.show();
             }
         });
     }

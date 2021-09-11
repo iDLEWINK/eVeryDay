@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,12 +22,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import java.io.File;
 
 public class EditMediaEntryActivity extends AppCompatActivity {
 
     private ImageView ivImage;
+    private VideoView vvImage;
     private TextView tvDate;
     private RadioButton rbMood1;
     private RadioButton rbMood2;
@@ -45,6 +48,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
     private int id;
     private String date;
     private String imagePath;
+    private String oldImagePath;
     private String caption;
     private int mood;
 
@@ -54,8 +58,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        new File(imagePath).delete();
-                        imagePath = cameraHelper.getCurrentPhotoPath();
+                        imagePath = cameraHelper.getCurrentPath();
                     }
                 }
             }
@@ -67,6 +70,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_media_entry);
 
         ivImage = findViewById(R.id.iv_edit_media_entry_image);
+        vvImage = findViewById(R.id.vv_edit_media_entry_image);
         tvDate = findViewById(R.id.tv_edit_media_entry_date);
         rbMood1 = findViewById(R.id.rb_edit_mood1);
         rbMood2 = findViewById(R.id.rb_edit_mood2);
@@ -82,29 +86,11 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         id = intent.getIntExtra(Keys.KEY_ID.name(), -1);
         date = intent.getStringExtra(Keys.KEY_DATE.name());
         imagePath = intent.getStringExtra(Keys.KEY_IMAGE_PATH.name());
+        oldImagePath = imagePath;
         caption = intent.getStringExtra(Keys.KEY_CAPTION.name());
         mood = intent.getIntExtra(Keys.KEY_MOOD.name(), 0);
 
-        ivImage.setImageURI(Uri.parse(imagePath));
-        tvDate.setText(date);
-        etCaption.setText(caption);
-        switch (mood) {
-            case 1:
-                rbMood1.setChecked(true);
-                break;
-            case 2:
-                rbMood2.setChecked(true);
-                break;
-            case 3:
-                rbMood3.setChecked(true);
-                break;
-            case 4:
-                rbMood4.setChecked(true);
-                break;
-            case 5:
-                rbMood5.setChecked(true);
-                break;
-        }
+        setValues();
 
         databaseHelper = DatabaseHelper.getInstance(this);
         cameraHelper = new CameraHelper(getApplicationContext());
@@ -113,7 +99,21 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         ibRetakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activityResultLauncher.launch(cameraHelper.makeIntent());
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditMediaEntryActivity.this);
+                builder.setTitle("What do you want to capture?");
+                builder.setItems(
+                        new String[]{"Take a photo", "Take a moment"},
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (which == 0)
+                                    activityResultLauncher.launch(cameraHelper.makePhotoIntent());
+                                else if (which == 1)
+                                    activityResultLauncher.launch(cameraHelper.makeVideoIntent());
+                            }
+                        }
+                );
+                builder.show();
             }
         });
         
@@ -156,6 +156,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         databaseHelper.updateData(id, imagePath, caption, mood);
+                        new File(oldImagePath).delete();
                     }
                 });
 
@@ -214,10 +215,52 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         alert.show();
     }
 
+    private void setValues() {
+        tvDate.setText(date);
+        etCaption.setText(caption);
+
+        String ext = imagePath.contains(".") ? imagePath.substring(imagePath.lastIndexOf(".")).toLowerCase() : "";
+
+        if (ext.equals(".jpeg") || ext.equals(".jpg")) {
+            ivImage.setVisibility(View.VISIBLE);
+            ivImage.setImageURI(Uri.parse(imagePath));
+            vvImage.setVisibility(View.GONE);
+        }
+        else {
+            vvImage.setVisibility(View.VISIBLE);
+            vvImage.setVideoURI(Uri.parse(imagePath));
+            vvImage.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.setLooping(true);
+                }
+            });
+            vvImage.start();
+            ivImage.setVisibility(View.GONE);
+        }
+
+        switch (mood) {
+            case 1:
+                rbMood1.setChecked(true);
+                break;
+            case 2:
+                rbMood2.setChecked(true);
+                break;
+            case 3:
+                rbMood3.setChecked(true);
+                break;
+            case 4:
+                rbMood4.setChecked(true);
+                break;
+            case 5:
+                rbMood5.setChecked(true);
+                break;
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        ivImage.setImageURI(Uri.parse(imagePath));
+        setValues();
     }
-
 }

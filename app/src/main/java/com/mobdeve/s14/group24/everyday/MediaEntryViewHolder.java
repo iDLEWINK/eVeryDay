@@ -35,11 +35,10 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
 
         String ext = imagePath.contains(".") ? imagePath.substring(imagePath.lastIndexOf(".")).toLowerCase() : "";
 
-        if (ext.equals(".jpeg") || ext.equals(".jpg")) {
+        if (ext.equals(".jpeg") || ext.equals(".jpg"))
             ivImage.setImageURI(Uri.parse(imagePath));
-        } else {
+        else
             ivImage.setImageBitmap(ThumbnailUtils.createVideoThumbnail(imagePath, MediaStore.Video.Thumbnails.MICRO_KIND));
-        }
     }
 
     public void setIvImage(Bitmap image) {

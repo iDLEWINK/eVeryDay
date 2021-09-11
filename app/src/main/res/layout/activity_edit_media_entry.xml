@@ -61,13 +61,20 @@
                 app:layout_constraintStart_toStartOf="@+id/gl_edit_main_start"
                 app:layout_constraintTop_toTopOf="@+id/gl_edit_main_top">
 
+                <VideoView
+                    android:id="@+id/vv_edit_media_entry_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone" />
+
                 <ImageView
                     android:id="@+id/iv_edit_media_entry_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-                    android:scaleType="fitCenter"
-                    tools:srcCompat="@drawable/sample2" />
+                    android:scaleType="fitCenter" />
 
                 <ImageButton
                     android:id="@+id/ib_retake_photo"

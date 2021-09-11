@@ -8,17 +8,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 public class ViewMediaEntryActivity extends AppCompatActivity {
 
     private TextView tvDate;
     private ImageView ivImage;
+    private VideoView vvImage;
     private TextView tvCaption;
     private TextView tvMood;
     private ImageView ivMood;
@@ -44,7 +48,7 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
                         caption = intent.getStringExtra(Keys.KEY_CAPTION.name());
                         mood = intent.getIntExtra(Keys.KEY_MOOD.name(), 0);
 
-                        initViewMediaEntryActivity();
+                        setValues();
                     }
                 }
             }
@@ -57,6 +61,7 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
 
         tvDate = findViewById(R.id.tv_view_media_entry_date);
         ivImage = findViewById(R.id.iv_view_media_entry_image);
+        vvImage = findViewById(R.id.vv_view_media_entry_image);
         tvCaption = findViewById(R.id.tv_view_media_entry_caption);
         tvMood = findViewById(R.id.tv_view_media_entry_mood);
         ivMood = findViewById(R.id.iv_view_media_entry_mood);
@@ -68,19 +73,36 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
         imagePath = intent.getStringExtra(Keys.KEY_IMAGE_PATH.name());
         caption = intent.getStringExtra(Keys.KEY_CAPTION.name());
         mood = intent.getIntExtra(Keys.KEY_MOOD.name(), 0);
-
-        initViewMediaEntryActivity();
     }
 
-    public void initViewMediaEntryActivity() {
+    public void setValues() {
         if (id == -1) {
             finish();
             return;
         }
 
         tvDate.setText(date);
-        ivImage.setImageURI(Uri.parse(imagePath));
         tvCaption.setText(caption);
+
+        String ext = imagePath.contains(".") ? imagePath.substring(imagePath.lastIndexOf(".")).toLowerCase() : "";
+
+        if (ext.equals(".jpeg") || ext.equals(".jpg")) {
+            ivImage.setVisibility(View.VISIBLE);
+            ivImage.setImageURI(Uri.parse(imagePath));
+            vvImage.setVisibility(View.GONE);
+        }
+        else {
+            vvImage.setVisibility(View.VISIBLE);
+            vvImage.setVideoURI(Uri.parse(imagePath));
+            vvImage.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.setLooping(true);
+                }
+            });
+            vvImage.start();
+            ivImage.setVisibility(View.GONE);
+        }
 
         if (mood < 1 || mood > 5)
             ivMood.setVisibility(View.GONE);
@@ -125,4 +147,11 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setValues();
+    }
+
 }

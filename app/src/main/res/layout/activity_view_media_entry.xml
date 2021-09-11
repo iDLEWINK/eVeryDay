@@ -71,8 +71,18 @@
                     android:scaleType="fitCenter"
                     app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
                     app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
-                    app:layout_constraintTop_toTopOf="@+id/gl_view_main_top"
-                    tools:srcCompat="@drawable/sample2" />
+                    app:layout_constraintTop_toTopOf="@+id/gl_view_main_top" />
+
+                <VideoView
+                    android:id="@+id/vv_view_media_entry_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@+id/gl_view_main_end"
+                    app:layout_constraintStart_toStartOf="@+id/gl_view_main_start"
+                    app:layout_constraintTop_toTopOf="@+id/gl_view_main_top" />
 
                 <ImageButton
                     android:id="@+id/ib_edit_media_entry"
