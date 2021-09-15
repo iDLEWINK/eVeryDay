@@ -94,37 +94,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        int lastClickedPosition = sp.getInt(Keys.CUR_DATA_SET_POS.name(), 0);
-
-        if (sp.getBoolean(Keys.MODIFIED_DATA_SET.name(), false) && mediaEntryAdapter != null) {
-            ThreadHelper.execute(new Runnable() {
-                @Override
-                public void run() {
-                    mediaEntries.set(
-                            lastClickedPosition,
-                            databaseHelper.getRowById(mediaEntries.get(lastClickedPosition).getId())
-                    );
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mediaEntryAdapter.notifyItemChanged(lastClickedPosition);
-                        }
-                    });
-                }
-            });
-        }
-
-        if (sp.getBoolean(Keys.INSERTED_DATA_SET.name(), false) && mediaEntryAdapter != null)
-            mediaEntryAdapter.notifyItemInserted(0);
-
-        if (sp.getBoolean(Keys.DELETED_DATA_SET.name(), false) && mediaEntryAdapter != null)
-            mediaEntryAdapter.notifyItemRemoved(lastClickedPosition);
-
-        sp.edit()
-                .putBoolean(Keys.MODIFIED_DATA_SET.name(), false)
-                .putBoolean(Keys.INSERTED_DATA_SET.name(), false)
-                .putBoolean(Keys.DELETED_DATA_SET.name(), false)
-                .commit();
+        updateRecyclerView();
     }
 
     private void initRecyclerView () {
@@ -159,9 +129,9 @@ public class MainActivity extends AppCompatActivity {
 */
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("What do you want to capture?");
+                builder.setTitle("Select an Option");
                 builder.setItems(
-                    new String[]{"Take a photo", "Take a moment"},
+                    new String[]{"Capture a photo", "Capture a Video"},
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -192,5 +162,39 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void updateRecyclerView () {
+        int lastClickedPosition = sp.getInt(Keys.CUR_DATA_SET_POS.name(), 0);
+
+        if (sp.getBoolean(Keys.MODIFIED_DATA_SET.name(), false) && mediaEntryAdapter != null) {
+            ThreadHelper.execute(new Runnable() {
+                @Override
+                public void run() {
+                    mediaEntries.set(
+                            lastClickedPosition,
+                            databaseHelper.getRowById(mediaEntries.get(lastClickedPosition).getId())
+                    );
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mediaEntryAdapter.notifyItemChanged(lastClickedPosition);
+                        }
+                    });
+                }
+            });
+        }
+
+        if (sp.getBoolean(Keys.INSERTED_DATA_SET.name(), false) && mediaEntryAdapter != null)
+            mediaEntryAdapter.notifyItemInserted(0);
+
+        if (sp.getBoolean(Keys.DELETED_DATA_SET.name(), false) && mediaEntryAdapter != null)
+            mediaEntryAdapter.notifyItemRemoved(lastClickedPosition);
+
+        sp.edit()
+                .putBoolean(Keys.MODIFIED_DATA_SET.name(), false)
+                .putBoolean(Keys.INSERTED_DATA_SET.name(), false)
+                .putBoolean(Keys.DELETED_DATA_SET.name(), false)
+                .commit();
     }
 }
