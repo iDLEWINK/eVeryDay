@@ -156,7 +156,8 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         databaseHelper.updateData(id, imagePath, caption, mood);
-                        new File(oldImagePath).delete();
+                        if (imagePath != oldImagePath)
+                            new File(oldImagePath).delete();
                     }
                 });
 

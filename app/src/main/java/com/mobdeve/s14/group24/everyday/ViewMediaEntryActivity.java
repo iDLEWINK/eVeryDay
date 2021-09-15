@@ -5,9 +5,12 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -112,22 +115,32 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
         switch (mood) {
             case 1:
                 ivMood.setImageResource(R.drawable.mood_face_res1);
+                ivMood.setColorFilter(ContextCompat.getColor(this, R.color.mood_1_darker),
+                        PorterDuff.Mode.SRC_ATOP);
                 tvMood.setText("Bad Mood");
                 break;
             case 2:
                 ivMood.setImageResource(R.drawable.mood_face_res2);
+                ivMood.setColorFilter(ContextCompat.getColor(this, R.color.mood_2_darker),
+                        PorterDuff.Mode.SRC_ATOP);
                 tvMood.setText("Poor Mood");
                 break;
             case 3:
                 ivMood.setImageResource(R.drawable.mood_face_res3);
+                ivMood.setColorFilter(ContextCompat.getColor(this, R.color.mood_3_darker),
+                        PorterDuff.Mode.SRC_ATOP);
                 tvMood.setText("Okay Mood");
                 break;
             case 4:
                 ivMood.setImageResource(R.drawable.mood_face_res4);
+                ivMood.setColorFilter(ContextCompat.getColor(this, R.color.mood_4_darker),
+                        PorterDuff.Mode.SRC_ATOP);
                 tvMood.setText("Good Mood");
                 break;
             case 5:
                 ivMood.setImageResource(R.drawable.mood_face_res5);
+                ivMood.setColorFilter(ContextCompat.getColor(this, R.color.mood_5_darker),
+                        PorterDuff.Mode.SRC_ATOP);
                 tvMood.setText("Great Mood");
                 break;
             default:

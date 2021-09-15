@@ -3,6 +3,13 @@
     <item android:state_checked="false">
         <bitmap
             android:gravity="center|fill"
-            android:src="@drawable/mood_face_res1"/>
+            android:src="@drawable/mood_face_res1"
+            android:tint="@color/black_coffee"/>
+    </item>
+    <item android:state_checked="true">
+        <bitmap
+            android:gravity="center|fill"
+            android:src="@drawable/mood_face_res1"
+            android:tint="@color/mood_1_darker"/>
     </item>
 </selector>

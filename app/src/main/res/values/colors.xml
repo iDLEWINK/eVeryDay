@@ -19,4 +19,9 @@
     <color name="mood_3">#FFFFE8D4</color>
     <color name="mood_4">#FFDCEDC1</color>
     <color name="mood_5">#FFA8E6CF</color>
+    <color name="mood_1_darker">#FF6689</color>
+    <color name="mood_2_darker">#F3AA6B</color>
+    <color name="mood_3_darker">#D5CE58</color>
+    <color name="mood_4_darker">#9DDC35</color>
+    <color name="mood_5_darker">#60E2B2</color>
 </resources>

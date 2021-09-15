@@ -120,44 +120,50 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_edit_media_entry_date">
 
                 <RadioButton
-                    style="@style/Mood1Style"
                     android:id="@+id/rb_edit_mood1"
+                    style="@style/Mood1Style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="3dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:checked="false"
+                    app:useMaterialThemeColors="false" />
 
                 <RadioButton
-                    style="@style/Mood2Style"
                     android:id="@+id/rb_edit_mood2"
+                    style="@style/Mood2Style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="3dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    app:useMaterialThemeColors="false" />
 
                 <RadioButton
-                    style="@style/Mood3Style"
                     android:id="@+id/rb_edit_mood3"
+                    style="@style/Mood3Style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="3dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    app:useMaterialThemeColors="false" />
 
                 <RadioButton
-                    style="@style/Mood4Style"
                     android:id="@+id/rb_edit_mood4"
+                    style="@style/Mood4Style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="3dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    app:useMaterialThemeColors="false" />
 
                 <RadioButton
-                    style="@style/Mood5Style"
                     android:id="@+id/rb_edit_mood5"
+                    style="@style/Mood5Style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="3dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    app:useMaterialThemeColors="false" />
             </RadioGroup>
 
             <TextView
