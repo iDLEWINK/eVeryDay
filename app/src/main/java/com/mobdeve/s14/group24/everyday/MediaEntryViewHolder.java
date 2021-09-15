@@ -32,7 +32,6 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setIvImage(String imagePath) {
-
         String ext = imagePath.contains(".") ? imagePath.substring(imagePath.lastIndexOf(".")).toLowerCase() : "";
 
         if (ext.equals(".jpeg") || ext.equals(".jpg"))

@@ -104,7 +104,12 @@ public class MainActivity extends AppCompatActivity {
                             lastClickedPosition,
                             databaseHelper.getRowById(mediaEntries.get(lastClickedPosition).getId())
                     );
-                    mediaEntryAdapter.notifyItemChanged(lastClickedPosition);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mediaEntryAdapter.notifyItemChanged(lastClickedPosition);
+                        }
+                    });
                 }
             });
         }
