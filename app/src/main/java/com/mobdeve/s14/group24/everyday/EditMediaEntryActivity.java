@@ -134,8 +134,8 @@ public class EditMediaEntryActivity extends AppCompatActivity {
 
     private void editEntry() {
         AlertDialog.Builder alert = new AlertDialog.Builder(EditMediaEntryActivity.this);
-        alert.setTitle("Edit Confirmation");
-        alert.setMessage("Are you sure you want to edit with these changes?");
+        alert.setTitle("Save Changes");
+        alert.setMessage("Do you want to save your changes for this Entry?");
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -185,8 +185,8 @@ public class EditMediaEntryActivity extends AppCompatActivity {
 
     private void deleteEntry() {
         AlertDialog.Builder alert = new AlertDialog.Builder(EditMediaEntryActivity.this);
-        alert.setTitle("Delete");
-        alert.setMessage("Are you sure you want to delete?");
+        alert.setTitle("Delete Entry");
+        alert.setMessage("Do you really want to delete this Entry? This cannot be undone.");
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
