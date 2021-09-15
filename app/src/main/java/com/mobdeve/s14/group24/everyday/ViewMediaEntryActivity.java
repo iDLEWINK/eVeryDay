@@ -144,7 +144,7 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
                 tvMood.setText("Great Mood");
                 break;
             default:
-                tvMood.setText("Not yet set");
+                tvMood.setText("No Mood Set");
         }
 
         ibEdit.setOnClickListener(new View.OnClickListener() {
