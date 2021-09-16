@@ -3,7 +3,13 @@ package com.mobdeve.s14.group24.everyday;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,7 +17,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MontageSettingsActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
@@ -63,16 +71,60 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             public void onClick(View v) {
                 Boolean isSuccessful = false;
                 pbLoading.setVisibility(View.VISIBLE);
+
                 // Call montage maker, set isSuccessful
-                isSuccessful = createMontage();
+//                isSuccessful =
+                createMontage();
+
                 pbLoading.setVisibility(View.GONE);
                 finish();
-                if (isSuccessful)
-                    Toast.makeText(MontageSettingsActivity.this, "Successfully Created Montage", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(MontageSettingsActivity.this, "Montage Creation Failed", Toast.LENGTH_SHORT).show();
+//                if (isSuccessful)
+//                    Toast.makeText(MontageSettingsActivity.this, "Successfully Created Montage", Toast.LENGTH_SHORT).show();
+//                else
+//                    Toast.makeText(MontageSettingsActivity.this, "Montage Creation Failed", Toast.LENGTH_SHORT).show();
+                Log.d("HELP", "YES CLICK");
             }
         });
+    }
+
+    public void createMontage() {
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
+
+        BitmapToVideoEncoder bitmapToVideoEncoder = new BitmapToVideoEncoder(new BitmapToVideoEncoder.BitmapToVideoEncoderCallback() {
+            @Override
+            public void onEncodingComplete(File outputFile) {
+                Toast.makeText(getApplicationContext(),  "Encoding complete!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        bitmapToVideoEncoder.startEncoding(100, 200, new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera"));
+
+        ArrayList<MediaEntry> mediaEntries = new ArrayList<MediaEntry>();
+        Cursor cursor = databaseHelper.readAllData();
+
+        while (cursor.moveToNext()) {
+            mediaEntries.add(0,
+                    new MediaEntry(cursor.getInt(0),
+                            new CustomDate(cursor.getString(1)),
+                            cursor.getString(2),
+                            cursor.getString(3),
+                            cursor.getInt(4)));
+        }
+
+        for (int i = 0; i < mediaEntries.size(); i++) {
+
+            try {
+                Log.d("PLZ", mediaEntries.get(i).getImagePath());
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(mediaEntries.get(i).getImagePath()));
+                bitmapToVideoEncoder.queueFrame(bitmap);
+                Log.d("CONVERTING", "" + i);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d("HUHU`", "NAG-ERROR");
+            }
+        }
+
+//        return false;
     }
 
     @Override
@@ -87,11 +139,4 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
         else
             tvEndDate.setText(selectedDate);
     }
-
-    public boolean createMontage() {
-        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
-
-        return false;
-    }
-
 }
