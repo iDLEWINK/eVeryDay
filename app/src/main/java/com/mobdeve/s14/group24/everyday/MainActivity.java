@@ -28,6 +28,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Random;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -63,7 +65,11 @@ public class MainActivity extends AppCompatActivity {
 
                                 Intent intent = new Intent(MainActivity.this, ViewMediaEntryActivity.class);
                                 sp.edit().putBoolean(Keys.INSERTED_DATA_SET.name(), true).commit();
-                                mediaEntries.add(0, mediaEntry);
+
+                                if(sp.getBoolean(Keys.KEY_DESCENDING.name(), true))
+                                    mediaEntries.add(0, mediaEntry);
+                                else
+                                    mediaEntries.add(mediaEntry);
 
                                 intent.putExtra(Keys.KEY_ID.name(), mediaEntry.getId());
                                 intent.putExtra(Keys.KEY_DATE.name(), mediaEntry.getDate().toStringFull());
@@ -117,8 +123,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 boolean sortOrder = sp.getBoolean(Keys.KEY_DESCENDING.name(), true);
+                mediaEntries = dataHelper.retrieveData();
 
-                mediaEntries = dataHelper.retrieveData(!sortOrder);
+                //Ascending
+                if(!sortOrder)
+                    Collections.reverse(mediaEntries);
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -143,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         boolean sortOrder = sp.getBoolean(Keys.KEY_DESCENDING.name(), true);
-
                         if(sortOrder) {
                             ibSort.setImageResource(R.drawable.sort_ascending);
                             spEditor.putBoolean(Keys.KEY_DESCENDING.name(), false);
@@ -155,8 +164,9 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                mediaEntries = dataHelper.retrieveData(sortOrder);
-                                mediaEntryAdapter.setData(mediaEntries);
+                                ArrayList reversedMedia = new ArrayList(mediaEntries);
+                                Collections.reverse(reversedMedia);
+                                mediaEntryAdapter.setData(reversedMedia);
                             }
                         });
 
@@ -229,10 +239,8 @@ public class MainActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
 
-        //TODO: Add random
-        calendar.set(Calendar.HOUR_OF_DAY, 1);
-        calendar.set(Calendar.MINUTE, 41);
-        calendar.set(Calendar.SECOND, 0);
+        Random random = new Random();
+        calendar.set(Calendar.HOUR_OF_DAY, random.nextInt(24));
 
         Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
 
@@ -241,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         if (alarmManager != null) {
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
         }
     }
 
@@ -267,8 +275,10 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        if (sp.getBoolean(Keys.INSERTED_DATA_SET.name(), false) && mediaEntryAdapter != null)
-            mediaEntryAdapter.notifyItemInserted(0);
+        if (sp.getBoolean(Keys.INSERTED_DATA_SET.name(), false) && mediaEntryAdapter != null){
+            int index = sp.getBoolean(Keys.KEY_DESCENDING.name(), true) ? 0 : mediaEntries.size();
+            mediaEntryAdapter.notifyItemInserted(index);
+        }
 
         if (sp.getBoolean(Keys.DELETED_DATA_SET.name(), false) && mediaEntryAdapter != null) {
             mediaEntries.remove(lastClickedPosition);

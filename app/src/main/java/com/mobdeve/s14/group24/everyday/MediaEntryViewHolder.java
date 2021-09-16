@@ -1,8 +1,8 @@
 package com.mobdeve.s14.group24.everyday;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
-import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
+import java.io.FileInputStream;
 
 public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
 
@@ -34,10 +37,22 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
     public void setIvImage(String imagePath) {
         String ext = imagePath.contains(".") ? imagePath.substring(imagePath.lastIndexOf(".")).toLowerCase() : "";
 
-        if (ext.equals(".jpeg") || ext.equals(".jpg"))
-            ivImage.setImageURI(Uri.parse(imagePath));
-        else
-            ivImage.setImageBitmap(ThumbnailUtils.createVideoThumbnail(imagePath, MediaStore.Video.Thumbnails.MICRO_KIND));
+        Bitmap bitmap = null;
+
+        if (ext.equals(".jpeg") || ext.equals(".jpg")) {
+            try {
+                File file = new File(imagePath);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                bitmap = BitmapFactory.decodeStream(new FileInputStream(file), null, options);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            bitmap = ThumbnailUtils.createVideoThumbnail(imagePath, MediaStore.Video.Thumbnails.FULL_SCREEN_KIND);
+        }
+
+        ivImage.setImageBitmap(bitmap);
     }
 
     public void setIvImage(Bitmap image) {
