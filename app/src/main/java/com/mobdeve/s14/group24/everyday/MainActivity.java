@@ -164,9 +164,9 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ArrayList<MediaEntry> reverseMediaEntries = dataHelper.retrieveData();
-                                Collections.reverse(reverseMediaEntries);
-                                mediaEntryAdapter.setData(reverseMediaEntries);
+                                ArrayList reversedMedia = new ArrayList(mediaEntries);
+                                Collections.reverse(reversedMedia);
+                                mediaEntryAdapter.setData(reversedMedia);
                             }
                         });
 
@@ -256,7 +256,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateRecyclerView () {
         int lastClickedPosition = sp.getInt(Keys.CUR_DATA_SET_POS.name(), 0);
-        int index = sp.getBoolean(Keys.KEY_DESCENDING.name(), true) ? 0 : mediaEntries.size();
 
         if (sp.getBoolean(Keys.MODIFIED_DATA_SET.name(), false) && mediaEntryAdapter != null) {
             ThreadHelper.execute(new Runnable() {
@@ -276,8 +275,10 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        if (sp.getBoolean(Keys.INSERTED_DATA_SET.name(), false) && mediaEntryAdapter != null)
+        if (sp.getBoolean(Keys.INSERTED_DATA_SET.name(), false) && mediaEntryAdapter != null){
+            int index = sp.getBoolean(Keys.KEY_DESCENDING.name(), true) ? 0 : mediaEntries.size();
             mediaEntryAdapter.notifyItemInserted(index);
+        }
 
         if (sp.getBoolean(Keys.DELETED_DATA_SET.name(), false) && mediaEntryAdapter != null) {
             mediaEntries.remove(lastClickedPosition);
