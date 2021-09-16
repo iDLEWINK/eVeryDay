@@ -28,11 +28,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView rvGallery;
-    private RecyclerView.Adapter mediaEntryAdapter;
+    private MediaEntryAdapter mediaEntryAdapter;
 
     private DatabaseHelper databaseHelper;
     private DataHelper dataHelper;
@@ -114,7 +116,9 @@ public class MainActivity extends AppCompatActivity {
         ThreadHelper.execute(new Runnable() {
             @Override
             public void run() {
-                mediaEntries = dataHelper.retrieveData();
+                boolean sortOrder = sp.getBoolean(Keys.KEY_DESCENDING.name(), true);
+
+                mediaEntries = dataHelper.retrieveData(sortOrder);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -134,16 +138,31 @@ public class MainActivity extends AppCompatActivity {
         ibSort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean sortDescending = sp.getBoolean(Keys.KEY_DESCENDING.name(), true);
+                Executor singleExecutor = Executors.newSingleThreadExecutor();
+                singleExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        boolean sortOrder = sp.getBoolean(Keys.KEY_DESCENDING.name(), true);
 
-                if(sortDescending) {
-                    ibSort.setImageResource(R.drawable.sort_ascending);
-                    spEditor.putBoolean(Keys.KEY_DESCENDING.name(), false);
-                } else {
-                    ibSort.setImageResource(R.drawable.sort_descending);
-                    spEditor.putBoolean(Keys.KEY_DESCENDING.name(), true);
-                }
-                spEditor.apply();
+                        if(sortOrder) {
+                            ibSort.setImageResource(R.drawable.sort_ascending);
+                            spEditor.putBoolean(Keys.KEY_DESCENDING.name(), false);
+                        } else {
+                            ibSort.setImageResource(R.drawable.sort_descending);
+                            spEditor.putBoolean(Keys.KEY_DESCENDING.name(), true);
+                        }
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mediaEntries = dataHelper.retrieveData(sortOrder);
+                                mediaEntryAdapter.setData(mediaEntries);
+                            }
+                        });
+
+                        spEditor.apply();
+                    }
+                });
             }
         });
     }
