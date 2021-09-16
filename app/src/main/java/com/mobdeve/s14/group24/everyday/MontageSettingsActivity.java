@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileInputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -87,6 +88,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
 //                    Toast.makeText(MontageSettingsActivity.this, "Successfully Created Montage", Toast.LENGTH_SHORT).show();
 //                else
 //                    Toast.makeText(MontageSettingsActivity.this, "Montage Creation Failed", Toast.LENGTH_SHORT).show();
+
                 Log.d("HELP", "YES CLICK");
             }
         });
@@ -98,30 +100,15 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
         BitmapToVideoEncoder bitmapToVideoEncoder = new BitmapToVideoEncoder(new BitmapToVideoEncoder.BitmapToVideoEncoderCallback() {
             @Override
             public void onEncodingComplete(File outputFile) {
-                Toast.makeText(getApplicationContext(),  "Encoding complete!", Toast.LENGTH_LONG).show();
+                Toast.makeText(MontageSettingsActivity.this,  "Encoding Complete!", Toast.LENGTH_LONG).show();
             }
         });
-
-        try {
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-            String imageFileName = "Montage_" + timeStamp + "_";
-            File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            File image = File.createTempFile(
-                    imageFileName,
-                    ".mp4",
-                    storageDir
-            );
-            bitmapToVideoEncoder.startEncoding(100, 200, image);
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
 
         ArrayList<MediaEntry> mediaEntries = new ArrayList<MediaEntry>();
         Cursor cursor = databaseHelper.readAllData();
 
-        while (cursor.moveToNext()) {
-            mediaEntries.add(0,
+        while (cursor.moveToNext()) { mediaEntries.add(
+                    0,
                     new MediaEntry(cursor.getInt(0),
                             new CustomDate(cursor.getString(1)),
                             cursor.getString(2),
@@ -129,20 +116,24 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
                             cursor.getInt(4)));
         }
 
-        for (int i = 0; i < mediaEntries.size(); i++) {
+        bitmapToVideoEncoder.startEncoding(50, 50, new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera"));
 
+
+        for (int i = 0; i < mediaEntries.size(); i++) {
             try {
-                Log.d("PLZ", mediaEntries.get(i).getImagePath());
-                Bitmap bitmap = decodeUri(this, Uri.fromFile(new File(mediaEntries.get(i).getImagePath())));
+                File file = new File(mediaEntries.get(i).getImagePath());
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file), null, options);
+                Log.d("PLZ", "TRY");
+
                 bitmapToVideoEncoder.queueFrame(bitmap);
-                Log.d("CONVERTING", "" + i);
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d("HUHU`", "NAG-ERROR");
+                Log.d("PLZ", "CATCH");
             }
         }
-
-//        return false;
+        bitmapToVideoEncoder.stopEncoding();
     }
 
     @Override
@@ -156,45 +147,5 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             tvStartDate.setText(selectedDate);
         else
             tvEndDate.setText(selectedDate);
-    }
-
-    public static Bitmap decodeUri(Context context, Uri uri) {
-        ParcelFileDescriptor parcelFD = null;
-        try {/*  w  w w.  j  a  v a2 s  .c o m*/
-            parcelFD = context.getContentResolver().openFileDescriptor(uri,
-                    "r");
-            FileDescriptor imageSource = parcelFD.getFileDescriptor();
-
-            //Decode image size
-            BitmapFactory.Options o = new BitmapFactory.Options();
-            o.inJustDecodeBounds = true;
-            BitmapFactory.decodeFileDescriptor(imageSource, null, o);
-
-            //the new size we want to scale to
-            final int REQUIRED_SIZE = 320;
-
-            //Find the correct scale value. It should be the power of 2. 2???
-            int width_tmp = o.outWidth;
-            int height_tmp = o.outHeight;
-            int scale = 1;
-            while (true) {
-                if (width_tmp < REQUIRED_SIZE && height_tmp < REQUIRED_SIZE) {
-                    break;
-                }
-                width_tmp /= 2;
-                height_tmp /= 2;
-                scale *= 2;
-            }
-
-            //decode with inSampleSize
-            BitmapFactory.Options o2 = new BitmapFactory.Options();
-            o2.inSampleSize = scale;
-            Bitmap bitmap = BitmapFactory.decodeFileDescriptor(imageSource,
-                    null, o2);
-            return bitmap;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }
