@@ -65,19 +65,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.insert(TABLE_NAME,null, cv);
     }
 
-    public Cursor readAllData(boolean sortDescending){
-        String SORT = sortDescending ? "DESC": "ASC";
-
-        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + COLUMN_DATE + " " + SORT;
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = null;
-        if(db != null)
-            cursor = db.rawQuery(query, null);
-
-        return cursor;
-    }
-
     public Cursor readAllData(){
         String query = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();

@@ -88,9 +88,9 @@ public class DataHelper {
         context.deleteDatabase(DatabaseHelper.DATABASE_NAME);
     }
 */
-    public ArrayList<MediaEntry> retrieveData (boolean sortOrder) {
+    public ArrayList<MediaEntry> retrieveData () {
         ArrayList<MediaEntry> mediaEntries = new ArrayList<MediaEntry>();
-        Cursor cursor = databaseHelper.readAllData(sortOrder);
+        Cursor cursor = databaseHelper.readAllData();
 
         while (cursor.moveToNext()) {
             mediaEntries.add(0,

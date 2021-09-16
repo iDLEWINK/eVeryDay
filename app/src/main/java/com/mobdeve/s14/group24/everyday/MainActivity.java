@@ -28,6 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Random;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -122,8 +123,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 boolean sortOrder = sp.getBoolean(Keys.KEY_DESCENDING.name(), true);
+                mediaEntries = dataHelper.retrieveData();
 
-                mediaEntries = dataHelper.retrieveData(!sortOrder);
+                //Ascending
+                if(!sortOrder)
+                    Collections.reverse(mediaEntries);
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -148,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         boolean sortOrder = sp.getBoolean(Keys.KEY_DESCENDING.name(), true);
-
                         if(sortOrder) {
                             ibSort.setImageResource(R.drawable.sort_ascending);
                             spEditor.putBoolean(Keys.KEY_DESCENDING.name(), false);
@@ -160,8 +164,9 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                mediaEntries = dataHelper.retrieveData(sortOrder);
-                                mediaEntryAdapter.setData(mediaEntries);
+                                ArrayList<MediaEntry> reverseMediaEntries = dataHelper.retrieveData();
+                                Collections.reverse(reverseMediaEntries);
+                                mediaEntryAdapter.setData(reverseMediaEntries);
                             }
                         });
 
