@@ -110,24 +110,25 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (startDate == null) {
-                    Toast.makeText(MontageSettingsActivity.this, "Please pick a start date", Toast.LENGTH_SHORT).show();
+
+                if (etLength.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(MontageSettingsActivity.this, "Duration must not be empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if (Integer.parseInt(etLength.getText().toString().trim()) <= 0) {
+                    Toast.makeText(MontageSettingsActivity.this, "Duration must be greater than 0", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if (startDate == null) {
+                    Toast.makeText(MontageSettingsActivity.this, "Please pick a Start Date", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else if (endDate == null) {
-                    Toast.makeText(MontageSettingsActivity.this, "Please pick an end date", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MontageSettingsActivity.this, "Please pick an End Date", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else if (startDate.toStringDB().compareTo(endDate.toStringDB()) >= 0) {
-                    Toast.makeText(MontageSettingsActivity.this, "Start date must be greater than end date", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else if (etLength.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(MontageSettingsActivity.this, "Length must not be empty", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else if (Float.parseFloat(etLength.getText().toString().trim()) <= 0) {
-                    Toast.makeText(MontageSettingsActivity.this, "Length must be greater than 0", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MontageSettingsActivity.this, "Start Date must be greater than End Date", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -163,7 +164,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
         ArrayList<MediaEntry> entriesToUse = databaseHelper.getRowByDateRange(startDate, endDate);
         ArrayList<Bitmap> bitmaps = new ArrayList<>();
 
-        pbProgress.setMax(entriesToUse.size() * 2 + 2);
+        pbProgress.setMax(entriesToUse.size() * 2 + 1);
 
         for (int i = 0; i < entriesToUse.size(); i++) {
             message = Message.obtain();
@@ -201,26 +202,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
 
             AnimatedGIFEncoder encoder = new AnimatedGIFEncoder();
             encoder.setDelay(Float.valueOf(Float.parseFloat(etLength.getText().toString().toString()) * 1000).intValue());
-            encoder.setQuality(9);
             encoder.start(byteArrayOutputStream);
-
-            message = Message.obtain();
-            bundle = new Bundle();
-            bundle.putString(PROGRESS_MESSAGE, "Adjusting frame size...");
-            bundle.putInt(PROGRESS_VALUE, ++progress);
-            message.setData(bundle);
-            handler.sendMessage(message);
-
-            int maxWidth = -1;
-            int maxHeight = -1;
-            for (Bitmap i : bitmaps) {
-                if (i.getWidth() > maxWidth)
-                    maxWidth = i.getWidth();
-                if (i.getHeight() > maxHeight)
-                    maxHeight = i.getHeight();
-            }
-
-            encoder.setSize(maxWidth, maxHeight);
 
             for (int i = 0; i < bitmaps.size(); i++) {
                 message = Message.obtain();
