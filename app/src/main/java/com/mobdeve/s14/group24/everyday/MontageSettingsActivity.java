@@ -20,9 +20,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -79,58 +83,34 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
                 pbLoading.setVisibility(View.VISIBLE);
 
                 // Call montage maker, set isSuccessful
-//                isSuccessful =
-                createMontage();
+                isSuccessful = createMontage();
 
                 pbLoading.setVisibility(View.GONE);
-                finish();
-//                if (isSuccessful)
-//                    Toast.makeText(MontageSettingsActivity.this, "Successfully Created Montage", Toast.LENGTH_SHORT).show();
-//                else
-//                    Toast.makeText(MontageSettingsActivity.this, "Montage Creation Failed", Toast.LENGTH_SHORT).show();
 
-                Log.d("HELP", "YES CLICK");
+                if (isSuccessful)
+                    Toast.makeText(MontageSettingsActivity.this, "Successfully Created Montage", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(MontageSettingsActivity.this, "Montage Creation Failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public void createMontage() {
+    public boolean createMontage() {
         DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
-
-        BitmapToVideoEncoder bitmapToVideoEncoder = new BitmapToVideoEncoder(new BitmapToVideoEncoder.BitmapToVideoEncoderCallback() {
-            @Override
-            public void onEncodingComplete(File outputFile) {
-                Toast.makeText(MontageSettingsActivity.this,  "Encoding Complete!", Toast.LENGTH_LONG).show();
-            }
-        });
 
         ArrayList<MediaEntry> mediaEntries = new ArrayList<MediaEntry>();
         Cursor cursor = databaseHelper.readAllData();
 
         while (cursor.moveToNext()) { mediaEntries.add(
-                    0,
-                    new MediaEntry(cursor.getInt(0),
-                            new CustomDate(cursor.getString(1)),
-                            cursor.getString(2),
-                            cursor.getString(3),
-                            cursor.getInt(4)));
+                0,
+                new MediaEntry(cursor.getInt(0),
+                        new CustomDate(cursor.getString(1)),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getInt(4)));
         }
 
-        try {
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-            String imageFileName = "Montage_" + timeStamp + "_";
-            File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            File image = File.createTempFile(
-                    imageFileName,
-                    ".mp4",
-                    storageDir
-            );
-            bitmapToVideoEncoder.startEncoding(100, 200, image);
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-
+        ArrayList<Bitmap> bitmaps = new ArrayList<>();
 
         for (int i = 0; i < mediaEntries.size(); i++) {
             try {
@@ -138,15 +118,38 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                 Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file), null, options);
-                Log.d("PLZ", "TRY");
-
-                bitmapToVideoEncoder.queueFrame(bitmap);
+                bitmaps.add(bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d("PLZ", "CATCH");
             }
         }
-        bitmapToVideoEncoder.stopEncoding();
+
+        try {
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+            String gifFilename = "eVeryDay_Montage_" + timeStamp + ".gif";
+
+            FileOutputStream outStream = new FileOutputStream(Paths.get(path, gifFilename).toString());
+            Log.d("PLZ", Paths.get(path, gifFilename).toString());
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+            AnimatedGIFEncoder encoder = new AnimatedGIFEncoder();
+            encoder.start(byteArrayOutputStream);
+
+            for (Bitmap bitmap : bitmaps) {
+                encoder.addFrame(bitmap);
+            }
+            encoder.finish();
+            byte[] bytes = byteArrayOutputStream.toByteArray();
+
+            outStream.write(bytes);
+            outStream.close();
+            return true;
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     @Override
