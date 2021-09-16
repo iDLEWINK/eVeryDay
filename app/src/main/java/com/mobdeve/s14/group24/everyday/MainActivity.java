@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 boolean sortOrder = sp.getBoolean(Keys.KEY_DESCENDING.name(), true);
 
-                mediaEntries = dataHelper.retrieveData(sortOrder);
+                mediaEntries = dataHelper.retrieveData(!sortOrder);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
