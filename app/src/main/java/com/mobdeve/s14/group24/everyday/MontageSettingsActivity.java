@@ -110,24 +110,25 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (startDate == null) {
-                    Toast.makeText(MontageSettingsActivity.this, "Please pick a start date", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else if (endDate == null) {
-                    Toast.makeText(MontageSettingsActivity.this, "Please pick an end date", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else if (startDate.toStringDB().compareTo(endDate.toStringDB()) >= 0) {
-                    Toast.makeText(MontageSettingsActivity.this, "Start date must be greater than end date", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else if (etLength.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(MontageSettingsActivity.this, "Length must not be empty", Toast.LENGTH_SHORT).show();
+
+                if (etLength.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(MontageSettingsActivity.this, "Duration must not be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else if (Integer.parseInt(etLength.getText().toString().trim()) <= 0) {
-                    Toast.makeText(MontageSettingsActivity.this, "Length must be greater than 0", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MontageSettingsActivity.this, "Duration must be greater than 0", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if (startDate == null) {
+                    Toast.makeText(MontageSettingsActivity.this, "Please pick a Start Date", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if (endDate == null) {
+                    Toast.makeText(MontageSettingsActivity.this, "Please pick an End Date", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if (startDate.toStringDB().compareTo(endDate.toStringDB()) >= 0) {
+                    Toast.makeText(MontageSettingsActivity.this, "Start Date must be greater than End Date", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
