@@ -91,21 +91,12 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
                     Toast.makeText(MontageSettingsActivity.this, "Successfully Created Montage", Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(MontageSettingsActivity.this, "Montage Creation Failed", Toast.LENGTH_SHORT).show();
-
-                Log.d("HELP", "YES CLICK");
             }
         });
     }
 
     public boolean createMontage() {
         DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
-
-        BitmapToVideoEncoder bitmapToVideoEncoder = new BitmapToVideoEncoder(new BitmapToVideoEncoder.BitmapToVideoEncoderCallback() {
-            @Override
-            public void onEncodingComplete(File outputFile) {
-                Toast.makeText(MontageSettingsActivity.this,  "Encoding Complete!", Toast.LENGTH_LONG).show();
-            }
-        });
 
         ArrayList<MediaEntry> mediaEntries = new ArrayList<MediaEntry>();
         Cursor cursor = databaseHelper.readAllData();
@@ -123,20 +114,13 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
 
         for (int i = 0; i < mediaEntries.size(); i++) {
             try {
-                Log.d("PLZ", mediaEntries.get(i).getImagePath());
                 File file = new File(mediaEntries.get(i).getImagePath());
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                 Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file), null, options);
                 bitmaps.add(bitmap);
-//                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//                bitmap.compress(Bitmap.CompressFormat.JPEG, 10, byteArrayOutputStream);
-                Log.d("PLZ", "TRY");
-
-                bitmapToVideoEncoder.queueFrame(bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d("PLZ", "CATCH");
             }
         }
 
