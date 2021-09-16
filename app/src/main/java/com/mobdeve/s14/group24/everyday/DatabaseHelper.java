@@ -142,4 +142,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return instance;
     }
 
+    public Cursor getRowByDateRange(CustomDate dateStart, CustomDate dateEnd) {
+        String query = "SELECT * FROM " + TABLE_NAME +
+                " WHERE " + COLUMN_DATE + " BETWEEN '" +
+                dateStart.toStringDB() + "' AND '" +
+                dateEnd.toStringDB() + "'";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        if(db != null)
+            cursor = db.rawQuery(query, null);
+
+        return cursor;
+    }
+
 }
