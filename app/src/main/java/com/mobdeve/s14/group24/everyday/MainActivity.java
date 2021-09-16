@@ -20,6 +20,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -37,9 +38,11 @@ public class MainActivity extends AppCompatActivity {
     private DataHelper dataHelper;
     private ArrayList<MediaEntry> mediaEntries;
     private SharedPreferences sp;
+    private SharedPreferences.Editor spEditor;
 
     private FloatingActionButton fabCamera;
     private FloatingActionButton fabMontage;
+    private ImageButton ibSort;
     private ProgressBar pbLoading;
     private TextView tvLoading;
 
@@ -87,10 +90,14 @@ public class MainActivity extends AppCompatActivity {
         databaseHelper = DatabaseHelper.getInstance(this);
         dataHelper = new DataHelper(MainActivity.this);
         sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        spEditor = sp.edit();
 
         initRecyclerView();
         initFabCamera();
         initFabMontage();
+
+        loadSort();
+        initIbSort();
 
         initNotification();
 
@@ -121,6 +128,35 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void initIbSort () {
+        ibSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean sortDescending = sp.getBoolean(Keys.KEY_DESCENDING.name(), true);
+
+                if(sortDescending) {
+                    ibSort.setImageResource(R.drawable.sort_ascending);
+                    spEditor.putBoolean(Keys.KEY_DESCENDING.name(), false);
+                } else {
+                    ibSort.setImageResource(R.drawable.sort_descending);
+                    spEditor.putBoolean(Keys.KEY_DESCENDING.name(), true);
+                }
+                spEditor.apply();
+            }
+        });
+    }
+
+    private void loadSort() {
+        ibSort = findViewById(R.id.ib_sort);
+        boolean sortDescending = sp.getBoolean(Keys.KEY_DESCENDING.name(), true);
+
+        if(sortDescending) {
+            ibSort.setImageResource(R.drawable.sort_descending);
+        } else {
+            ibSort.setImageResource(R.drawable.sort_ascending);
+        }
     }
 
     private void initFabCamera () {
@@ -224,4 +260,5 @@ public class MainActivity extends AppCompatActivity {
                 .putBoolean(Keys.DELETED_DATA_SET.name(), false)
                 .commit();
     }
+
 }
