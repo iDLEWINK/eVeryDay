@@ -37,7 +37,7 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
         if (ext.equals(".jpeg") || ext.equals(".jpg"))
             ivImage.setImageURI(Uri.parse(imagePath));
         else
-            ivImage.setImageBitmap(ThumbnailUtils.createVideoThumbnail(imagePath, MediaStore.Video.Thumbnails.MICRO_KIND));
+            ivImage.setImageBitmap(ThumbnailUtils.createVideoThumbnail(imagePath, MediaStore.Video.Thumbnails.FULL_SCREEN_KIND));
     }
 
     public void setIvImage(Bitmap image) {
