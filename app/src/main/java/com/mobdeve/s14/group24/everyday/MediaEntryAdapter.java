@@ -85,4 +85,10 @@ public class MediaEntryAdapter extends RecyclerView.Adapter<MediaEntryViewHolder
     public int getItemCount() {
         return mediaEntries.size();
     }
+
+    public void setData(ArrayList<MediaEntry> mediaEntries) {
+        this.mediaEntries.clear();
+        this.mediaEntries.addAll(mediaEntries);
+        notifyDataSetChanged();
+    }
 }
