@@ -63,7 +63,11 @@ public class MainActivity extends AppCompatActivity {
 
                                 Intent intent = new Intent(MainActivity.this, ViewMediaEntryActivity.class);
                                 sp.edit().putBoolean(Keys.INSERTED_DATA_SET.name(), true).commit();
-                                mediaEntries.add(0, mediaEntry);
+
+                                if(sp.getBoolean(Keys.KEY_DESCENDING.name(), true))
+                                    mediaEntries.add(0, mediaEntry);
+                                else
+                                    mediaEntries.add(mediaEntry);
 
                                 intent.putExtra(Keys.KEY_ID.name(), mediaEntry.getId());
                                 intent.putExtra(Keys.KEY_DATE.name(), mediaEntry.getDate().toStringFull());
@@ -248,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateRecyclerView () {
         int lastClickedPosition = sp.getInt(Keys.CUR_DATA_SET_POS.name(), 0);
+        int index = sp.getBoolean(Keys.KEY_DESCENDING.name(), true) ? 0 : mediaEntries.size();
 
         if (sp.getBoolean(Keys.MODIFIED_DATA_SET.name(), false) && mediaEntryAdapter != null) {
             ThreadHelper.execute(new Runnable() {
@@ -268,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (sp.getBoolean(Keys.INSERTED_DATA_SET.name(), false) && mediaEntryAdapter != null)
-            mediaEntryAdapter.notifyItemInserted(0);
+            mediaEntryAdapter.notifyItemInserted(index);
 
         if (sp.getBoolean(Keys.DELETED_DATA_SET.name(), false) && mediaEntryAdapter != null) {
             mediaEntries.remove(lastClickedPosition);
