@@ -64,13 +64,13 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
                 Boolean isSuccessful = false;
                 pbLoading.setVisibility(View.VISIBLE);
                 // Call montage maker, set isSuccessful
-                // isSuccessful = makeMontage()
+                isSuccessful = createMontage();
                 pbLoading.setVisibility(View.GONE);
                 finish();
                 if (isSuccessful)
-                    Toast.makeText(MontageSettingsActivity.this, "Successfully created montage", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MontageSettingsActivity.this, "Successfully Created Montage", Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(MontageSettingsActivity.this, "Montage creation failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MontageSettingsActivity.this, "Montage Creation Failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -86,6 +86,12 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             tvStartDate.setText(selectedDate);
         else
             tvEndDate.setText(selectedDate);
+    }
+
+    public boolean createMontage() {
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
+
+        return false;
     }
 
 }
