@@ -2,9 +2,11 @@ package com.mobdeve.s14.group24.everyday;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.util.Log;
 
@@ -61,6 +63,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_DATE, new CustomDate().toStringDB());
         cv.put(COLUMN_IMAGE_PATH, imagePath);
         return db.insert(TABLE_NAME,null, cv);
+    }
+
+    public Cursor readAllData(boolean sortDescending){
+        String SORT = sortDescending ? "DESC": "ASC";
+
+        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + COLUMN_DATE + " " + SORT;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if(db != null)
+            cursor = db.rawQuery(query, null);
+
+        return cursor;
     }
 
     public Cursor readAllData(){
