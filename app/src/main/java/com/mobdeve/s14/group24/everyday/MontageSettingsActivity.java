@@ -1,10 +1,14 @@
 package com.mobdeve.s14.group24.everyday;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -42,6 +46,8 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
     private CustomDate startDate = null;
     private CustomDate endDate = null;
 
+    private String filePath = null;
+
     final static String PROGRESS_MESSAGE = "PROGRESS_MESSAGE";
     final static String PROGRESS_VALUE = "PROGRESS_NUMBER";
     final static String ERROR = "ERROR";
@@ -63,6 +69,28 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             if (pbProgress.getMax() == data.getInt(PROGRESS_VALUE)) {
                 llProgress.setVisibility(View.GONE);
                 Toast.makeText(MontageSettingsActivity.this, "Successfully Created Montage", Toast.LENGTH_SHORT).show();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MontageSettingsActivity.this);
+                builder.setTitle("Montage Creation Successful");
+                builder.setMessage("Do You Want to Watch the Montage?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.setDataAndType(Uri.parse(filePath), "image/gif");
+                        filePath = null;
+                        finish();
+                        startActivity(intent);
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                });
+                builder.create().show();
             }
 
         }
@@ -196,8 +224,8 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
             String gifFilename = "eVeryDay_Montage_" + timeStamp + ".gif";
 
-
-            FileOutputStream outStream = new FileOutputStream(Paths.get(path, gifFilename).toString());
+            filePath = Paths.get(path, gifFilename).toString();
+            FileOutputStream outStream = new FileOutputStream(filePath);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
             AnimatedGIFEncoder encoder = new AnimatedGIFEncoder();
