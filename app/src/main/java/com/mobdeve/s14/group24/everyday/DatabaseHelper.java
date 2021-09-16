@@ -10,6 +10,8 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static DatabaseHelper instance = null;
@@ -103,10 +105,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return cursorToMediaEntry(cursor);
     }
-/*
-    public MediaEntry getRowByDate(CustomDate date){
+
+    public ArrayList<MediaEntry> getRowByDateRange(CustomDate dateStart, CustomDate dateEnd) {
         String query = "SELECT * FROM " + TABLE_NAME +
-                " WHERE " + COLUMN_DATE + " = '" + date.toStringDB() + "'";
+                " WHERE " + COLUMN_DATE + " BETWEEN '" +
+                dateStart.toStringDB() + "' AND '" +
+                dateEnd.toStringDB() + "'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;
 
@@ -116,9 +120,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor.getCount() == 0)
             return null;
 
-        return cursorToMediaEntry(cursor);
+        ArrayList<MediaEntry> mediaEntries = new ArrayList<MediaEntry>();
+
+        while (cursor.moveToNext()) {
+            mediaEntries.add(0,
+                    new MediaEntry(cursor.getInt(0),
+                            new CustomDate(cursor.getString(1)),
+                            cursor.getString(2),
+                            cursor.getString(3),
+                            cursor.getInt(4)));
+        }
+
+        return mediaEntries;
     }
-*/
+
     public void updateData(int id, String imagePath, String caption, int mood){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
