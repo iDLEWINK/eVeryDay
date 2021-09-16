@@ -52,7 +52,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             super.handleMessage(msg);
             Bundle data = msg.getData();
 
-            if (data.getString(PROGRESS_MESSAGE).equals(ERROR)) {
+            if (data.getString(PROGRESS_MESSAGE) != null && data.getString(PROGRESS_MESSAGE).equals(ERROR)) {
                 llProgress.setVisibility(View.GONE);
                 Toast.makeText(MontageSettingsActivity.this, "Montage Creation Failed", Toast.LENGTH_SHORT).show();
             }
@@ -126,7 +126,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
                     Toast.makeText(MontageSettingsActivity.this, "Length must not be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                else if (Integer.parseInt(etLength.getText().toString().trim()) <= 0) {
+                else if (Float.parseFloat(etLength.getText().toString().trim()) <= 0) {
                     Toast.makeText(MontageSettingsActivity.this, "Length must be greater than 0", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -157,18 +157,20 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
         Bundle bundle = new Bundle();
         bundle.putString(PROGRESS_MESSAGE, "Getting your photos...");
         bundle.putInt(PROGRESS_VALUE, progress);
+        message.setData(bundle);
         handler.sendMessage(message);
 
         ArrayList<MediaEntry> entriesToUse = databaseHelper.getRowByDateRange(startDate, endDate);
         ArrayList<Bitmap> bitmaps = new ArrayList<>();
 
-        pbProgress.setMax(entriesToUse.size() * 2 + 1);
+        pbProgress.setMax(entriesToUse.size() * 2 + 2);
 
         for (int i = 0; i < entriesToUse.size(); i++) {
             message = Message.obtain();
             bundle = new Bundle();
             bundle.putString(PROGRESS_MESSAGE, "Processing photo #" + (i + 1) + "...");
             bundle.putInt(PROGRESS_VALUE, ++progress);
+            message.setData(bundle);
             handler.sendMessage(message);
             try {
                 File file = new File(entriesToUse.get(i).getImagePath());
@@ -186,6 +188,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             bundle = new Bundle();
             bundle.putString(PROGRESS_MESSAGE, "Creating output file...");
             bundle.putInt(PROGRESS_VALUE, ++progress);
+            message.setData(bundle);
             handler.sendMessage(message);
 
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
@@ -197,14 +200,34 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
             AnimatedGIFEncoder encoder = new AnimatedGIFEncoder();
-            encoder.setDelay(Integer.parseInt(etLength.getText().toString().toString()) * 1000);
+            encoder.setDelay(Float.valueOf(Float.parseFloat(etLength.getText().toString().toString()) * 1000).intValue());
+            encoder.setQuality(9);
             encoder.start(byteArrayOutputStream);
+
+            message = Message.obtain();
+            bundle = new Bundle();
+            bundle.putString(PROGRESS_MESSAGE, "Adjusting frame size...");
+            bundle.putInt(PROGRESS_VALUE, ++progress);
+            message.setData(bundle);
+            handler.sendMessage(message);
+
+            int maxWidth = -1;
+            int maxHeight = -1;
+            for (Bitmap i : bitmaps) {
+                if (i.getWidth() > maxWidth)
+                    maxWidth = i.getWidth();
+                if (i.getHeight() > maxHeight)
+                    maxHeight = i.getHeight();
+            }
+
+            encoder.setSize(maxWidth, maxHeight);
 
             for (int i = 0; i < bitmaps.size(); i++) {
                 message = Message.obtain();
                 bundle = new Bundle();
                 bundle.putString(PROGRESS_MESSAGE, "Encoding photo #" + (i + 1) + "...");
                 bundle.putInt(PROGRESS_VALUE, ++progress);
+                message.setData(bundle);
                 handler.sendMessage(message);
                 encoder.addFrame(bitmaps.get(i));
             }
