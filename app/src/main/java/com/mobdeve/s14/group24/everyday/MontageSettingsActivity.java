@@ -85,7 +85,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
         tvProgress = findViewById(R.id.tv_montage_progress);
         llProgress = findViewById(R.id.ll_montage_progress);
 
-        etLength.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        etLength.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         tvStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
