@@ -31,6 +31,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Keys.NOTIFICATION_CHANNEL_ID.name())
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Capture Your Precious Memories")
                 .setContentText("Please \uD83D\uDC49\uD83D\uDC48");
 
