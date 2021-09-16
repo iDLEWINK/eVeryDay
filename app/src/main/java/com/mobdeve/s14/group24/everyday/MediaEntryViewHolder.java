@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -52,7 +53,10 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
             bitmap = ThumbnailUtils.createVideoThumbnail(imagePath, MediaStore.Video.Thumbnails.FULL_SCREEN_KIND);
         }
 
-        ivImage.setImageBitmap(bitmap);
+        int height = (int) (bitmap.getHeight() * (240.0 / bitmap.getWidth()));
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 240, height, true);
+
+        ivImage.setImageBitmap(scaledBitmap);
     }
 
     public void setIvImage(Bitmap image) {
