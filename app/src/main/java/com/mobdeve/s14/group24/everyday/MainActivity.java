@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Select an Option");
                 builder.setItems(
-                    new String[]{"Capture a photo", "Capture a Video"},
+                    new String[]{"Capture a Photo", "Capture a Video"},
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
