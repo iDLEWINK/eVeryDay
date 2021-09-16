@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String currentPhotoPath;
 
+
     private ActivityResultLauncher activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -63,20 +64,25 @@ public class MainActivity extends AppCompatActivity {
                             public void run() {
                                 MediaEntry mediaEntry = databaseHelper.getRowById(databaseHelper.addEntry(currentPhotoPath));
 
+                                //Initializes intent for viewing of media entry
                                 Intent intent = new Intent(MainActivity.this, ViewMediaEntryActivity.class);
                                 sp.edit().putBoolean(Keys.INSERTED_DATA_SET.name(), true).commit();
 
+                                //If descending, append media entry to the start of the arrayList
                                 if(sp.getBoolean(Keys.KEY_DESCENDING.name(), true))
                                     mediaEntries.add(0, mediaEntry);
+                                //Else, append to the end of the arrayList
                                 else
                                     mediaEntries.add(mediaEntry);
 
+                                //Add the keys to send to intent for viewMediaEntry
                                 intent.putExtra(Keys.KEY_ID.name(), mediaEntry.getId());
                                 intent.putExtra(Keys.KEY_DATE.name(), mediaEntry.getDate().toStringFull());
                                 intent.putExtra(Keys.KEY_IMAGE_PATH.name(), mediaEntry.getImagePath());
                                 intent.putExtra(Keys.KEY_CAPTION.name(), mediaEntry.getCaption());
                                 intent.putExtra(Keys.KEY_MOOD.name(), mediaEntry.getMood());
 
+                                //Start the activity with the intent for viewMediaEntry
                                 startActivity(intent);
                             }
                         });
@@ -85,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
             }
     );
 
+    //Initializes necessary objects and loads data on launch
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //Calls updateRecyclerView() method onResume
     @Override
     protected void onResume() {
         super.onResume();
@@ -122,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         ThreadHelper.execute(new Runnable() {
             @Override
             public void run() {
+                //Retrieves saved sort preference
                 boolean sortOrder = sp.getBoolean(Keys.KEY_DESCENDING.name(), true);
                 mediaEntries = dataHelper.retrieveData();
 
@@ -144,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Initializes the sort image button
     private void initIbSort () {
         ibSort.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,7 +162,10 @@ public class MainActivity extends AppCompatActivity {
                 singleExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
+                        //Retrieves the saved sort preference
                         boolean sortOrder = sp.getBoolean(Keys.KEY_DESCENDING.name(), true);
+
+                        //If descending
                         if(sortOrder) {
                             ibSort.setImageResource(R.drawable.sort_ascending);
                             spEditor.putBoolean(Keys.KEY_DESCENDING.name(), false);
