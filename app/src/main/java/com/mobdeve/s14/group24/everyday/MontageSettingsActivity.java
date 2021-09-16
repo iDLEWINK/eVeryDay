@@ -126,7 +126,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
                     Toast.makeText(MontageSettingsActivity.this, "Length must not be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                else if (Integer.parseInt(etLength.getText().toString().trim()) <= 0) {
+                else if (Float.parseFloat(etLength.getText().toString().trim()) <= 0) {
                     Toast.makeText(MontageSettingsActivity.this, "Length must be greater than 0", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -200,7 +200,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
             AnimatedGIFEncoder encoder = new AnimatedGIFEncoder();
-            encoder.setDelay(Integer.parseInt(etLength.getText().toString().toString()) * 1000);
+            encoder.setDelay(Float.valueOf(Float.parseFloat(etLength.getText().toString().toString()) * 1000).intValue());
             encoder.start(byteArrayOutputStream);
 
             for (int i = 0; i < bitmaps.size(); i++) {
