@@ -116,7 +116,20 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
                             cursor.getInt(4)));
         }
 
-        bitmapToVideoEncoder.startEncoding(50, 50, new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera"));
+        try {
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+            String imageFileName = "Montage_" + timeStamp + "_";
+            File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            File image = File.createTempFile(
+                    imageFileName,
+                    ".mp4",
+                    storageDir
+            );
+            bitmapToVideoEncoder.startEncoding(100, 200, image);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
 
 
         for (int i = 0; i < mediaEntries.size(); i++) {

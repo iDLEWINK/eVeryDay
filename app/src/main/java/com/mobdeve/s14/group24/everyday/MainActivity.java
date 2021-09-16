@@ -251,8 +251,10 @@ public class MainActivity extends AppCompatActivity {
         if (sp.getBoolean(Keys.INSERTED_DATA_SET.name(), false) && mediaEntryAdapter != null)
             mediaEntryAdapter.notifyItemInserted(0);
 
-        if (sp.getBoolean(Keys.DELETED_DATA_SET.name(), false) && mediaEntryAdapter != null)
+        if (sp.getBoolean(Keys.DELETED_DATA_SET.name(), false) && mediaEntryAdapter != null) {
+            mediaEntries.remove(lastClickedPosition);
             mediaEntryAdapter.notifyItemRemoved(lastClickedPosition);
+        }
 
         sp.edit()
                 .putBoolean(Keys.MODIFIED_DATA_SET.name(), false)
