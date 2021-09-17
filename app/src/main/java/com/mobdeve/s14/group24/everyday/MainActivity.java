@@ -277,9 +277,11 @@ public class MainActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
 
+        //Fetches a random hour in the day given the calendar
         Random random = new Random();
         calendar.set(Calendar.HOUR_OF_DAY, random.nextInt(24));
 
+        //Creates intent for notification
         Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -291,10 +293,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    
+
     private void updateRecyclerView () {
+        //Position of last accessed media entry
         int lastClickedPosition = sp.getInt(Keys.CUR_DATA_SET_POS.name(), 0);
 
+        //Update if after modifying contents of a media entry
         if (sp.getBoolean(Keys.MODIFIED_DATA_SET.name(), false) && mediaEntryAdapter != null) {
             ThreadHelper.execute(new Runnable() {
                 @Override
@@ -313,12 +317,16 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+        //Update if after creating new media entry
         if (sp.getBoolean(Keys.INSERTED_DATA_SET.name(), false) && mediaEntryAdapter != null){
+            //Inserted data set will be notified at index 0 if descending and the last element of the ArrayList if ascending
             int index = sp.getBoolean(Keys.KEY_DESCENDING.name(), true) ? 0 : mediaEntries.size();
             mediaEntryAdapter.notifyItemInserted(index);
         }
 
+        //Update if after deleting a media entry
         if (sp.getBoolean(Keys.DELETED_DATA_SET.name(), false) && mediaEntryAdapter != null) {
+            //Removes the last accessed mediaEntry from the ArrayList
             mediaEntries.remove(lastClickedPosition);
             mediaEntryAdapter.notifyItemRemoved(lastClickedPosition);
         }

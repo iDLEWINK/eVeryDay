@@ -13,9 +13,11 @@ import java.util.Calendar;
 
 public class DatePicker extends DialogFragment {
 
+    //Creates an accessible popout for a date picker
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        //Retrieves current date
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);

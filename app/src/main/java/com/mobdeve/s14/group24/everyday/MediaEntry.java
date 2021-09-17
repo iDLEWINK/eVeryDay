@@ -8,6 +8,7 @@ public class MediaEntry {
     private String caption;
     private int mood;
 
+    //Constructor for a media entry
     public MediaEntry (int id, CustomDate date, String imagePath, String caption, int mood) {
         this.id = id;
         this.date = date;
