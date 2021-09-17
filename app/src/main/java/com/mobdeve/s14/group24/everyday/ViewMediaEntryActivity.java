@@ -37,6 +37,7 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
     private String caption;
     private int mood;
 
+    //Callback method after startactivityforresult. Loads values from intent from editMediaEntry and sets values to instance variables accordingly.
     private ActivityResultLauncher activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -45,12 +46,14 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent intent = result.getData();
 
+                        //Retrieves values from intent
                         id = intent.getIntExtra(Keys.KEY_ID.name(), -1);
                         date = intent.getStringExtra(Keys.KEY_DATE.name());
                         imagePath = intent.getStringExtra(Keys.KEY_IMAGE_PATH.name());
                         caption = intent.getStringExtra(Keys.KEY_CAPTION.name());
                         mood = intent.getIntExtra(Keys.KEY_MOOD.name(), 0);
 
+                        //Sets the values of the views on the screen activity
                         setValues();
                     }
                 }
@@ -70,6 +73,7 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
         ivMood = findViewById(R.id.iv_view_media_entry_mood);
         ibEdit = findViewById(R.id.ib_edit_media_entry);
 
+        //Retrieves values from intent and saves values accordingly to instance variables
         Intent intent = getIntent();
         id = intent.getIntExtra(Keys.KEY_ID.name(), -1);
         date = intent.getStringExtra(Keys.KEY_DATE.name());
@@ -78,6 +82,7 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
         mood = intent.getIntExtra(Keys.KEY_MOOD.name(), 0);
     }
 
+    //If invalid id was accessed (denoting invalid data/media entry), finish the activity and return to previous activity
     public void setValues() {
         if (id == -1) {
             finish();
@@ -87,13 +92,16 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
         tvDate.setText(date);
         tvCaption.setText(caption);
 
+        //Determines the extension file of. If an no-file/invalid file was retrieved, set string to blank to avoid error in method calls
         String ext = imagePath.contains(".") ? imagePath.substring(imagePath.lastIndexOf(".")).toLowerCase() : "";
 
+        //If the media entry is an image, use the imageView and hide the videoView
         if (ext.equals(".jpeg") || ext.equals(".jpg")) {
             ivImage.setVisibility(View.VISIBLE);
             ivImage.setImageURI(Uri.parse(imagePath));
             vvImage.setVisibility(View.GONE);
         }
+        //If the media entry is a video, use the videoView and hide the imageView
         else {
             vvImage.setVisibility(View.VISIBLE);
             vvImage.setVideoURI(Uri.parse(imagePath));
@@ -103,15 +111,20 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
                     mp.setLooping(true);
                 }
             });
+            //Starts/plays the video
             vvImage.start();
             ivImage.setVisibility(View.GONE);
         }
 
+        //If mood is out of valid range
         if (mood < 1 || mood > 5)
+            //Hide the list of moods
             ivMood.setVisibility(View.GONE);
         else
+            //Show the list of moods
             ivMood.setVisibility(View.VISIBLE);
 
+        //Sets the color of the mood icon and mood text label depending on the mood value retrieved
         switch (mood) {
             case 1:
                 ivMood.setImageResource(R.drawable.mood_face_res1);
@@ -147,6 +160,7 @@ public class ViewMediaEntryActivity extends AppCompatActivity {
                 tvMood.setText("No Mood Set");
         }
 
+        //Sets on click on edit image button to launch intent on edit media entry activity
         ibEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
