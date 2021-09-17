@@ -23,6 +23,7 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
     private ImageView ivImage;
     private ImageView ivMood;
 
+    //Constructor for view holder
     public MediaEntryViewHolder(@NonNull @NotNull View itemView) {
         super(itemView);
 
@@ -53,6 +54,7 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder {
             bitmap = ThumbnailUtils.createVideoThumbnail(imagePath, MediaStore.Video.Thumbnails.FULL_SCREEN_KIND);
         }
 
+        //Scales down image resource (bitmap)
         int height = (int) (bitmap.getHeight() * (240.0 / bitmap.getWidth()));
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 240, height, true);
 
