@@ -53,11 +53,13 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
     final static String ERROR = "ERROR";
 
     private Handler handler = new Handler(Looper.getMainLooper()) {
+        //Handler
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             Bundle data = msg.getData();
 
+            //If an error is detected with the current runnable process
             if (data.getString(PROGRESS_MESSAGE) != null && data.getString(PROGRESS_MESSAGE).equals(ERROR)) {
                 llProgress.setVisibility(View.GONE);
                 Toast.makeText(MontageSettingsActivity.this, "Montage Creation Failed", Toast.LENGTH_SHORT).show();
@@ -66,13 +68,17 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             tvProgress.setText(data.getString(PROGRESS_MESSAGE));
             pbProgress.setProgress(data.getInt(PROGRESS_VALUE));
 
+            //If progress reached max or the entire process of creating montage was successful
             if (pbProgress.getMax() == data.getInt(PROGRESS_VALUE)) {
                 llProgress.setVisibility(View.GONE);
                 Toast.makeText(MontageSettingsActivity.this, "Successfully Created Montage", Toast.LENGTH_SHORT).show();
 
+                //Prompt for accessing and viewing the newly created montage
                 AlertDialog.Builder builder = new AlertDialog.Builder(MontageSettingsActivity.this);
                 builder.setTitle("Montage Creation Successful");
                 builder.setMessage("Do You Want to Watch the Montage?");
+
+                //Launches intent for viewing of the newly created montage
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -84,6 +90,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
                         startActivity(intent);
                     }
                 });
+                //Closes dialog
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -104,6 +111,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
         initComponents();
     }
 
+    //Initializes views in the montage settings layout
     private void initComponents() {
         etLength = findViewById(R.id.et_montage_length);
         tvStartDate = findViewById(R.id.et_montage_start_date);
@@ -115,6 +123,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
 
         etLength.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
+        //On click of start date prompts a date picker dialog
         tvStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,6 +134,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             }
         });
 
+        //On click of end date prompts a date picker dialog
         tvEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,36 +145,44 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             }
         });
 
+        //On click of create prompts the validation of value and start of creation process of montage
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                //Validator for empty duration
                 if (etLength.getText().toString().trim().isEmpty()) {
                     Toast.makeText(MontageSettingsActivity.this, "Duration must not be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                //Validator for invalid duration
                 else if (Integer.parseInt(etLength.getText().toString().trim()) <= 0) {
                     Toast.makeText(MontageSettingsActivity.this, "Duration must be greater than 0", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                //Validator for empty start date
                 else if (startDate == null) {
                     Toast.makeText(MontageSettingsActivity.this, "Please pick a Start Date", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                //Validator for empty end date
                 else if (endDate == null) {
                     Toast.makeText(MontageSettingsActivity.this, "Please pick an End Date", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                //Validator of invalid date sets where start date is later than end date
                 else if (startDate.toStringDB().compareTo(endDate.toStringDB()) >= 0) {
                     Toast.makeText(MontageSettingsActivity.this, "Start Date must be greater than End Date", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+                //Sets progress bar to visible
                 llProgress.setVisibility(View.VISIBLE);
 
                 ThreadHelper.execute(new Runnable() {
                     @Override
                     public void run() {
+                        //If create montage was unsuccessful, pass an error message/value to handler
                         if (!createMontage()) {
                             Message message = Message.obtain();
                             Bundle bundle = new Bundle();
