@@ -195,23 +195,30 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
         });
     }
 
+    //Method for handling the creation of montage process. Returns true if successful and false if unsuccessful.
     public boolean createMontage() {
         DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
         int progress = 0;
 
         Message message = Message.obtain();
+
+        //Add progress on bundle
         Bundle bundle = new Bundle();
         bundle.putString(PROGRESS_MESSAGE, "Getting your photos...");
         bundle.putInt(PROGRESS_VALUE, progress);
         message.setData(bundle);
         handler.sendMessage(message);
 
+        //ArrayList of retrieved mediaEntries within the specified start and end date
         ArrayList<MediaEntry> entriesToUse = databaseHelper.getRowByDateRange(startDate, endDate);
         ArrayList<Bitmap> bitmaps = new ArrayList<>();
 
+        //Sets max of progressBar to fit that of the amount of entries
         pbProgress.setMax(entriesToUse.size() * 2 + 1);
 
+        //Retrieves, processes, and sets the data to be used in compilation in the next step
         for (int i = 0; i < entriesToUse.size(); i++) {
+            //Handles messages for each individual entries
             message = Message.obtain();
             bundle = new Bundle();
             bundle.putString(PROGRESS_MESSAGE, "Processing photo #" + (i + 1) + "...");
@@ -219,6 +226,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             message.setData(bundle);
             handler.sendMessage(message);
             try {
+                //Converts file image to bitmap and add accordingly to bitmaps arraylist
                 File file = new File(entriesToUse.get(i).getImagePath());
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -237,14 +245,19 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             message.setData(bundle);
             handler.sendMessage(message);
 
+            //Gets path where the montage is to be saved
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+            //Formats timestamp to be added as date detail to the file
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+            //Formats the file name of the newly created montage
             String gifFilename = "eVeryDay_Montage_" + timeStamp + ".gif";
 
+            //Sets up writing to device
             filePath = Paths.get(path, gifFilename).toString();
             FileOutputStream outStream = new FileOutputStream(filePath);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
+            //GIF encoder
             AnimatedGIFEncoder encoder = new AnimatedGIFEncoder();
             encoder.setDelay(Float.valueOf(Float.parseFloat(etLength.getText().toString().toString()) * 1000).intValue());
             encoder.start(byteArrayOutputStream);
@@ -256,12 +269,15 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
                 bundle.putInt(PROGRESS_VALUE, ++progress);
                 message.setData(bundle);
                 handler.sendMessage(message);
+                //GIFencoder adds processed photo as a frame to the currently processed montage gif file
                 encoder.addFrame(bitmaps.get(i));
             }
             encoder.finish();
             byte[] bytes = byteArrayOutputStream.toByteArray();
 
             outStream.write(bytes);
+
+            //Ends writing to device
             outStream.close();
             return true;
         } catch(Exception e) {
@@ -271,6 +287,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
         return false;
     }
 
+    //Sets the date of instance variables startDate or endDate depending on the value chosen from the date picker
     @Override
     public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
         if (isStart) {
