@@ -19,6 +19,7 @@ public class DataHelper {
     private SharedPreferences sp;
     private DatabaseHelper databaseHelper;
 
+    //Constructor for data helper
     public DataHelper (Context context) {
         this.context = context;
         databaseHelper = DatabaseHelper.getInstance(context);
@@ -27,6 +28,7 @@ public class DataHelper {
             initializeData();
     }
 
+    //Initializes all sample data
     private void initializeData() {
         CustomDate dates[] = {
                 new CustomDate("2021/07/18"),
@@ -88,6 +90,7 @@ public class DataHelper {
         context.deleteDatabase(DatabaseHelper.DATABASE_NAME);
     }
 */
+    //Retrieves and returns all data from the database as a media entry arrayList
     public ArrayList<MediaEntry> retrieveData () {
         ArrayList<MediaEntry> mediaEntries = new ArrayList<MediaEntry>();
         Cursor cursor = databaseHelper.readAllData();
