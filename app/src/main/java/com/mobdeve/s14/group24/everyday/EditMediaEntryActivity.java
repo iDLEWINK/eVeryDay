@@ -102,28 +102,6 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         databaseHelper = DatabaseHelper.getInstance(this);
         cameraHelper = new CameraHelper(getApplicationContext());
         sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-/*
-        rgMoods.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-            }
-        });
-
-        View.OnClickListener unselectMood = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RadioButton button = (RadioButton) v;
-                if (button.isChecked())
-                    rgMoods.clearCheck();
-            }
-        };
-
-        rbMood1.setOnClickListener(unselectMood);
-        rbMood2.setOnClickListener(unselectMood);
-        rbMood3.setOnClickListener(unselectMood);
-        rbMood4.setOnClickListener(unselectMood);
-        rbMood5.setOnClickListener(unselectMood);*/
 
         ibRetakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -303,5 +281,25 @@ public class EditMediaEntryActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setValues();
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(EditMediaEntryActivity.this);
+        alert.setTitle("You have unsaved changes");
+        alert.setMessage("Leaving this page will remove all of your changes. Are you sure you want to leave?");
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                EditMediaEntryActivity.this.finish();
+            }
+        });
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.show();
     }
 }
