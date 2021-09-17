@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,10 +49,6 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
 
     private String filePath = null;
 
-    final static String PROGRESS_MESSAGE = "PROGRESS_MESSAGE";
-    final static String PROGRESS_VALUE = "PROGRESS_NUMBER";
-    final static String ERROR = "ERROR";
-
     private Handler handler = new Handler(Looper.getMainLooper()) {
         //Handler
         @Override
@@ -60,16 +57,17 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             Bundle data = msg.getData();
 
             //If an error is detected with the current runnable process
-            if (data.getString(PROGRESS_MESSAGE) != null && data.getString(PROGRESS_MESSAGE).equals(ERROR)) {
+            Log.d("aaa", data.getInt(Keys.PROGRESS_VALUE.name() )+ "");
+            if (data.getInt(Keys.PROGRESS_VALUE.name()) == -1) {
                 llProgress.setVisibility(View.GONE);
-                Toast.makeText(MontageSettingsActivity.this, "Montage Creation Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MontageSettingsActivity.this, data.getString(Keys.PROGRESS_MESSAGE.name()), Toast.LENGTH_SHORT).show();
             }
 
-            tvProgress.setText(data.getString(PROGRESS_MESSAGE));
-            pbProgress.setProgress(data.getInt(PROGRESS_VALUE));
+            tvProgress.setText(data.getString(Keys.PROGRESS_MESSAGE.name()));
+            pbProgress.setProgress(data.getInt(Keys.PROGRESS_VALUE.name()));
 
             //If progress reached max or the entire process of creating montage was successful
-            if (pbProgress.getMax() == data.getInt(PROGRESS_VALUE)) {
+            if (pbProgress.getMax() == data.getInt(Keys.PROGRESS_VALUE.name())) {
                 llProgress.setVisibility(View.GONE);
                 Toast.makeText(MontageSettingsActivity.this, "Successfully Created Montage", Toast.LENGTH_SHORT).show();
 
@@ -182,11 +180,14 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
                     @Override
                     public void run() {
                         //If create montage was unsuccessful, pass an error message/value to handler
-                        if (!createMontage()) {
+                        try {
+                            createMontage();
+                        }
+                        catch (Exception e) {
                             Message message = Message.obtain();
                             Bundle bundle = new Bundle();
-                            bundle.putString(PROGRESS_MESSAGE, ERROR);
-                            bundle.putInt(PROGRESS_VALUE, 0);
+                            bundle.putString(Keys.PROGRESS_MESSAGE.name(), e.getMessage());
+                            bundle.putInt(Keys.PROGRESS_VALUE.name(), -1);
                             handler.sendMessage(message);
                         }
                     }
@@ -196,7 +197,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
     }
 
     //Method for handling the creation of montage process. Returns true if successful and false if unsuccessful.
-    public boolean createMontage() {
+    public void createMontage() throws Exception {
         DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
         int progress = 0;
 
@@ -204,14 +205,19 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
 
         //Add progress on bundle
         Bundle bundle = new Bundle();
-        bundle.putString(PROGRESS_MESSAGE, "Getting your photos...");
-        bundle.putInt(PROGRESS_VALUE, progress);
+        bundle.putString(Keys.PROGRESS_MESSAGE.name(), "Getting your photos...");
+        bundle.putInt(Keys.PROGRESS_VALUE.name(), progress);
         message.setData(bundle);
         handler.sendMessage(message);
 
         //ArrayList of retrieved mediaEntries within the specified start and end date
         ArrayList<MediaEntry> entriesToUse = databaseHelper.getRowByDateRange(startDate, endDate);
         ArrayList<Bitmap> bitmaps = new ArrayList<>();
+
+        if (entriesToUse.size() == 0) {
+            
+            throw new Exception("You have no entries in that date range");
+        }
 
         //Sets max of progressBar to fit that of the amount of entries
         pbProgress.setMax(entriesToUse.size() * 2 + 1);
@@ -221,8 +227,8 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             //Handles messages for each individual entries
             message = Message.obtain();
             bundle = new Bundle();
-            bundle.putString(PROGRESS_MESSAGE, "Processing photo #" + (i + 1) + "...");
-            bundle.putInt(PROGRESS_VALUE, ++progress);
+            bundle.putString(Keys.PROGRESS_MESSAGE.name(), "Processing photo #" + (i + 1) + "...");
+            bundle.putInt(Keys.PROGRESS_VALUE.name(), ++progress);
             message.setData(bundle);
             handler.sendMessage(message);
             try {
@@ -234,14 +240,15 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
                 bitmaps.add(bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
+                throw e;
             }
         }
 
         try {
             message = Message.obtain();
             bundle = new Bundle();
-            bundle.putString(PROGRESS_MESSAGE, "Creating output file...");
-            bundle.putInt(PROGRESS_VALUE, ++progress);
+            bundle.putString(Keys.PROGRESS_MESSAGE.name(), "Creating output file...");
+            bundle.putInt(Keys.PROGRESS_VALUE.name(), ++progress);
             message.setData(bundle);
             handler.sendMessage(message);
 
@@ -256,7 +263,6 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             File fPath = new File(path);
             File fGifFilename = new File(fPath, gifFilename);
             filePath = fGifFilename.getPath();
-
             FileOutputStream outStream = new FileOutputStream(filePath);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -268,8 +274,8 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             for (int i = 0; i < bitmaps.size(); i++) {
                 message = Message.obtain();
                 bundle = new Bundle();
-                bundle.putString(PROGRESS_MESSAGE, "Encoding photo #" + (i + 1) + "...");
-                bundle.putInt(PROGRESS_VALUE, ++progress);
+                bundle.putString(Keys.PROGRESS_MESSAGE.name(), "Encoding photo #" + (i + 1) + "...");
+                bundle.putInt(Keys.PROGRESS_VALUE.name(), ++progress);
                 message.setData(bundle);
                 handler.sendMessage(message);
                 //GIFencoder adds processed photo as a frame to the currently processed montage gif file
@@ -282,12 +288,10 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
 
             //Ends writing to device
             outStream.close();
-            return true;
         } catch(Exception e) {
             e.printStackTrace();
+            throw e;
         }
-
-        return false;
     }
 
     //Sets the date of instance variables startDate or endDate depending on the value chosen from the date picker
