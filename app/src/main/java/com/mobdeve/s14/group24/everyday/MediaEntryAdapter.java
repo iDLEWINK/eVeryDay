@@ -35,6 +35,7 @@ public class MediaEntryAdapter extends RecyclerView.Adapter<MediaEntryViewHolder
 
     private ArrayList<MediaEntry> mediaEntries;
 
+    //Constructor for the adapter that accepts and stores mediaEntries arraylist value to instance variable
     public MediaEntryAdapter (ArrayList<MediaEntry> mediaEntries) {
         this.mediaEntries = mediaEntries;
     }
@@ -47,14 +48,15 @@ public class MediaEntryAdapter extends RecyclerView.Adapter<MediaEntryViewHolder
         View view = layoutInflater.inflate(R.layout.item_media, parent, false);
 
         MediaEntryViewHolder mediaEntryViewHolder = new MediaEntryViewHolder(view);
-
+        //Sets onClick for every media entry item in recycler view to redirect on view media entry activity
         mediaEntryViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Initialize intent for view media entry activity
                 Intent intent = new Intent(v.getContext(), ViewMediaEntryActivity.class);
 
                 MediaEntry mediaEntry = mediaEntries.get(mediaEntryViewHolder.getBindingAdapterPosition());
-
+                //Adds value for intent to be loaded and passed to view media entry activity
                 intent.putExtra(Keys.KEY_ID.name(), mediaEntry.getId());
                 intent.putExtra(Keys.KEY_DATE.name(), mediaEntry.getDate().toStringFull());
                 intent.putExtra(Keys.KEY_IMAGE_PATH.name(), mediaEntry.getImagePath());
@@ -75,17 +77,19 @@ public class MediaEntryAdapter extends RecyclerView.Adapter<MediaEntryViewHolder
     @Override
     public void onBindViewHolder(@NonNull @NotNull MediaEntryViewHolder holder, int position) {
         MediaEntry mediaEntry = mediaEntries.get(position);
-
+        //Sets values for the date, image, and mood on the media entry on current position
         holder.setTvDate(mediaEntry.getDate().toStringNoYear());
         holder.setIvImage(mediaEntry.getImagePath());
         holder.setIvMood(mediaEntry.getMood());
     }
 
+    //Returns the total number of items in the ArrayList mediaEntries instance variable
     @Override
     public int getItemCount() {
         return mediaEntries.size();
     }
 
+    //Clears the current instance var arraylist media entries of value and completely replace with the values in the parameter, then notify changes in data set
     public void setData(ArrayList<MediaEntry> mediaEntries) {
         this.mediaEntries.clear();
         this.mediaEntries.addAll(mediaEntries);
