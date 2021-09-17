@@ -155,7 +155,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
                     Toast.makeText(MontageSettingsActivity.this, "Please pick an End Date", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                else if (startDate.toStringDB().compareTo(endDate.toStringDB()) >= 0) {
+                else if (startDate.toString().compareTo(endDate.toString()) > 0) {
                     Toast.makeText(MontageSettingsActivity.this, "Start Date must be greater than End Date", Toast.LENGTH_SHORT).show();
                     return;
                 }

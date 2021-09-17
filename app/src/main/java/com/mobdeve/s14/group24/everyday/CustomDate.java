@@ -35,6 +35,10 @@ public class CustomDate {
         return monthNames[month] + " " + day;
     }
 
+    public String toString () {
+        return year + "-" + String.format("%02d" , month + 1) + "-" + String.format("%02d" , day);
+    }
+
     public String toStringDB() {
         return year + "/" + month + "/" + day;
     }
