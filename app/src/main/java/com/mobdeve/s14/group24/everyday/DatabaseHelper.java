@@ -30,6 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    //Creates the SQL database with the appropriate column names
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE " + TABLE_NAME + " (" +
@@ -42,12 +43,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
+    //Changes database to the newer version in the case a new one appears
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 
+    //Inserts media entry with the date, imagepath, caption, and mood to the database
     public MediaEntry addEntry(CustomDate date, String imagePath, String caption, int mood){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -59,6 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return getRowById(id);
     }
 
+    //Inserts media entry with date and imagepath to the databasee
     public long addEntry(String imagePath){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -67,6 +71,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.insert(TABLE_NAME,null, cv);
     }
 
+    //Returns cursor that can point to all the data within the database
     public Cursor readAllData(){
         String query = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -78,6 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    //Retrieves and returns the mediaEntry with the specified id from the database
     public MediaEntry getRowById(long id){
         String query = "SELECT * FROM " + TABLE_NAME +
                 " WHERE " + COLUMN_ID + " = " + id;
@@ -93,6 +99,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursorToMediaEntry(cursor);
     }
 
+    //Retrieves and returns the ArrayList of media entries within the specified start date and end date from the database
     public ArrayList<MediaEntry> getRowByDateRange(CustomDate dateStart, CustomDate dateEnd) {
         String query = "SELECT * FROM " + TABLE_NAME +
                 " WHERE " + COLUMN_DATE + " BETWEEN '" +
@@ -103,9 +110,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if(db != null)
             cursor = db.rawQuery(query, null);
-
-        if (cursor.getCount() == 0)
-            return null;
 
         ArrayList<MediaEntry> mediaEntries = new ArrayList<MediaEntry>();
 
@@ -121,6 +125,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return mediaEntries;
     }
 
+    //Fetches the media entry with the specified entry within the database and updates its column values accordingly
     public void updateData(int id, String imagePath, String caption, int mood){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -130,16 +135,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update(TABLE_NAME, cv, "_id=?", new String[]{String.valueOf(id)});
     }
 
+    //Deletes a media entry from the database
     public void deleteOneRow(int id){
         SQLiteDatabase db = this.getWritableDatabase();
         long result = db.delete(TABLE_NAME, "_id=?", new String[]{String.valueOf(id)});
     }
 
+    //Deletes all entries within the database
     public void deleteAllData(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME);
     }
 
+    //Retrieves the mediaEntry from the database as to where the cursor is currently pointing at
     private MediaEntry cursorToMediaEntry(Cursor cursor) {
         cursor.moveToNext();
         return new MediaEntry(
@@ -151,6 +159,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         );
     }
 
+    //Returns database helper with context
     public static DatabaseHelper getInstance(Context context) {
         if (instance == null)
             instance = new DatabaseHelper(context.getApplicationContext());

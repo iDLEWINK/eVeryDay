@@ -1,10 +1,14 @@
 package com.mobdeve.s14.group24.everyday;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -42,16 +46,20 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
     private CustomDate startDate = null;
     private CustomDate endDate = null;
 
+    private String filePath = null;
+
     final static String PROGRESS_MESSAGE = "PROGRESS_MESSAGE";
     final static String PROGRESS_VALUE = "PROGRESS_NUMBER";
     final static String ERROR = "ERROR";
 
     private Handler handler = new Handler(Looper.getMainLooper()) {
+        //Handler
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             Bundle data = msg.getData();
 
+            //If an error is detected with the current runnable process
             if (data.getString(PROGRESS_MESSAGE) != null && data.getString(PROGRESS_MESSAGE).equals(ERROR)) {
                 llProgress.setVisibility(View.GONE);
                 Toast.makeText(MontageSettingsActivity.this, "Montage Creation Failed", Toast.LENGTH_SHORT).show();
@@ -60,9 +68,36 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             tvProgress.setText(data.getString(PROGRESS_MESSAGE));
             pbProgress.setProgress(data.getInt(PROGRESS_VALUE));
 
+            //If progress reached max or the entire process of creating montage was successful
             if (pbProgress.getMax() == data.getInt(PROGRESS_VALUE)) {
                 llProgress.setVisibility(View.GONE);
                 Toast.makeText(MontageSettingsActivity.this, "Successfully Created Montage", Toast.LENGTH_SHORT).show();
+
+                //Prompt for accessing and viewing the newly created montage
+                AlertDialog.Builder builder = new AlertDialog.Builder(MontageSettingsActivity.this);
+                builder.setTitle("Montage Creation Successful");
+                builder.setMessage("Do You Want to Watch the Montage?");
+
+                //Launches intent for viewing of the newly created montage
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.setDataAndType(Uri.parse(filePath), "image/gif");
+                        filePath = null;
+                        finish();
+                        startActivity(intent);
+                    }
+                });
+                //Closes dialog
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                });
+                builder.create().show();
             }
 
         }
@@ -76,6 +111,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
         initComponents();
     }
 
+    //Initializes views in the montage settings layout
     private void initComponents() {
         etLength = findViewById(R.id.et_montage_length);
         tvStartDate = findViewById(R.id.et_montage_start_date);
@@ -87,6 +123,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
 
         etLength.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
+        //On click of start date prompts a date picker dialog
         tvStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +134,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             }
         });
 
+        //On click of end date prompts a date picker dialog
         tvEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,35 +145,43 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             }
         });
 
+        //On click of create prompts the validation of value and start of creation process of montage
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (startDate == null) {
-                    Toast.makeText(MontageSettingsActivity.this, "Please pick a start date", Toast.LENGTH_SHORT).show();
+
+                //Validator for empty duration
+                if (etLength.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(MontageSettingsActivity.this, "Duration must not be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                //Validator for invalid duration
+                else if (Integer.parseInt(etLength.getText().toString().trim()) <= 0) {
+                    Toast.makeText(MontageSettingsActivity.this, "Duration must be greater than 0", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                //Validator for empty start date
+                else if (startDate == null) {
+                    Toast.makeText(MontageSettingsActivity.this, "Please pick a Start Date", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                //Validator for empty end date
                 else if (endDate == null) {
-                    Toast.makeText(MontageSettingsActivity.this, "Please pick an end date", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MontageSettingsActivity.this, "Please pick an End Date", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                else if (startDate.toStringDB().compareTo(endDate.toStringDB()) >= 0) {
-                    Toast.makeText(MontageSettingsActivity.this, "Start date must be greater than end date", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else if (etLength.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(MontageSettingsActivity.this, "Length must not be empty", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else if (Float.parseFloat(etLength.getText().toString().trim()) <= 0) {
-                    Toast.makeText(MontageSettingsActivity.this, "Length must be greater than 0", Toast.LENGTH_SHORT).show();
+                else if (startDate.toString().compareTo(endDate.toString()) > 0) {
+                    Toast.makeText(MontageSettingsActivity.this, "Start Date must be greater than End Date", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+                //Sets progress bar to visible
                 llProgress.setVisibility(View.VISIBLE);
 
                 ThreadHelper.execute(new Runnable() {
                     @Override
                     public void run() {
+                        //If create montage was unsuccessful, pass an error message/value to handler
                         if (!createMontage()) {
                             Message message = Message.obtain();
                             Bundle bundle = new Bundle();
@@ -149,23 +195,30 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
         });
     }
 
+    //Method for handling the creation of montage process. Returns true if successful and false if unsuccessful.
     public boolean createMontage() {
         DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
         int progress = 0;
 
         Message message = Message.obtain();
+
+        //Add progress on bundle
         Bundle bundle = new Bundle();
         bundle.putString(PROGRESS_MESSAGE, "Getting your photos...");
         bundle.putInt(PROGRESS_VALUE, progress);
         message.setData(bundle);
         handler.sendMessage(message);
 
+        //ArrayList of retrieved mediaEntries within the specified start and end date
         ArrayList<MediaEntry> entriesToUse = databaseHelper.getRowByDateRange(startDate, endDate);
         ArrayList<Bitmap> bitmaps = new ArrayList<>();
 
-        pbProgress.setMax(entriesToUse.size() * 2 + 2);
+        //Sets max of progressBar to fit that of the amount of entries
+        pbProgress.setMax(entriesToUse.size() * 2 + 1);
 
+        //Retrieves, processes, and sets the data to be used in compilation in the next step
         for (int i = 0; i < entriesToUse.size(); i++) {
+            //Handles messages for each individual entries
             message = Message.obtain();
             bundle = new Bundle();
             bundle.putString(PROGRESS_MESSAGE, "Processing photo #" + (i + 1) + "...");
@@ -173,6 +226,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             message.setData(bundle);
             handler.sendMessage(message);
             try {
+                //Converts file image to bitmap and add accordingly to bitmaps arraylist
                 File file = new File(entriesToUse.get(i).getImagePath());
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -191,36 +245,22 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             message.setData(bundle);
             handler.sendMessage(message);
 
+            //Gets path where the montage is to be saved
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+            //Formats timestamp to be added as date detail to the file
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+            //Formats the file name of the newly created montage
             String gifFilename = "eVeryDay_Montage_" + timeStamp + ".gif";
 
-
-            FileOutputStream outStream = new FileOutputStream(Paths.get(path, gifFilename).toString());
+            //Sets up writing to device
+            filePath = Paths.get(path, gifFilename).toString();
+            FileOutputStream outStream = new FileOutputStream(filePath);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
+            //GIF encoder
             AnimatedGIFEncoder encoder = new AnimatedGIFEncoder();
             encoder.setDelay(Float.valueOf(Float.parseFloat(etLength.getText().toString().toString()) * 1000).intValue());
-            encoder.setQuality(9);
             encoder.start(byteArrayOutputStream);
-
-            message = Message.obtain();
-            bundle = new Bundle();
-            bundle.putString(PROGRESS_MESSAGE, "Adjusting frame size...");
-            bundle.putInt(PROGRESS_VALUE, ++progress);
-            message.setData(bundle);
-            handler.sendMessage(message);
-
-            int maxWidth = -1;
-            int maxHeight = -1;
-            for (Bitmap i : bitmaps) {
-                if (i.getWidth() > maxWidth)
-                    maxWidth = i.getWidth();
-                if (i.getHeight() > maxHeight)
-                    maxHeight = i.getHeight();
-            }
-
-            encoder.setSize(maxWidth, maxHeight);
 
             for (int i = 0; i < bitmaps.size(); i++) {
                 message = Message.obtain();
@@ -229,12 +269,15 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
                 bundle.putInt(PROGRESS_VALUE, ++progress);
                 message.setData(bundle);
                 handler.sendMessage(message);
+                //GIFencoder adds processed photo as a frame to the currently processed montage gif file
                 encoder.addFrame(bitmaps.get(i));
             }
             encoder.finish();
             byte[] bytes = byteArrayOutputStream.toByteArray();
 
             outStream.write(bytes);
+
+            //Ends writing to device
             outStream.close();
             return true;
         } catch(Exception e) {
@@ -244,6 +287,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
         return false;
     }
 
+    //Sets the date of instance variables startDate or endDate depending on the value chosen from the date picker
     @Override
     public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
         if (isStart) {

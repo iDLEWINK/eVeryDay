@@ -54,6 +54,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
     private String caption;
     private int mood;
 
+    //Start activity for result for camera
     private ActivityResultLauncher activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -85,6 +86,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         ibEdit = findViewById(R.id.ib_submit_edit);
         ibDelete = findViewById(R.id.ib_delete);
 
+        //Loads intent values of selected media entry to screen var values
         Intent intent = getIntent();
         id = intent.getIntExtra(Keys.KEY_ID.name(), -1);
         date = intent.getStringExtra(Keys.KEY_DATE.name());
@@ -93,8 +95,10 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         caption = intent.getStringExtra(Keys.KEY_CAPTION.name());
         mood = intent.getIntExtra(Keys.KEY_MOOD.name(), 0);
 
+        //Sets intent values
         setValues();
 
+        //Initializes both helpers for database and camera
         databaseHelper = DatabaseHelper.getInstance(this);
         cameraHelper = new CameraHelper(getApplicationContext());
         sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -141,7 +145,8 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                 builder.show();
             }
         });
-        
+
+        //Sets on click listener for the edit image button
         ibEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,6 +154,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
             }
         });
 
+        //Sets on click listener for the delete image button
         ibDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,6 +164,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
     }
 
     private void editEntry() {
+        //Prompts initial dialog for confirmation of edit action
         AlertDialog.Builder alert = new AlertDialog.Builder(EditMediaEntryActivity.this);
         alert.setTitle("Save Changes");
         alert.setMessage("Do you want to save your changes for this Entry?");
@@ -198,11 +205,13 @@ public class EditMediaEntryActivity extends AppCompatActivity {
                 intent.putExtra(Keys.KEY_MOOD.name(), mood);
                 setResult(Activity.RESULT_OK, intent);
 
+                //Activates dataset modified key and returns intent to view with newly added variables
                 sp.edit().putBoolean(Keys.MODIFIED_DATA_SET.name(), true).commit();
                 dialog.dismiss();
                 finish();
             }
         });
+        //Dismiss dialog if confirm is not accepted
         alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -213,6 +222,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
     }
 
     private void deleteEntry() {
+        //Prompts initial dialog for confirmation of delete action
         AlertDialog.Builder alert = new AlertDialog.Builder(EditMediaEntryActivity.this);
         alert.setTitle("Delete Entry");
         alert.setMessage("Do you really want to delete this Entry? This cannot be undone.");
@@ -245,6 +255,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         alert.show();
     }
 
+    //Sets the activity elements value with the loaded intent values
     private void setValues() {
         tvDate.setText(date);
         etCaption.setText(caption);

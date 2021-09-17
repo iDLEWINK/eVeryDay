@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String currentPhotoPath;
 
+
     private ActivityResultLauncher activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -63,20 +64,25 @@ public class MainActivity extends AppCompatActivity {
                             public void run() {
                                 MediaEntry mediaEntry = databaseHelper.getRowById(databaseHelper.addEntry(currentPhotoPath));
 
+                                //Initializes intent for viewing of media entry
                                 Intent intent = new Intent(MainActivity.this, ViewMediaEntryActivity.class);
                                 sp.edit().putBoolean(Keys.INSERTED_DATA_SET.name(), true).commit();
 
+                                //If descending, append media entry to the start of the arrayList
                                 if(sp.getBoolean(Keys.KEY_DESCENDING.name(), true))
                                     mediaEntries.add(0, mediaEntry);
+                                //Else, append to the end of the arrayList
                                 else
                                     mediaEntries.add(mediaEntry);
 
+                                //Add the keys to send to intent for viewMediaEntry
                                 intent.putExtra(Keys.KEY_ID.name(), mediaEntry.getId());
                                 intent.putExtra(Keys.KEY_DATE.name(), mediaEntry.getDate().toStringFull());
                                 intent.putExtra(Keys.KEY_IMAGE_PATH.name(), mediaEntry.getImagePath());
                                 intent.putExtra(Keys.KEY_CAPTION.name(), mediaEntry.getCaption());
                                 intent.putExtra(Keys.KEY_MOOD.name(), mediaEntry.getMood());
 
+                                //Start the activity with the intent for viewMediaEntry
                                 startActivity(intent);
                             }
                         });
@@ -85,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
             }
     );
 
+    //Initializes necessary objects and loads data on launch
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,29 +99,41 @@ public class MainActivity extends AppCompatActivity {
 
         pbLoading = findViewById(R.id.pb_loading_main);
         tvLoading = findViewById(R.id.tv_loading_main);
+
+        //Sets loading indicator to visible before the main data and screen are loaded
         pbLoading.setVisibility(View.VISIBLE);
         tvLoading.setVisibility(View.VISIBLE);
 
+        //Initialize Database and Shared Preferences
         databaseHelper = DatabaseHelper.getInstance(this);
         dataHelper = new DataHelper(MainActivity.this);
         sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         spEditor = sp.edit();
 
+        //Initialize recycler view
         initRecyclerView();
+
+        //Initialize action buttons for camera and montage
         initFabCamera();
         initFabMontage();
 
+        //Calls loadSort method to retrieve saved sort preference
         loadSort();
+
+        //Initialize sort image button
         initIbSort();
 
+        //Initialize notification
         initNotification();
 
     }
 
+    //Calls updateRecyclerView() method onResume
     @Override
     protected void onResume() {
         super.onResume();
 
+        //Calls updateRecyclerView method to match screen with potential changes
         updateRecyclerView();
     }
 
@@ -122,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
         ThreadHelper.execute(new Runnable() {
             @Override
             public void run() {
+                //Retrieves saved sort preference
                 boolean sortOrder = sp.getBoolean(Keys.KEY_DESCENDING.name(), true);
                 mediaEntries = dataHelper.retrieveData();
 
@@ -144,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Initializes the sort image button
     private void initIbSort () {
         ibSort.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,11 +173,16 @@ public class MainActivity extends AppCompatActivity {
                 singleExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
+                        //Retrieves the saved sort preference
                         boolean sortOrder = sp.getBoolean(Keys.KEY_DESCENDING.name(), true);
+
+                        //If descending
                         if(sortOrder) {
+                            //Set image button icon to ascending, and set the keys to false(ascending)
                             ibSort.setImageResource(R.drawable.sort_ascending);
                             spEditor.putBoolean(Keys.KEY_DESCENDING.name(), false);
                         } else {
+                            //Set image button icon to descending, and set the keys to true(descending)
                             ibSort.setImageResource(R.drawable.sort_descending);
                             spEditor.putBoolean(Keys.KEY_DESCENDING.name(), true);
                         }
@@ -164,12 +190,15 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                //Initialize new ArrayList with the current mediaEntries as data and reverse it
                                 ArrayList reversedMedia = new ArrayList(mediaEntries);
                                 Collections.reverse(reversedMedia);
+                                //Call adapter method setData with the argument reversedMedia to make changes to screen data
                                 mediaEntryAdapter.setData(reversedMedia);
                             }
                         });
 
+                        //Save sort value to shared preferences
                         spEditor.apply();
                     }
                 });
@@ -177,10 +206,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Loads the sort values from shared preferences
     private void loadSort() {
         ibSort = findViewById(R.id.ib_sort);
+
+        //Fetches sort value from shared preferencees
         boolean sortDescending = sp.getBoolean(Keys.KEY_DESCENDING.name(), true);
 
+        //Sets the sort image button icon depending on the sort value found from shared preferences
         if(sortDescending) {
             ibSort.setImageResource(R.drawable.sort_descending);
         } else {
@@ -199,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
                 else {
 */
 
+                //Shows prompt for whether picture or photo is to be taken
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Select an Option");
                 builder.setItems(
@@ -208,10 +242,12 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             CameraHelper cameraHelper = new CameraHelper(getApplicationContext());
                             if (which == 0) {
+                                //Launch camera intent for photo
                                 activityResultLauncher.launch(cameraHelper.makePhotoIntent());
                                 currentPhotoPath = cameraHelper.getCurrentPath();
                             }
                             else if (which == 1) {
+                                //Launch camera intent for video
                                 activityResultLauncher.launch(cameraHelper.makeVideoIntent());
                                 currentPhotoPath = cameraHelper.getCurrentPath();
                             }
@@ -223,12 +259,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Initializes action button for montage functionality
     private void initFabMontage () {
         fabMontage = findViewById(R.id.fab_activity_main_montage);
 
         fabMontage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Launch intent on montage settings screen on click
                 Intent intent = new Intent(MainActivity.this, MontageSettingsActivity.class);
                 startActivity(intent);
             }
@@ -239,9 +277,11 @@ public class MainActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
 
+        //Fetches a random hour in the day given the calendar
         Random random = new Random();
         calendar.set(Calendar.HOUR_OF_DAY, random.nextInt(24));
 
+        //Creates intent for notification
         Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -255,8 +295,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void updateRecyclerView () {
+        //Position of last accessed media entry
         int lastClickedPosition = sp.getInt(Keys.CUR_DATA_SET_POS.name(), 0);
 
+        //Update if after modifying contents of a media entry
         if (sp.getBoolean(Keys.MODIFIED_DATA_SET.name(), false) && mediaEntryAdapter != null) {
             ThreadHelper.execute(new Runnable() {
                 @Override
@@ -275,12 +317,16 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+        //Update if after creating new media entry
         if (sp.getBoolean(Keys.INSERTED_DATA_SET.name(), false) && mediaEntryAdapter != null){
+            //Inserted data set will be notified at index 0 if descending and the last element of the ArrayList if ascending
             int index = sp.getBoolean(Keys.KEY_DESCENDING.name(), true) ? 0 : mediaEntries.size();
             mediaEntryAdapter.notifyItemInserted(index);
         }
 
+        //Update if after deleting a media entry
         if (sp.getBoolean(Keys.DELETED_DATA_SET.name(), false) && mediaEntryAdapter != null) {
+            //Removes the last accessed mediaEntry from the ArrayList
             mediaEntries.remove(lastClickedPosition);
             mediaEntryAdapter.notifyItemRemoved(lastClickedPosition);
         }
