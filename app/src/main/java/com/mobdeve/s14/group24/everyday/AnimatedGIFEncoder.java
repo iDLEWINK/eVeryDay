@@ -243,9 +243,9 @@ public class AnimatedGIFEncoder {
      * Sets the GIF frame position. The position is 0,0 by default.
      * Useful for only updating a section of the image
      *
-     * @param w
+     * @param x
      *          int frame width.
-     * @param h
+     * @param y
      *          int frame width.
      */
     public void setPosition(int x, int y) {

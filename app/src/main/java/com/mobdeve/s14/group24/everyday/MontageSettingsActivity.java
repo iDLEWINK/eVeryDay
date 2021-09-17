@@ -253,7 +253,10 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             String gifFilename = "eVeryDay_Montage_" + timeStamp + ".gif";
 
             //Sets up writing to device
-            filePath = Paths.get(path, gifFilename).toString();
+            File fPath = new File(path);
+            File fGifFilename = new File(fPath, gifFilename);
+            filePath = fGifFilename.getPath();
+
             FileOutputStream outStream = new FileOutputStream(filePath);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 

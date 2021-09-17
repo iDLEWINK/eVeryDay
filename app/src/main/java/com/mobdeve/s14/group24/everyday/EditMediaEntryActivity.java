@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -31,6 +32,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
     private ImageView ivImage;
     private VideoView vvImage;
     private TextView tvDate;
+    private RadioGroup rgMoods;
     private RadioButton rbMood1;
     private RadioButton rbMood2;
     private RadioButton rbMood3;
@@ -73,6 +75,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         ivImage = findViewById(R.id.iv_edit_media_entry_image);
         vvImage = findViewById(R.id.vv_edit_media_entry_image);
         tvDate = findViewById(R.id.tv_edit_media_entry_date);
+        rgMoods = findViewById(R.id.rg_moods);
         rbMood1 = findViewById(R.id.rb_edit_mood1);
         rbMood2 = findViewById(R.id.rb_edit_mood2);
         rbMood3 = findViewById(R.id.rb_edit_mood3);
@@ -146,16 +149,20 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (rbMood1.isChecked())
-                    mood = 1;
-                else if (rbMood2.isChecked())
-                    mood = 2;
-                else if (rbMood3.isChecked())
-                    mood = 3;
-                else if (rbMood4.isChecked())
-                    mood = 4;
-                else if (rbMood5.isChecked())
-                    mood = 5;
+                switch (rgMoods.getCheckedRadioButtonId()) {
+                    case R.id.rb_edit_mood1:
+                        mood = 1; break;
+                    case R.id.rb_edit_mood2:
+                        mood = 2; break;
+                    case R.id.rb_edit_mood3:
+                        mood = 3; break;
+                    case R.id.rb_edit_mood4:
+                        mood = 4; break;
+                    case R.id.rb_edit_mood5:
+                        mood = 5; break;
+                    case -1:
+                        mood = 0; break;
+                }
 
                 caption = etCaption.getText().toString().trim();
 
@@ -274,5 +281,25 @@ public class EditMediaEntryActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setValues();
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(EditMediaEntryActivity.this);
+        alert.setTitle("You have unsaved changes");
+        alert.setMessage("Leaving this page will remove all of your changes. Are you sure you want to leave?");
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                EditMediaEntryActivity.this.finish();
+            }
+        });
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.show();
     }
 }
