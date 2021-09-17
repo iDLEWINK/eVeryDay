@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -31,6 +32,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
     private ImageView ivImage;
     private VideoView vvImage;
     private TextView tvDate;
+    private RadioGroup rgMoods;
     private RadioButton rbMood1;
     private RadioButton rbMood2;
     private RadioButton rbMood3;
@@ -73,6 +75,7 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         ivImage = findViewById(R.id.iv_edit_media_entry_image);
         vvImage = findViewById(R.id.vv_edit_media_entry_image);
         tvDate = findViewById(R.id.tv_edit_media_entry_date);
+        rgMoods = findViewById(R.id.rg_moods);
         rbMood1 = findViewById(R.id.rb_edit_mood1);
         rbMood2 = findViewById(R.id.rb_edit_mood2);
         rbMood3 = findViewById(R.id.rb_edit_mood3);
@@ -99,6 +102,28 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         databaseHelper = DatabaseHelper.getInstance(this);
         cameraHelper = new CameraHelper(getApplicationContext());
         sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+/*
+        rgMoods.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+            }
+        });
+
+        View.OnClickListener unselectMood = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RadioButton button = (RadioButton) v;
+                if (button.isChecked())
+                    rgMoods.clearCheck();
+            }
+        };
+
+        rbMood1.setOnClickListener(unselectMood);
+        rbMood2.setOnClickListener(unselectMood);
+        rbMood3.setOnClickListener(unselectMood);
+        rbMood4.setOnClickListener(unselectMood);
+        rbMood5.setOnClickListener(unselectMood);*/
 
         ibRetakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,16 +171,20 @@ public class EditMediaEntryActivity extends AppCompatActivity {
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (rbMood1.isChecked())
-                    mood = 1;
-                else if (rbMood2.isChecked())
-                    mood = 2;
-                else if (rbMood3.isChecked())
-                    mood = 3;
-                else if (rbMood4.isChecked())
-                    mood = 4;
-                else if (rbMood5.isChecked())
-                    mood = 5;
+                switch (rgMoods.getCheckedRadioButtonId()) {
+                    case R.id.rb_edit_mood1:
+                        mood = 1; break;
+                    case R.id.rb_edit_mood2:
+                        mood = 2; break;
+                    case R.id.rb_edit_mood3:
+                        mood = 3; break;
+                    case R.id.rb_edit_mood4:
+                        mood = 4; break;
+                    case R.id.rb_edit_mood5:
+                        mood = 5; break;
+                    case -1:
+                        mood = 0; break;
+                }
 
                 caption = etCaption.getText().toString().trim();
 
