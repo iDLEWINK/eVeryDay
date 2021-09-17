@@ -6,6 +6,7 @@ public class CustomDate {
     private static final String[] monthNames = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     private int day, month, year;
 
+    //Custom date constructor
     public CustomDate() {
         Calendar c = Calendar.getInstance();
 
@@ -14,6 +15,7 @@ public class CustomDate {
         month = c.get(Calendar.MONTH);
     }
 
+    //Splits the generated date instance to day, month, and years in integer format
     public CustomDate(String stringDate) {
         String[] dateParts = stringDate.split("/");
         year = Integer.parseInt(dateParts[0]);
@@ -21,24 +23,29 @@ public class CustomDate {
         day = Integer.parseInt(dateParts[2]);
     }
 
+    //Overloaded method that sets values of date instance variables according to arguments in constructor
     public CustomDate(int year, int month, int day) {
         this.year = year;
         this.day = day;
         this.month = month;
     }
 
+    //Returns a string that represents formatted date with the month as string, and day and year as integers
     public String toStringFull() {
         return monthNames[month] + " " + day + ", " + year;
     }
 
+    //Returns a string that represents formatted date without the year, and with the month as string and day as integer
     public String toStringNoYear() {
         return monthNames[month] + " " + day;
     }
 
+    //Returns a string that represents a YYYY/MM/DD format for storage in the database
     public String toStringDB() {
         return year + "/" + month + "/" + day;
     }
 
+    //Returns a string that represents a YYYY_MM_DD format for file naming convention
     public String toStringFileName() {
         return year + "_" + month + "_" + day + ".jpg";
     }
