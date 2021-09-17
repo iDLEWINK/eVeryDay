@@ -40,6 +40,11 @@ public class CustomDate {
         return monthNames[month] + " " + day;
     }
 
+    //Returns a string that represents a YYYY-MM-DD format
+    public String toString () {
+        return year + "-" + String.format("%02d" , month + 1) + "-" + String.format("%02d" , day);
+    }
+
     //Returns a string that represents a YYYY/MM/DD format for storage in the database
     public String toStringDB() {
         return year + "/" + month + "/" + day;

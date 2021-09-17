@@ -111,9 +111,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(db != null)
             cursor = db.rawQuery(query, null);
 
-        if (cursor.getCount() == 0)
-            return null;
-
         ArrayList<MediaEntry> mediaEntries = new ArrayList<MediaEntry>();
 
         while (cursor.moveToNext()) {
