@@ -57,10 +57,10 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             Bundle data = msg.getData();
 
             //If an error is detected with the current runnable process
-            Log.d("aaa", data.getInt(Keys.PROGRESS_VALUE.name() )+ "");
             if (data.getInt(Keys.PROGRESS_VALUE.name()) == -1) {
                 llProgress.setVisibility(View.GONE);
                 Toast.makeText(MontageSettingsActivity.this, data.getString(Keys.PROGRESS_MESSAGE.name()), Toast.LENGTH_SHORT).show();
+                return;
             }
 
             tvProgress.setText(data.getString(Keys.PROGRESS_MESSAGE.name()));
@@ -154,7 +154,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
                     return;
                 }
                 //Validator for invalid duration
-                else if (Integer.parseInt(etLength.getText().toString().trim()) <= 0) {
+                else if (Float.parseFloat(etLength.getText().toString().trim()) <= 0) {
                     Toast.makeText(MontageSettingsActivity.this, "Duration must be greater than 0", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -188,6 +188,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
                             Bundle bundle = new Bundle();
                             bundle.putString(Keys.PROGRESS_MESSAGE.name(), e.getMessage());
                             bundle.putInt(Keys.PROGRESS_VALUE.name(), -1);
+                            message.setData(bundle);
                             handler.sendMessage(message);
                         }
                     }
@@ -215,7 +216,6 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
         ArrayList<Bitmap> bitmaps = new ArrayList<>();
 
         if (entriesToUse.size() == 0) {
-            
             throw new Exception("You have no entries in that date range");
         }
 
