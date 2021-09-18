@@ -148,30 +148,9 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             @Override
             public void onClick(View v) {
 
-                //Validator for empty duration
-                if (etLength.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(MontageSettingsActivity.this, "Duration must not be empty", Toast.LENGTH_SHORT).show();
+                // Check if form is valid before proceeding
+                if (!isFormValid())
                     return;
-                }
-                //Validator for invalid duration
-                else if (Float.parseFloat(etLength.getText().toString().trim()) <= 0) {
-                    Toast.makeText(MontageSettingsActivity.this, "Duration must be greater than 0", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                //Validator for empty start date
-                else if (startDate == null) {
-                    Toast.makeText(MontageSettingsActivity.this, "Please pick a Start Date", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                //Validator for empty end date
-                else if (endDate == null) {
-                    Toast.makeText(MontageSettingsActivity.this, "Please pick an End Date", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else if (startDate.toString().compareTo(endDate.toString()) > 0) {
-                    Toast.makeText(MontageSettingsActivity.this, "Start Date must be greater than End Date", Toast.LENGTH_SHORT).show();
-                    return;
-                }
 
                 //Sets progress bar to visible
                 llProgress.setVisibility(View.VISIBLE);
@@ -207,7 +186,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
         //Add progress on bundle
         Bundle bundle = new Bundle();
         bundle.putString(Keys.PROGRESS_MESSAGE.name(), "Getting your photos...");
-        bundle.putInt(Keys.PROGRESS_VALUE.name(), progress);
+        bundle.putInt(Keys.PROGRESS_VALUE.name(), ++progress);
         message.setData(bundle);
         handler.sendMessage(message);
 
@@ -216,6 +195,12 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
         ArrayList<Bitmap> bitmaps = new ArrayList<>();
 
         if (entriesToUse.size() == 0) {
+            try {
+                Thread.sleep(500);
+            }
+            catch (Exception e) {
+                throw e;
+            }
             throw new Exception("You have no entries in that date range");
         }
 
@@ -294,14 +279,42 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
         }
     }
 
+    // Validates the user's inputs
+    public boolean isFormValid() {
+        //Validator for empty duration
+        if (etLength.getText().toString().trim().isEmpty()) {
+            Toast.makeText(MontageSettingsActivity.this, "Duration must not be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        //Validator for invalid duration
+        else if (Float.parseFloat(etLength.getText().toString().trim()) <= 0) {
+            Toast.makeText(MontageSettingsActivity.this, "Duration must be greater than 0", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        //Validator for empty start date
+        else if (startDate == null) {
+            Toast.makeText(MontageSettingsActivity.this, "Please pick a Start Date", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        //Validator for empty end date
+        else if (endDate == null) {
+            Toast.makeText(MontageSettingsActivity.this, "Please pick an End Date", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (startDate.toString().compareTo(endDate.toString()) > 0) {
+            Toast.makeText(MontageSettingsActivity.this, "Start Date must be greater than End Date", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
     //Sets the date of instance variables startDate or endDate depending on the value chosen from the date picker
     @Override
     public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
         if (isStart) {
             startDate = new CustomDate(year, month, dayOfMonth);
             tvStartDate.setText(startDate.toStringFull());
-        }
-        else {
+        } else {
             endDate = new CustomDate(year, month, dayOfMonth);
             tvEndDate.setText(endDate.toStringFull());
         }
