@@ -205,7 +205,11 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
         }
 
         //Sets max of progressBar to fit that of the amount of entries
-        pbProgress.setMax(entriesToUse.size() * 2 + 1);
+        pbProgress.setMax(entriesToUse.size() * 2 + 2);
+
+        //Values to save the smallest width and height
+        int smallestWidth = Integer.MAX_VALUE;
+        int smallestHeight = Integer.MAX_VALUE;
 
         //Retrieves, processes, and sets the data to be used in compilation in the next step
         for (int i = 0; i < entriesToUse.size(); i++) {
@@ -222,12 +226,26 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                 Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file), null, options);
+                // Finds the smallest photo height
+                if (bitmap.getWidth() < smallestWidth)
+                    smallestWidth = bitmap.getWidth();
+                if (bitmap.getHeight() < smallestHeight)
+                    smallestHeight = bitmap.getHeight();
                 bitmaps.add(bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw e;
             }
         }
+
+        message = Message.obtain();
+        bundle = new Bundle();
+        bundle.putString(Keys.PROGRESS_MESSAGE.name(), "Resizing photos...");
+        bundle.putInt(Keys.PROGRESS_VALUE.name(), ++progress);
+        message.setData(bundle);
+        handler.sendMessage(message);
+        for (int i = 0; i < bitmaps.size(); i++)
+            bitmaps.set(i, Bitmap.createScaledBitmap(bitmaps.get(i), smallestWidth, smallestHeight, true));
 
         try {
             message = Message.obtain();
@@ -254,6 +272,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             //GIF encoder
             AnimatedGIFEncoder encoder = new AnimatedGIFEncoder();
             encoder.setDelay(Float.valueOf(Float.parseFloat(etLength.getText().toString().toString()) * 1000).intValue());
+            encoder.setRepeat(0);
             encoder.start(byteArrayOutputStream);
 
             for (int i = 0; i < bitmaps.size(); i++) {
