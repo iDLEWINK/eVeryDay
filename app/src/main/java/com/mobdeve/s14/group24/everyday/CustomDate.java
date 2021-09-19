@@ -47,7 +47,7 @@ public class CustomDate {
 
     //Returns a string that represents a YYYY/MM/DD format for storage in the database
     public String toStringDB() {
-        return year + "/" + String.format("%02d", month + 1) + "/" + String.format("%02d", day);
+        return year + "/" + String.format("%02d", month) + "/" + String.format("%02d", day);
     }
 
     //Returns a string that represents a YYYY_MM_DD format for file naming convention
