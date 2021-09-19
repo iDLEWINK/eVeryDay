@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton ibSort;
     private ProgressBar pbLoading;
     private TextView tvLoading;
+    private TextView tvEmpty;
 
     private String currentPhotoPath;
 
@@ -99,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
         pbLoading = findViewById(R.id.pb_loading_main);
         tvLoading = findViewById(R.id.tv_loading_main);
+        tvEmpty = findViewById(R.id.tv_gallery_empty);
 
         //Sets loading indicator to visible before the main data and screen are loaded
         pbLoading.setVisibility(View.VISIBLE);
@@ -336,6 +338,11 @@ public class MainActivity extends AppCompatActivity {
                 .putBoolean(Keys.INSERTED_DATA_SET.name(), false)
                 .putBoolean(Keys.DELETED_DATA_SET.name(), false)
                 .commit();
+
+        if (mediaEntries.size() == 0)
+            tvLoading.setVisibility(View.VISIBLE);
+        else
+            tvLoading.setVisibility(View.GONE);
     }
 
 }

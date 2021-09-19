@@ -8,4 +8,5 @@
     <string name="about_caption_label">About This Pic</string>
     <string name="mood_label">Mood</string>
     <string name="loading_main">Getting your photos</string>
+    <string name="empty_gallery">You have no photos in your gallery.</string>
 </resources>

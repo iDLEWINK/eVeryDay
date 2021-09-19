@@ -113,4 +113,22 @@
         app:layout_constraintTop_toTopOf="@+id/tv_gallery_label"
         app:srcCompat="@drawable/sort_descending"
         app:tint="#FFFFFFFF" />
+
+    <TextView
+        android:id="@+id/tv_gallery_empty"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="128dp"
+        android:fontFamily="@font/righteous"
+        android:gravity="center"
+        android:text="@string/empty_gallery"
+        android:textColor="@color/black_coffee"
+        android:textSize="38sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rv_activity_main_gallery" />
 </androidx.constraintlayout.widget.ConstraintLayout>
