@@ -107,7 +107,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 dateEnd.toStringDB() + "'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;
-
+        Log.d("aaa", query);
         if(db != null)
             cursor = db.rawQuery(query, null);
 
