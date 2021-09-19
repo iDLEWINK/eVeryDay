@@ -8,12 +8,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -222,10 +224,16 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             handler.sendMessage(message);
             try {
                 //Converts file image to bitmap and add accordingly to bitmaps arraylist
-                File file = new File(entriesToUse.get(i).getImagePath());
+                String imagePath = entriesToUse.get(i).getImagePath();
+                File file = new File(imagePath);
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file), null, options);
+                String ext = imagePath.contains(".") ? imagePath.substring(imagePath.lastIndexOf(".")).toLowerCase() : "";
+                Bitmap bitmap;
+                if (ext.equals(".mp4"))
+                    bitmap = ThumbnailUtils.createVideoThumbnail(imagePath,  MediaStore.Images.Thumbnails.FULL_SCREEN_KIND);
+                else
+                    bitmap = BitmapFactory.decodeStream(new FileInputStream(file), null, options);
                 // Finds the smallest photo height
                 if (bitmap.getWidth() < smallestWidth)
                     smallestWidth = bitmap.getWidth();
@@ -234,7 +242,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
                 bitmaps.add(bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
-                throw e;
+                throw new Exception("There was an error in processing your photos");
             }
         }
 
@@ -294,7 +302,7 @@ public class MontageSettingsActivity extends AppCompatActivity implements DatePi
             outStream.close();
         } catch(Exception e) {
             e.printStackTrace();
-            throw e;
+            throw new Exception("There was an error in encoding your photos");
         }
     }
 
