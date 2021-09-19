@@ -19,6 +19,7 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -160,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
                         MainActivity.this.rvGallery.setAdapter(mediaEntryAdapter);
                         pbLoading.setVisibility(View.GONE);
                         tvLoading.setVisibility(View.GONE);
+                        updateRecyclerView();
                     }
                 });
             }
@@ -297,6 +299,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void updateRecyclerView () {
+        if (mediaEntries == null)
+            return;
+
         //Position of last accessed media entry
         int lastClickedPosition = sp.getInt(Keys.CUR_DATA_SET_POS.name(), 0);
 
@@ -340,9 +345,9 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
 
         if (mediaEntries.size() == 0)
-            tvLoading.setVisibility(View.VISIBLE);
+            tvEmpty.setVisibility(View.VISIBLE);
         else
-            tvLoading.setVisibility(View.GONE);
+            tvEmpty.setVisibility(View.GONE);
     }
 
 }
