@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -99,7 +100,6 @@ public class DataHelper {
     public ArrayList<MediaEntry> retrieveData () {
         ArrayList<MediaEntry> mediaEntries = new ArrayList<MediaEntry>();
         Cursor cursor = databaseHelper.readAllData();
-
         while (cursor.moveToNext()) {
             mediaEntries.add(0,
                     new MediaEntry(cursor.getInt(0),
@@ -108,7 +108,6 @@ public class DataHelper {
                             cursor.getString(3),
                             cursor.getInt(4)));
         }
-
         return mediaEntries;
     }
 
